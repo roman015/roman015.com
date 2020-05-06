@@ -1,0 +1,24 @@
+---
+
+# The first host entry below is a hack to pass the host IP via CLI. 
+# ref: https://stackoverflow.com/a/49790233/198660
+# It works by first running a command on localhost to add a remote host via 
+# a variable.
+  - hosts: localhost
+    connection: local
+
+    tasks:
+    - add_host:
+        name: "{{ working_host }}"
+        groups: remote_droplet
+      changed_when: false 
+
+# Defining roles for our ansible script
+  - hosts: remote_droplet
+
+    vars_files:
+      - group_vars/all.yml
+
+    roles:
+      - remote-ping
+
