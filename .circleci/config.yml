@@ -25,4 +25,9 @@ jobs:
 workflows:
   deployment-workflow:
     jobs:
-      - deployment-job
+      - deployment-job:
+          filters:
+            branches:
+              only: 
+                - master
+
