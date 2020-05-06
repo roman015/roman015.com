@@ -1,12 +1,28 @@
- version: 2.1
+version: 2.1
 
- orbs:
-  win: circleci/windows@2.2.0
+executors:
+  ubuntu-docker:
+    docker:
+      - image: abrahamvarricatt/ubuntu-ansible-toolbox:latest
 
- jobs:
-   build:
-     executor: win/default     
-    
-     steps:
-       - checkout
-       - run: dotnet build
+commands:
+  
+  run-ansible:
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "e9:f3:26:a7:c6:82:d1:16:c4:fa:d6:02:25:39:58:b4"
+      - checkout  
+      - run: cd .provision && ./run_ansible.sh --remote-ip $DROPLET_HOST_IP
+
+jobs:
+  deployment-job:
+    executor: ubuntu-docker
+    steps:
+      - run-ansible
+
+
+workflows:
+  deployment-workflow:
+    jobs:
+      - deployment-job
