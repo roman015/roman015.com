@@ -1,5 +1,7 @@
 #!/bin/bash
-
+#
+# This script will bootstrap the ansible playbook, which runs on the remote
+# droplet.
 
 # Parsing arguments
 # ref: https://unix.stackexchange.com/a/580258/410983
@@ -34,4 +36,7 @@ then
     exit 1
 fi
 
-echo "This was the IP passed into the script = $REMOTE_IP "
+# Running our playbook
+ansible-playbook basic-provision.yml \
+                 -e working_host=$REMOTE_IP \
+                 -e 'ansible_python_interpreter=/usr/bin/python3'
