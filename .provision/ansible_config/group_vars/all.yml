@@ -5,5 +5,5 @@
 # Webapp user
 webapp_user: sammy
 webapp_user_password: rand321
-webapp_repo: "{{ lookup('env', 'CIRCLE_REPOSITORY_URL') }}"
+webapp_repo: "https://github.com/{{ lookup('env', 'CIRCLE_PROJECT_USERNAME') }}/{{ lookup('env', 'CIRCLE_PROJECT_REPONAME') }}.git  "
 
