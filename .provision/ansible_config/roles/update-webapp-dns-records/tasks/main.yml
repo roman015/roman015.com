@@ -1,10 +1,25 @@
 ---
 
-  - name: Create DNS record for www project
-    cloudflare_dns:
-      zone: {{ dns_zone }}
-      record: {{ dns_www_record }}
-      type: A
-      value: {{ working_host }}
-      account_email: {{ dns_cloudflare_account_email }}
-      account_api_token: {{ dns_cloudflare_api_token }}
+#   - name: Create DNS record for www project
+#     cloudflare_dns:
+#       zone: "{{ dns_zone }}"
+#       record: "{{ dns_www_record }}"
+#       type: A
+#       value: "{{ working_host }}"
+#       account_email: "{{ dns_cloudflare_account_email }}"
+#       account_api_token: "{{ dns_cloudflare_api_token }}"
+
+  - name: Create new unproxied A record
+    uri:
+      url: "https://api.cloudflare.com/client/v4/zones/{{ dns_cloudflare_zone_id }}/dns_records"
+      method: POST
+      body: '{"type":"A","name":"{{ dns_www_record }}.{{ dns_zone }}","content":"{{ working_host }}","ttl":1,"proxied":false}'
+      body_format: json
+      headers:
+        Authorization: "Bearer {{ dns_cloudflare_api_token }}"
+        Content-Type: "application/json"
+      register: A_result
+
+  - name: Cloudflare response
+    debug:
+      var: A_result.stdout_lines
