@@ -7,4 +7,4 @@
     type: A
     value: "{{ working_host }}"
     account_email: "{{ dns_cloudflare_account_email }}"
-    account_api_token: "{{ dummy_token }}"
+    account_api_token: "{{ dns_cloudflare_api_token }}"
