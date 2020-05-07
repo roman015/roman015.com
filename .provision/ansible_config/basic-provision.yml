@@ -25,4 +25,6 @@
       - install-dotnet-core
       - install-nginx
       - setting-up-webapp
+      - configure-systemd-journal-logging
+      - setting-up-worker
 

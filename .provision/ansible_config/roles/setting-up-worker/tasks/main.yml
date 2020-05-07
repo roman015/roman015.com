@@ -1,0 +1,24 @@
+---
+
+  - name: Build dotNetWorker project
+    become: yes
+    become_user: "{{ webapp_user }}"
+    shell: dotnet build
+    args:
+      chdir: /home/{{ webapp_user }}/web_project/worker
+
+  - name: Publish dotNetWorker project
+    become: yes
+    become_user: "{{ webapp_user }}"
+    shell: dotnet publish -c Release
+    args:
+      chdir: /home/{{ webapp_user }}/web_project/worker
+    notify:
+      - Restart dotNetWorker
+
+  - name: install dotNetWorker systemd unit file
+    template: 
+      src: worker.service.j2 
+      dest: /etc/systemd/system/worker.service
+    notify:
+      - Restart dotNetWorker
