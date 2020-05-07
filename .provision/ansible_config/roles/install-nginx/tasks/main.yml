@@ -1,0 +1,22 @@
+---
+
+  - name: Install nginx
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - nginx
+
+  - name: Allow HTTP for nginx in firewall
+    ufw:
+      rule: allow
+      name: "Nginx HTTP"
+
+  - name: Allow SSH in firewall
+    ufw:
+      rule: allow
+      name: "OpenSSH"
+
+  - name: Activate firewall
+    ufw:
+      state: enabled

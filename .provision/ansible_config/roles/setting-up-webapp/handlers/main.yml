@@ -1,0 +1,12 @@
+---
+
+- name: "Restart dotNetWebApp"
+  systemd:
+    name: "webapp.service"
+    state: restarted
+    daemon_reload: yes
+
+- name: "Restart nginx"
+  service:
+    name: nginx
+    state: restarted

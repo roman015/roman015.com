@@ -1,0 +1,15 @@
+[Unit]
+Description=dotNet webapp
+
+[Service]
+WorkingDirectory=/var/www/site-www
+ExecStart=/usr/bin/dotnet /var/www/site-www/bin/Debug/netcoreapp3.1/publish/www.roman015.com.dll
+Restart=always
+RestartSec=10
+SyslogIdentifier=webapp
+User={{ webapp_user }}
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+[Install]
+WantedBy=multi-user.target
