@@ -1,3 +1,9 @@
 ---
 
-# Empty file ... for now.
+
+
+# Webapp user
+webapp_user: sammy
+webapp_user_password: rand321
+webapp_repo: "{{ lookup('env', 'CIRCLE_REPOSITORY_URL') }}"
+

@@ -1,0 +1,46 @@
+---
+
+  - name: Create symlink to webapp source folder
+    file:
+      state: link
+      src: /home/{{ webapp_user }}/web_project/www
+      dest: /var/www/site-www
+
+  - name: Publish dotNet project
+    become: yes
+    become_user: "{{ webapp_user }}"
+    shell: dotnet publish
+    args:
+      chdir: /var/www/site-www
+    notify:
+      - Restart dotNetWebApp
+      - Restart nginx
+
+  - name: install dotNetWebApp systemd unit file
+    template: 
+      src: webapp.service.j2 
+      dest: /etc/systemd/system/webapp.service
+    notify:
+      - Restart dotNetWebApp
+
+  - name: install nginx configuration file for dotnet_webapp
+    template: 
+      src: dotnet_webapp.j2 
+      dest: /etc/nginx/sites-available/dotnet_webapp
+    notify:
+      - Restart nginx
+
+  - name: Activate dotnet_webapp on nginx via symbolic link
+    file:
+      state: link
+      src: /etc/nginx/sites-available/dotnet_webapp
+      dest: /etc/nginx/sites-enabled/dotnet_webapp
+    notify:
+      - Restart nginx      
+
+  - name: Delete default nginx config
+    file:
+      state: absent
+      path: /etc/nginx/sites-enabled/default
+    notify:
+      - Restart nginx
