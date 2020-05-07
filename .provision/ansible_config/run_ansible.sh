@@ -39,4 +39,6 @@ fi
 # Running our playbook
 ansible-playbook basic-provision.yml \
                  -e working_host=$REMOTE_IP \
+                 -e dns_cloudflare_account_email=$CLOUDFLARE_ACCOUNT_EMAIL \
+                 -e dns_cloudflare_api_token=$CLOUDFLARE_API_TOKEN \
                  -e 'ansible_python_interpreter=/usr/bin/python3'
