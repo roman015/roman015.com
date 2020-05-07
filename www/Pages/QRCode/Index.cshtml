@@ -1,0 +1,19 @@
+@page
+@model QRCodeModel
+@{
+    ViewData["Title"] = "QR Code Generator";
+}
+<h1>@ViewData["Title"]</h1>
+
+<br/>
+
+<div class="container">
+    <form asp-page-handler="GenerateCode" method="post">
+        <div class="form-group">
+            <input type="text" name="textdata" class="form-control" value='@Model.QRText' placeholder="Enter text to use in the QR Code here And press Generate" title="Enter text to use in the QR Code" />
+        </div>
+        <button class="btn btn-success">Generate</button>
+    </form>
+    <br/>
+    <img src='@Model.QRUrl'></img>
+</div>

@@ -1,10 +1,51 @@
 ﻿@page
 @model IndexModel
 @{
+    /*
+        QR Code by icon 54 from the Noun Project
+        Speech Bubble by libertetstudio from the Noun Project
+    */
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@section Header{
+    <style>
+        .btn {
+            margin-top: 10px;
+        }
+
+        .btn-icon {
+            height: 30px;
+            max-width: 50px;
+        }
+    </style>
+}
+
+<div class="container text-center">
+    <div class="row">
+        <div class="col-sm-12 col-lg-4">
+            <button type="button" onclick="location.href='https://blog.roman015.com';" class="btn btn-primary btn-block btn-lg">
+                <img class="btn-icon" src="~/img/Blog.png"/>
+                <br/>
+                The Missing Source Code
+            </button>
+        </div>
+        <div class="col-sm-12 col-lg-4">
+            <button type="button" onclick="location.href='QRCode';" class="btn btn-info btn-block btn-lg">
+                <img class="btn-icon" src="~/img/QRCode.png"/>
+                </br>
+                QR Code Generator
+            </button>
+        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="col-sm-12 col-lg-4">
+                <button type="button" onclick="location.href='https://www.roman015.com/Factorio';" class="btn btn-warning btn-block btn-lg">
+                    <img class="btn-icon" src="~/img/Factorio.png"/>
+                    <br/>
+                    Factorio
+                </button>
+            </div>
+        }
+    </div>
 </div>
