@@ -15,4 +15,9 @@ server {
     listen 80;
     listen [::]:80;
 
+    server_name {{ dns_www_record }}.{{ dns_zone }}
+                ""
+                {{ working_host }}
+                ;
+
 }
