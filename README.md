@@ -31,3 +31,33 @@ the following command,
 $ journalctl -u worker.service -f
 ```
 
+# Updating DNS records
+
+To configure what DNS records to use, environment variables need to be updated 
+on CircleCI. Specifically these,
+
+```
+CLOUDFLARE_ACCOUNT_EMAIL  <- should be the email used to login to cloudflare
+CLOUDFLARE_API_TOKEN <- should be the Cloudflare account Global Key
+```
+
+You can get the global key by logging into Cloudflare and navigating to,
+
+My Profile > API Tokens (the tab) > select view "Global API Key" near the 
+bottom. 
+NOTE: We are *not* using Cloudflare API Tokens at this time. 
+
+
+Also 2 variables need to be updated in this repository at,
+./provision/ansible_config/group_vars/all.yml ;
+
+```
+dns_zone:  <- should point to root domain, eg: example.com
+dns_www_record:  <- the subdomain for the www webapp, eg: ccc
+```
+
+Editing the file will configure nginx to respond to requests,
+for eg: ccc.example.com
+
+After doing these changes, deploying the app via CircleCI should update 
+everything.
