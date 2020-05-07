@@ -1,0 +1,22 @@
+---
+
+  - name: Disable rsyslog service (to use systemd-journal instead)
+    apt:
+      name: rsyslog
+      state: absent
+
+  - name: set configuration parameters in journald config
+    ini_file:
+      path: /etc/systemd/journald.conf
+      no_extra_spaces: yes
+      section: Journal
+      option: "{{ item.option }}"
+      value: "{{ item.value }}"
+    with_items:
+      - { option: "Storage", value: "persistent"}
+      - { option: "Compress", value: "yes"}
+      - { option: "SystemMaxUse", value: "500M"}
+      - { option: "SystemMaxFileSize", value: "50M"}
+      - { option: "MaxRetentionSec", value: "0"}
+    notify:
+      - restart journald
