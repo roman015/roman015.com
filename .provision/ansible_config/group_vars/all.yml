@@ -13,6 +13,5 @@ webapp_repo: "https://github.com/{{ lookup('env', 'CIRCLE_PROJECT_USERNAME') }}/
 #       Am just mentioning these variables here so that we know what they are.
 dns_zone: abraham-v.com
 dns_www_record: bbb
-dns_cloudflare_zone_id: dummy_id
 dns_cloudflare_account_email: dummy_email@temp.com
 dns_cloudflare_api_token: dummy_token
