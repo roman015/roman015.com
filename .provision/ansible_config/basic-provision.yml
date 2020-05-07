@@ -21,4 +21,8 @@
 
     roles:
       - remote-ping
+      - create-webapp-user
+      - install-dotnet-core
+      - install-nginx
+      - setting-up-webapp
 
