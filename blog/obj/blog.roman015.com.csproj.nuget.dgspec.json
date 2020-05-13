@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\xavie\\Source\\roman015.com\\blog\\blog.roman015.com.csproj": {}
+    "C:\\Users\\xavie\\Source\\roman015.com\\blog\\blog.roman015.com.csproj": {}
   },
   "projects": {
-    "c:\\Users\\xavie\\Source\\roman015.com\\blog\\blog.roman015.com.csproj": {
+    "C:\\Users\\xavie\\Source\\roman015.com\\blog\\blog.roman015.com.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\xavie\\Source\\roman015.com\\blog\\blog.roman015.com.csproj",
+        "projectUniqueName": "C:\\Users\\xavie\\Source\\roman015.com\\blog\\blog.roman015.com.csproj",
         "projectName": "blog.roman015.com",
-        "projectPath": "c:\\Users\\xavie\\Source\\roman015.com\\blog\\blog.roman015.com.csproj",
+        "projectPath": "C:\\Users\\xavie\\Source\\roman015.com\\blog\\blog.roman015.com.csproj",
         "packagesPath": "C:\\Users\\xavie\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\xavie\\Source\\roman015.com\\blog\\obj\\",
+        "outputPath": "C:\\Users\\xavie\\Source\\roman015.com\\blog\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\xavie\\AppData\\Roaming\\NuGet\\NuGet.Config"

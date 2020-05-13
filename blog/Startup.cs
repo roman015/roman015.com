@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
 namespace blog.roman015.com
@@ -40,7 +43,25 @@ namespace blog.roman015.com
                 app.UseHsts();
             }
 
-            app.UseStaticFiles();
+            // Add Mapping for rss feed
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings[".rss"] = "application/xml";
+
+            //app.UseHttpsRedirection();
+            app.UseDefaultFiles();
+            app.UseDefaultFiles("/posts"); // TODO : Fix this in Wyam
+            
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ContentTypeProvider = provider
+            });
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "Wyam")
+                ),
+                ContentTypeProvider = provider
+            });
 
             app.UseRouting();
 
