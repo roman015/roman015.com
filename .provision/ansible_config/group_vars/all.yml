@@ -11,7 +11,7 @@ webapp_repo: "https://github.com/{{ lookup('env', 'CIRCLE_PROJECT_USERNAME') }}/
 # NOTE: Most of these should get over-written by the CLI arguments passed in 
 #       with ./run_ansible.sh
 #       Am just mentioning these variables here so that we know what they are.
-dns_zone: abraham-v.com
+dns_zone: roman015.com
 dns_www_record: bbb
 dns_cloudflare_account_email: dummy_email@temp.com
 dns_cloudflare_api_token: dummy_token
