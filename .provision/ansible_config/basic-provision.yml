@@ -27,5 +27,5 @@
       - setting-up-webapp
       - configure-systemd-journal-logging
       - setting-up-worker
-      - update-webapp-dns-records
+      - update-dns-records
 
