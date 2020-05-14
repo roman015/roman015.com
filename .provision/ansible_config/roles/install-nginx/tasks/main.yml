@@ -25,3 +25,18 @@
   - name: Activate firewall
     ufw:
       state: enabled
+
+  - name: install nginx configuration file for default (HTTP redirect)
+    template: 
+      src: default_nginx.j2 
+      dest: /etc/nginx/sites-available/default_nginx
+    notify:
+      - Restart nginx
+
+  - name: Activate default_nginx on nginx via symbolic link
+    file:
+      state: link
+      src: /etc/nginx/sites-available/default_nginx
+      dest: /etc/nginx/sites-enabled/default_nginx
+    notify:
+      - Restart nginx      

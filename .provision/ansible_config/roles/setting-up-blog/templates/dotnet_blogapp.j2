@@ -14,9 +14,6 @@ server {
     proxy_set_header X-Forwarded-Proto $scheme;
   }
 
-  listen 80;
-  listen [::]:80;
-
   # SSL configuration (inspired by Certbot)
   listen [::]:443 ssl;
   listen 443 ssl;
