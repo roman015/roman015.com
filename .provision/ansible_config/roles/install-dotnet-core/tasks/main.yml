@@ -59,7 +59,7 @@
   - name: Install WYAM globally
     become: yes
     become_user: "{{ webapp_user }}"
-    shell: dotnet tool update --global Wyam.Tool
+    shell: dotnet tool update --global Wyam.Tool --version 2.2.9
   # NOTE: The original command was `dotnet tool install ...` , but running this
   #       a second time returns an error. The update command apparently installs 
   #       the tool if it isn't present, and does not return an error if it is 
