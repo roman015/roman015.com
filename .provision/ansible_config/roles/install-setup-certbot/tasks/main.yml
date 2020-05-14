@@ -55,6 +55,8 @@
 # NOTE 2: The -n in the above command means "run non-interactively" and the
 #         --agree-tos means that we are agreeing to their terms and conditions.
 
-  - name: Generate Diffie-Hellman parameters with the default size (4096 bits)
-    openssl_dhparam:
-      path: /etc/letsencrypt/ssl-dhparams.pem
+  - name: Generate DH parameters with the default size (4096 bits)
+    shell: openssl dhparam -dsaparam -out /etc/letsencrypt/ssl-dhparams.pem 4096
+
+  # openssl_dhparam:
+    #   path: /etc/letsencrypt/ssl-dhparams.pem
