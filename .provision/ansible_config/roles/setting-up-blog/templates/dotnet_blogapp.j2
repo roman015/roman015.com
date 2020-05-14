@@ -18,7 +18,7 @@ server {
   listen [::]:80;
 
   # SSL configuration (inspired by Certbot)
-  listen [::]:443 ssl ipv6only=on;
+  listen [::]:443 ssl;
   listen 443 ssl;
   ssl_certificate /etc/letsencrypt/live/{{ dns_zone }}/fullchain.pem;
   ssl_certificate_key /etc/letsencrypt/live/{{ dns_zone }}/privkey.pem;
