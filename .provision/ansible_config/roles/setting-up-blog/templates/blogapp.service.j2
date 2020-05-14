@@ -1,0 +1,15 @@
+[Unit]
+Description=dotNet blogapp
+
+[Service]
+WorkingDirectory=/var/www/site-blog
+ExecStart=/usr/bin/dotnet /var/www/site-blog/bin/Debug/netcoreapp2.1/publish/www.roman015.com.dll
+Restart=always
+RestartSec=10
+SyslogIdentifier=dotNetBlogapp
+User={{ webapp_user }}
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+[Install]
+WantedBy=multi-user.target

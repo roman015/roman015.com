@@ -1,0 +1,12 @@
+---
+
+- name: "Restart dotNetBlogApp"
+  systemd:
+    name: "blogapp.service"
+    state: restarted
+    daemon_reload: yes
+
+- name: "Restart nginx"
+  service:
+    name: nginx
+    state: restarted
