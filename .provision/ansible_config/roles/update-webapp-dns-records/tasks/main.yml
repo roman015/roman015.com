@@ -10,3 +10,14 @@
       account_email: "{{ dns_cloudflare_account_email }}"
       account_api_token: "{{ dns_cloudflare_api_token }}"
       state: present
+
+  - name: Create DNS record for ssh
+    cloudflare_dns:
+      zone: "{{ dns_zone }}"
+      record: "ssh"
+      type: A
+      proxied: no
+      value: "{{ working_host }}"
+      account_email: "{{ dns_cloudflare_account_email }}"
+      account_api_token: "{{ dns_cloudflare_api_token }}"
+      state: present
