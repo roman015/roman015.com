@@ -24,6 +24,7 @@
       - create-webapp-user
       - install-dotnet-core
       - install-nginx
+      - install-setup-certbot
       - setting-up-webapp
       - configure-systemd-journal-logging
       - setting-up-worker
