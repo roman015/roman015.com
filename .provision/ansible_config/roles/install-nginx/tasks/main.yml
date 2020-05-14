@@ -12,6 +12,11 @@
       rule: allow
       name: "Nginx HTTP"
 
+  - name: Allow HTTPS for nginx in firewall
+    ufw:
+      rule: allow
+      name: "Nginx Full"
+
   - name: Allow SSH in firewall
     ufw:
       rule: allow

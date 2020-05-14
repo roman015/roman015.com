@@ -9,7 +9,7 @@
     apt_repository:
       repo: 'ppa:certbot/certbot'
 
-  - name: Install certbot related tools
+  - name: Install certbot and related tools
     apt:
       name: "{{ item }}"
       state: present
@@ -36,4 +36,25 @@
       dest: /root/.secrets/cloudflare.cfg
       mode: '0400'
 
+  - name: Request certificates from Lets Encrypt 
+    shell: > 
+      certbot certonly --dns-cloudflare 
+      --dns-cloudflare-credentials /root/.secrets/cloudflare.cfg 
+      -d {{ dns_zone }},*.{{ dns_zone }} 
+      --preferred-challenges dns-01 
+      -m {{ dns_cloudflare_account_email }} 
+      -n 
+      --agree-tos
 
+# NOTE: The above command will also install a systemd timer which automatically
+#       runs to renew the certificates, if needed. I *think* it runs every 6 or 
+#       8 hours. You can see the full list of timers active on the system with 
+#       the following command, 
+#       $ systemctl list-timers
+
+# NOTE 2: The -n in the above command means "run non-interactively" and the
+#         --agree-tos means that we are agreeing to their terms and conditions.
+
+  - name: Generate Diffie-Hellman parameters with the default size (4096 bits)
+    openssl_dhparam:
+      path: /etc/letsencrypt/ssl-dhparams.pem
