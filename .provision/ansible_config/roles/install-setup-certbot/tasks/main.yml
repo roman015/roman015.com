@@ -1,0 +1,39 @@
+---
+
+# These instructions were inspired from,
+# ref: https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx
+#
+# NOTE: From an earlier step, we already have the universe repository activated.
+
+  - name: Register certbot PPA repository
+    apt_repository:
+      repo: 'ppa:certbot/certbot'
+
+  - name: Install certbot related tools
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    with_items:
+      - software-properties-common
+      - certbot
+      - python3-certbot-nginx
+      - python3-certbot-dns-cloudflare
+
+# We need to create a CloudFlare configuration file;
+# ref: https://certbot-dns-cloudflare.readthedocs.io/en/stable/
+# ref: https://mangolassi.it/topic/18355/setup-letsencrypt-certbot-with-cloudflare-dns-authentication-ubuntu
+
+  - name: Create .secrets folder
+    file:
+      path: /root/.secrets
+      state: directory
+      mode: '0700'
+
+  - name: Copy over configuration file
+    template: 
+      src: cloudflare.cfg.j2 
+      dest: /root/.secrets/cloudflare.cfg
+      mode: '0400'
+
+
