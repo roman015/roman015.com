@@ -7,7 +7,7 @@
     "ResetPasswordPolicyId": "{{ azureb2c_reset_password_policy_id }}",
     "EditProfilePolicyId": "{{ azureb2c_edit_profile_policy_id }}",
     "RedirectUri": "{{ azureb2c_redirect_uri }}",
-    "ClientSecret" : "{{ azureb2c_client_secret }}",
+    "ClientSecret" : "{{ azureb2c_client_secret | b64decode }}",
     "ApiUrl": "{{ azureb2c_api_uri_https }}",
     "ApiScopes": "{{ azureb2c_apiscopes }}"
     }
