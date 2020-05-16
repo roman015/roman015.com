@@ -41,7 +41,6 @@ ansible-playbook basic-provision.yml \
                  -e working_host=$REMOTE_IP \
                  -e dns_cloudflare_account_email=$CLOUDFLARE_ACCOUNT_EMAIL \
                  -e dns_cloudflare_api_token=$CLOUDFLARE_API_TOKEN \
-
                  -e azureb2c_clientid=$AZUREB2C_CLIENTID \
                  -e azureb2c_tenant=$AZUREB2C_TENANT \
                  -e azureb2c_signupsignin_policy_id=$AZUREB2C_SIGNUPSIGNIN_POLICY_ID \
@@ -51,5 +50,4 @@ ansible-playbook basic-provision.yml \
                  -e azureb2c_client_secret=$AZUREB2C_CLIENT_SECRET \
                  -e azureb2c_api_uri_https=$AZUREB2C_API_URI_HTTPS \
                  -e azureb2c_apiscopes=$AZUREB2C_APISCOPES \
-
                  -e 'ansible_python_interpreter=/usr/bin/python3'
