@@ -1,4 +1,7 @@
 www/obj/project.nuget.cache
+www/appsettings.Development.json
+blog/obj/project.nuget.cache
+blog/appsettings.Development.json
 id_rsa
 id_rsa.pub
 temp.txt
