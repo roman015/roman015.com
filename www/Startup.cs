@@ -52,6 +52,7 @@ namespace www.roman015.com
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                //IdentityModelEventSource.ShowPII = true;                
             }
             else
             {
@@ -63,6 +64,8 @@ namespace www.roman015.com
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
