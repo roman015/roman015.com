@@ -16,3 +16,14 @@ dns_www_record: test
 dns_blog_record: blog
 dns_cloudflare_account_email: dummy_email@temp.com
 dns_cloudflare_api_token: dummy_token
+
+# Azure b2c stuff
+azureb2c_clientid: temp
+azureb2c_tenant: temp
+azureb2c_signupsignin_policy_id: temp
+azureb2c_reset_password_policy_id: temp
+azureb2c_edit_profile_policy_id: temp
+azureb2c_redirect_uri: temp
+azureb2c_client_secret: temp
+azureb2c_api_uri_https: temp
+azureb2c_apiscopes: temp
