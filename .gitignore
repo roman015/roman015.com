@@ -1,6 +1,6 @@
-www/obj/project.nuget.cache
+www/obj/
 www/appsettings.Development.json
-blog/obj/project.nuget.cache
+blog/obj/
 blog/appsettings.Development.json
 id_rsa
 id_rsa.pub

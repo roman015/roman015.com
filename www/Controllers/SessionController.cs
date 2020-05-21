@@ -25,7 +25,9 @@ namespace www.roman015.com
         [HttpGet]
         public IActionResult SignIn()
         {
-            var redirectUrl = Url.Action("", "", values: null, protocol: Request.Scheme);
+            Console.WriteLine("SessionController - SignIn");
+            var redirectUrl = Url.Action("", "", values: null, protocol: "https");
+            Console.WriteLine("SessionController - SignIn - redirecturl - " + redirectUrl);
             return Challenge(
                 new AuthenticationProperties { RedirectUri = redirectUrl },
                 OpenIdConnectDefaults.AuthenticationScheme);
