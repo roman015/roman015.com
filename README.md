@@ -29,6 +29,8 @@ the following command,
 
 ```
 $ journalctl -u worker.service -f
+$ journalctl -u webapp -f
+
 ```
 
 # Updating DNS records
