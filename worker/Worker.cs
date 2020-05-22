@@ -67,12 +67,14 @@ namespace dotNetWorker
 
         private Task ReadyAsync()
         {
-            _logger.LogInformation($"Connected as -> [] :)");
+            _logger.LogInformation($"Connected as -> [dotNet-worker] :)");
             return Task.CompletedTask;
         }
 
         private async Task MessageReceivedAsync(SocketMessage message)
         {
+            _logger.LogInformation(message.Content);
+
             //This ensures we don't loop things by responding to ourselves (as the bot)
             if (message.Author.Id == _client.CurrentUser.Id)
                 return;
