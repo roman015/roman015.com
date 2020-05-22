@@ -12,3 +12,35 @@
       repo: "{{ terraria_setup_server_repo }}"
       dest: /home/{{ webapp_user }}/terraria_on_digital_ocean
       version: master
+
+  - name: Installing dependencies for docker and docker-machine
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - 'apt-transport-https'
+      - 'ca-certificates'
+      - 'curl'
+      - 'gnupg-agent'
+      - 'software-properties-common'
+
+  - name: Add Apt signing key from docker, will not download if present
+    apt_key:
+      id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+      url: https://download.docker.com/linux/debian/gpg
+      state: present
+
+  - name: Add APT repository from docker
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+      state: present
+
+  - name: Installing dependencies for docker and docker-machine
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    with_items:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
