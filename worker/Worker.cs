@@ -22,26 +22,33 @@ namespace dotNetWorker
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Creating Discord client object");
-            _client = new DiscordSocketClient();
+            _logger.LogInformation("Starting worker service!");
+
+            _client = new DiscordSocketClient(new DiscordSocketConfig
+            {
+                LogLevel = LogSeverity.Info
+            });
+            _client.Log += Log;
+
             var token = Environment.GetEnvironmentVariable("WORKER_DISCORD_BOT_TOKEN");
-            _logger.LogInformation("Attempting to login as bot");
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
-            _logger.LogInformation("Hopefully logged in now!");
+
+            _client.Ready += () => 
+            {
+                _logger.LogInformation("Bot is connected!");
+                return Task.CompletedTask;
+            };
 
             // Block this task until the program is closed.
             await Task.Delay(-1);
+        }
 
-
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                _logger.LogInformation("Information - Worker running at: {time}", DateTimeOffset.Now);
-                _logger.LogWarning("Warning - Worker running at: {time}", DateTimeOffset.Now);
-                _logger.LogError("Error - Worker running at: {time}", DateTimeOffset.Now);
-                _logger.LogCritical("Critical - Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(1000, stoppingToken);
-            }
+        private Task Log(LogMessage message)
+        {
+            // Write logs to systemd/journalctl directly
+            _logger.LogInformation(message.ToString());
+            return Task.CompletedTask;
         }
     }
 }
