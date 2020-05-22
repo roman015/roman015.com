@@ -27,3 +27,10 @@ azureb2c_redirect_uri: temp
 azureb2c_client_secret: temp
 azureb2c_api_uri_https: temp
 azureb2c_apiscopes: temp
+
+# Variables for Terraria server
+terraria_dotoken: temp
+terraria_discord_bot_token: temp
+terraria_discord_channel: temp
+terraria_setup_server_repo: https://github.com/abrahamvarricatt/terraria_on_digital_ocean.git
+

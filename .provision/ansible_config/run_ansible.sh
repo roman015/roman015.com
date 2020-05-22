@@ -50,4 +50,7 @@ ansible-playbook basic-provision.yml \
                  -e azureb2c_client_secret=$AZUREB2C_CLIENT_SECRET \
                  -e azureb2c_api_uri_https=$AZUREB2C_API_URI_HTTPS \
                  -e azureb2c_apiscopes=$AZUREB2C_APISCOPES \
+                 -e terraria_dotoken=$TERRARIA_DOTOKEN \
+                 -e terraria_discord_bot_token=$TERRARIA_DISCORD_BOT_TOKEN \
+                 -e terraria_discord_channel=$TERRARIA_DISCORD_CHANNEL_ID \
                  -e 'ansible_python_interpreter=/usr/bin/python3'

@@ -1,0 +1,14 @@
+---
+
+  - name: record environment variables for Terraria server
+    template: 
+      src: terraria-server-env-vars.sh.j2
+      dest: /etc/profile.d/terraria-server-env-vars.sh
+
+  - name: Clone terraria_on_digital_ocean repo
+    become: yes
+    become_user: "{{ webapp_user }}"
+    git:
+      repo: "{{ terraria_setup_server_repo }}"
+      dest: /home/{{ webapp_user }}/terraria_on_digital_ocean
+      version: master
