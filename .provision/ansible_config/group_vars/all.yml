@@ -34,3 +34,5 @@ terraria_discord_bot_token: temp
 terraria_discord_channel: temp
 terraria_setup_server_repo: https://github.com/abrahamvarricatt/terraria_on_digital_ocean.git
 
+# The worker bot running on Discord
+worker_discord_bot_token: temp

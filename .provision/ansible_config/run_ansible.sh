@@ -53,4 +53,5 @@ ansible-playbook basic-provision.yml \
                  -e terraria_dotoken=$TERRARIA_DOTOKEN \
                  -e terraria_discord_bot_token=$TERRARIA_DISCORD_BOT_TOKEN \
                  -e terraria_discord_channel=$TERRARIA_DISCORD_CHANNEL_ID \
+                 -e worker_discord_bot_token=$WORKER_DISCORD_BOT_TOKEN \
                  -e 'ansible_python_interpreter=/usr/bin/python3'
