@@ -80,6 +80,7 @@ namespace dotNetWorker.Services
             if (!command.IsSpecified)
             {
                 _logger.LogError($"Command failed to execute for [{context.User.Username}] <-> [{result.ErrorReason}]!");
+                await context.Channel.SendMessageAsync($"Sorry, {context.User.Username}... something went wrong -> [{result.ErrorReason}]!");
                 return;
             }
                 
