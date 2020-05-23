@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Debug;
+using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,19 +14,20 @@ using Discord;
 using Discord.WebSocket;
 using Discord.Commands;
 using dotNetWorker.Services;
+using Serilog;
 
 
 namespace dotNetWorker
 {
     public class Worker : BackgroundService
     {
-        private readonly ILogger<Worker> _logger;
+        private Microsoft.Extensions.Logging.ILogger _logger;
         private readonly IConfiguration _config;
         private DiscordSocketClient _client;
+        private static string _logLevel;
 
         public Worker(ILogger<Worker> logger)
         {
-            _logger = logger;
 
             // create the configuration
             var _builder = new ConfigurationBuilder()
@@ -46,15 +49,15 @@ namespace dotNetWorker
                 // you get the services via GetRequiredService<T>
                 var client = services.GetRequiredService<DiscordSocketClient>();
                 _client = client;
+                _logger = services.GetRequiredService<ILogger<CommandHandler>>();
+                _logger.LogInformation("Starting the worker service!");
 
                 // setup logging and the ready event
-                client.Log += LogAsync;
-                client.Ready += ReadyAsync;
-                services.GetRequiredService<CommandService>().Log += LogAsync;
+                services.GetRequiredService<LoggingService>();
 
                 // this is where we get the Token, and start the bot
                 var token = Environment.GetEnvironmentVariable("WORKER_DISCORD_BOT_TOKEN");
-                await _client.LoginAsync(TokenType.Bot, token);
+                await client.LoginAsync(TokenType.Bot, token);
                 await client.StartAsync();
 
                 // we get the CommandHandler class here and call the InitializeAsync method to start things up for the CommandHandler service
@@ -62,34 +65,6 @@ namespace dotNetWorker
 
                 await Task.Delay(-1);
             }
-
-
-            // old stuff ... 
-            /*
-            _logger.LogInformation("Starting worker service!");            
-
-            _client = new DiscordSocketClient(new DiscordSocketConfig
-            {
-                LogLevel = LogSeverity.Info,
-                MessageCacheSize = 100
-            });
-
-            //Hook into log event
-            _client.Log += LogAsync;
-
-            //Hook into the client ready event
-            _client.Ready += ReadyAsync;
-
-            //Hook into the message received event, this is how we handle the hello world example
-            _client.MessageReceived += MessageReceivedAsync;
-
-            var token = Environment.GetEnvironmentVariable("WORKER_DISCORD_BOT_TOKEN");
-            await _client.LoginAsync(TokenType.Bot, token);
-            await _client.StartAsync();
-
-            // Block this task until the program is closed.
-            await Task.Delay(-1);
-            */
         }
 
         public override async Task StopAsync(CancellationToken stoppingToken)
@@ -100,33 +75,6 @@ namespace dotNetWorker
             await Task.CompletedTask;
         }
 
-        private Task LogAsync(LogMessage message)
-        {
-            // Write logs to systemd/journalctl directly
-            _logger.LogInformation(message.ToString());
-            return Task.CompletedTask;
-        }
-
-        private Task ReadyAsync()
-        {
-            _logger.LogInformation($"Connected as -> [{_client.CurrentUser}] :)");
-            return Task.CompletedTask;
-        }
-
-        private async Task MessageReceivedAsync(SocketMessage message)
-        {
-            _logger.LogInformation(message.Content);
-
-            //This ensures we don't loop things by responding to ourselves (as the bot)
-            if (message.Author.Id == _client.CurrentUser.Id)
-                return;
-
-            if (message.Content == ".hello")
-            {
-                await message.Channel.SendMessageAsync("world!");
-            }  
-        }
-
         // this method handles the ServiceCollection creation/configuration, and builds out the service provider we can call on later
         private ServiceProvider ConfigureServices()
         {
@@ -134,12 +82,47 @@ namespace dotNetWorker
             // we can add types we have access to here, hence adding the new using statement:
             // using dotNetWorker.Services;
             // the config we build is also added, which comes in handy for setting the command prefix!
-            return new ServiceCollection()
+            var services = new ServiceCollection()
                 .AddSingleton(_config)
                 .AddSingleton<DiscordSocketClient>()
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandler>()
-                .BuildServiceProvider();
+                .AddSingleton<LoggingService>()
+                .AddLogging(configure => configure.AddSerilog());
+            
+            if (!string.IsNullOrEmpty(_logLevel)) 
+            {
+                switch (_logLevel.ToLower())
+                {
+                    case "info":
+                    {
+                        services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Information);
+                        break;
+                    }
+                    case "error":
+                    {
+                        services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Error);
+                        break;
+                    } 
+                    case "debug":
+                    {
+                        services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Debug);
+                        break;
+                    } 
+                    default: 
+                    {
+                        services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Error);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Information);
+            }
+
+            var serviceProvider = services.BuildServiceProvider();
+            return serviceProvider;
         }
 
     }
