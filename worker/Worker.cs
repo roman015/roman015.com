@@ -5,27 +5,68 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
+using Microsoft.Extensions.DependencyInjection;
 using Discord;
 using Discord.WebSocket;
+using Discord.Commands;
+using dotNetWorker.Services;
+
 
 namespace dotNetWorker
 {
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
+        private readonly IConfiguration _config;
         private DiscordSocketClient _client;
 
         public Worker(ILogger<Worker> logger)
         {
             _logger = logger;
+
+            // create the configuration
+            var _builder = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile(path: "config.json");  
+
+            // build the configuration and assign to _config          
+            _config = _builder.Build();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             // This method represents the background service we are running
 
+            // call ConfigureServices to create the ServiceCollection/Provider for passing around the services
+            using (var services = ConfigureServices())
+            {
+                // get the client and assign to client 
+                // you get the services via GetRequiredService<T>
+                var client = services.GetRequiredService<DiscordSocketClient>();
+                _client = client;
 
-            _logger.LogInformation("Starting worker service!");
+                // setup logging and the ready event
+                client.Log += LogAsync;
+                client.Ready += ReadyAsync;
+                services.GetRequiredService<CommandService>().Log += LogAsync;
+
+                // this is where we get the Token, and start the bot
+                var token = Environment.GetEnvironmentVariable("WORKER_DISCORD_BOT_TOKEN");
+                await _client.LoginAsync(TokenType.Bot, token);
+                await client.StartAsync();
+
+                // we get the CommandHandler class here and call the InitializeAsync method to start things up for the CommandHandler service
+                await services.GetRequiredService<CommandHandler>().InitializeAsync();
+
+                await Task.Delay(-1);
+            }
+
+
+            // old stuff ... 
+            /*
+            _logger.LogInformation("Starting worker service!");            
 
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
@@ -48,6 +89,7 @@ namespace dotNetWorker
 
             // Block this task until the program is closed.
             await Task.Delay(-1);
+            */
         }
 
         public override async Task StopAsync(CancellationToken stoppingToken)
@@ -67,7 +109,7 @@ namespace dotNetWorker
 
         private Task ReadyAsync()
         {
-            _logger.LogInformation($"Connected as -> [dotNet-worker] :)");
+            _logger.LogInformation($"Connected as -> [{_client.CurrentUser}] :)");
             return Task.CompletedTask;
         }
 
@@ -84,5 +126,21 @@ namespace dotNetWorker
                 await message.Channel.SendMessageAsync("world!");
             }  
         }
+
+        // this method handles the ServiceCollection creation/configuration, and builds out the service provider we can call on later
+        private ServiceProvider ConfigureServices()
+        {
+            // this returns a ServiceProvider that is used later to call for those services
+            // we can add types we have access to here, hence adding the new using statement:
+            // using dotNetWorker.Services;
+            // the config we build is also added, which comes in handy for setting the command prefix!
+            return new ServiceCollection()
+                .AddSingleton(_config)
+                .AddSingleton<DiscordSocketClient>()
+                .AddSingleton<CommandService>()
+                .AddSingleton<CommandHandler>()
+                .BuildServiceProvider();
+        }
+
     }
 }
