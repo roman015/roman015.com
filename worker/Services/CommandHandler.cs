@@ -29,7 +29,7 @@ namespace dotNetWorker.Services
             _logger = services.GetRequiredService<ILogger<CommandHandler>>();
             _services = services;
             
-            // take action when we execute a command
+            // take action after we execute a command
             _commands.CommandExecuted += CommandExecutedAsync;
 
             // take action when we receive a message (so we can process it, and see if it is a valid command)
@@ -62,7 +62,7 @@ namespace dotNetWorker.Services
             // Only respond to message in #general channel
             if (message.Channel.Id.ToString() != _config["channel-general"])
             {
-                _logger.LogInformation("Message not in #general channle, ignoring it.");
+                _logger.LogInformation("Message not in #general channel, ignoring it.");
                 return;
             }
 
