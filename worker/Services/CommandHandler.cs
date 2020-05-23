@@ -45,14 +45,24 @@ namespace dotNetWorker.Services
         // this class is where the magic starts, and takes actions upon receiving messages
         public async Task MessageReceivedAsync(SocketMessage rawMessage)
         {
+            _logger.LogInformation("Received a message");
             // ensures we don't process system/other bot messages
             if (!(rawMessage is SocketUserMessage message)) 
             {
+                _logger.LogInformation("Detected system message, ignoring it.");
                 return;
             }
             
             if (message.Source != MessageSource.User) 
             {
+                _logger.LogInformation("Detected a bot message, ignoring it.");
+                return;
+            }
+
+            // Only respond to message in #general channel
+            if (message.Channel.Id.ToString() != _config["channel-general"])
+            {
+                _logger.LogInformation("Message not in #general channle, ignoring it.");
                 return;
             }
 
@@ -65,8 +75,10 @@ namespace dotNetWorker.Services
             // determine if the message has a valid prefix, and adjust argPos based on prefix
             if (!(message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(prefix, ref argPos))) 
             {
+                _logger.LogInformation("Message not a command, ignoring it");
                 return;
             }
+            _logger.LogInformation($"Found a potential command = [{message.ToString()}]");
            
             var context = new SocketCommandContext(_client, message);
 

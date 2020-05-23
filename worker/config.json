@@ -1,3 +1,5 @@
 {
-    "Prefix": "!"
+    "Prefix": "!",
+    "channel-general": 114991657509847045,
+    "channel-shell-output": 713727388701294592
 }
