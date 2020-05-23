@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Microsoft.Extensions.Configuration;
 
 namespace dotNetWorker.Services
 {
@@ -12,6 +13,7 @@ namespace dotNetWorker.Services
     {
 
         // declare the fields used later in this class
+        private readonly IConfiguration _config;
         private readonly ILogger _logger;
         private readonly DiscordSocketClient _discord;
         private readonly CommandService _commands;
@@ -19,6 +21,7 @@ namespace dotNetWorker.Services
         public LoggingService(IServiceProvider services)
         { 
             // get the services we need via DI, and assign the fields declared above to them
+            _config = services.GetRequiredService<IConfiguration>();
             _discord = services.GetRequiredService<DiscordSocketClient>(); 
             _commands = services.GetRequiredService<CommandService>();
             _logger = services.GetRequiredService<ILogger<LoggingService>>();
@@ -34,6 +37,12 @@ namespace dotNetWorker.Services
         {
             _logger.LogInformation($"Connected as -> [{_discord.CurrentUser}] :)");
             _logger.LogInformation($"We are on [{_discord.Guilds.Count}] servers");
+            
+            // Send a hello on Connecting
+            (_discord
+                .GetChannel(ulong.Parse(_config["channel-shell-output"])) as IMessageChannel)
+                .SendMessageAsync("Howdy everyone! I'm back!");
+            
             return Task.CompletedTask;
         }
 
