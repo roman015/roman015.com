@@ -8,12 +8,30 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using dotNetWorker.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace dotNetWorker.Modules
 {
     // for commands to be available, and have the Context passed to them, we must inherit ModuleBase
     public class ExampleCommands : ModuleBase
     {
+
+        private readonly ExampleTaskBoss _taskboss;
+
+        public ExampleCommands(IServiceProvider services)
+        {
+            _taskboss = services.GetRequiredService<ExampleTaskBoss>();
+        }
+
+        [Command("dummy")]
+        public async Task DummyCommand()
+        {
+            // test: can we just call the method like this?
+            _taskboss.StartTask();
+        }
+
+
         [Command("hello")]
         public async Task HelloCommand()
         {

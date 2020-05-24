@@ -87,6 +87,7 @@ namespace dotNetWorker
                 .AddSingleton<DiscordSocketClient>()
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandler>()
+                .AddSingleton<ExampleTaskBoss>()
                 .AddSingleton<LoggingService>()
                 .AddLogging(configure => configure.AddSerilog());
             

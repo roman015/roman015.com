@@ -28,10 +28,14 @@ The worker writes logs to the systemd-journal service. You can stream them with
 the following command,
 
 ```
-$ journalctl -u worker.service -f
-$ journalctl -u webapp -f
+$ journalctl -u worker.service -f -o cat
+$ journalctl -u webapp -f -o cat
+$ journalctl -u blogapp -f -o cat
 
 ```
+
+
+
 
 # Updating DNS records
 
