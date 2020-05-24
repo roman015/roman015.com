@@ -12,6 +12,7 @@
       repo: "{{ terraria_setup_server_repo }}"
       dest: /home/{{ webapp_user }}/terraria_on_digital_ocean
       version: master
+      force: yes
 
   - name: Installing dependencies for docker and docker-machine
     apt:
