@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,18 +12,24 @@ namespace dotNetWorker.Services
     {
         private readonly IConfiguration _config;
         private readonly DiscordSocketClient _client;
+        private readonly IMessageChannel _channel;
 
         public ExampleTaskBoss(IServiceProvider services)
         {
             _client = services.GetRequiredService<DiscordSocketClient>();
             _config = services.GetRequiredService<IConfiguration>();
+            _channel = _client
+                .GetChannel(ulong.Parse(_config["channel-shell-output"])) as IMessageChannel;
         }
-        public void StartTask()
+        public async void StartTask()
         {
             // TODO: start a task, for now just write a message into discord
-            (_client
-                .GetChannel(ulong.Parse(_config["channel-shell-output"])) as IMessageChannel)
-                .SendMessageAsync("Message from ExampleTaskBoss - StartTask!");
+            await _channel.SendMessageAsync("Message from ExampleTaskBoss - StartTask!");
+            for (int i = 1; i <= 5; i++) { 
+                await Task.Delay(2000);
+                await _channel.SendMessageAsync($"Loop iteration = {i}");
+            }
+            await _channel.SendMessageAsync("Loop over");
         }
     }
 }
