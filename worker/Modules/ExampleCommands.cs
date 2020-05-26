@@ -24,16 +24,8 @@ namespace dotNetWorker.Modules
             _taskboss = services.GetRequiredService<ExampleTaskBoss>();
         }
 
-        [Command("dummy")]
-        public async Task DummyCommand()
-        {
-            // test: can we just call the method like this?
-            _taskboss.StartTask();
-        }
-
-
-        [Command("hello")]
-        public async Task HelloCommand()
+        [Command("help")]
+        public async Task HelpCommand()
         {
             // initialize empty string builder for reply
             var sb = new StringBuilder();
@@ -42,15 +34,32 @@ namespace dotNetWorker.Modules
             var user = Context.User;
             
             // build out the reply
-            sb.AppendLine($"You are -> [{user.Username}]");
-            sb.AppendLine("I must now say, World!");
+            sb.AppendLine($"!help was invoked by -> [{user.Username}]");
+            sb.AppendLine("-");
+            sb.AppendLine("Available commands,");
+            sb.AppendLine("-");
+            sb.AppendLine("!help = displays this message");
+            sb.AppendLine("!8ball <question> = answers yes/no questions");
+            sb.AppendLine("!start-terraria = Starts remote Terraria server instance");
+            sb.AppendLine("!stop-terraria = Stops remote Terraria instance and deletes host system");
 
             // send simple string reply
             await ReplyAsync(sb.ToString());
         }
 
+        [Command("start-terraria")]
+        public async Task StartTerraria()
+        {
+            await _taskboss.ManageRemoteServer("start-terraria");
+        }
+
+        [Command("stop-terraria")]
+        public async Task StopTerraria()
+        {
+            await _taskboss.ManageRemoteServer("stop-terraria");
+        }
+
         [Command("8ball")]
-        [Alias("ask")]
         public async Task AskEightBall([Remainder]string args = null)
         {
             // I like using StringBuilder to build out the reply

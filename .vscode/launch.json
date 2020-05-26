@@ -27,6 +27,22 @@
             }
         },
         {
+            "name": ".NET worker app",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-worker",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/worker/bin/Debug/netcoreapp3.1/dotNetWorker.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/worker",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "WORKER_DISCORD_BOT_TOKEN": "${env:WORKER_DISCORD_BOT_TOKEN}"
+            }
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach",
