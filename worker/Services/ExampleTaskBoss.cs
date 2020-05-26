@@ -18,8 +18,8 @@ namespace dotNetWorker.Services
         {
             _client = services.GetRequiredService<DiscordSocketClient>();
             _config = services.GetRequiredService<IConfiguration>();
-            _channel = (IMessageChannel)_client
-                .GetChannel(ulong.Parse(_config["channel-shell-output"]));
+            _channel = (_client
+                .GetChannel(ulong.Parse(_config["channel-shell-output"])) as IMessageChannel);
         }
         public async void StartTask()
         {
