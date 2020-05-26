@@ -14,10 +14,11 @@
       version: master
       force: yes
 
-  - name: Installing dependencies for docker and docker-machine
+  - name: Installing dependencies for ansible
     apt:
       name: "{{ item }}"
       state: present
+      update_cache: yes
     with_items:
       - 'apt-transport-https'
       - 'ca-certificates'
@@ -25,32 +26,14 @@
       - 'gnupg-agent'
       - 'software-properties-common'
 
-  - name: Add Apt signing key from docker, will not download if present
-    apt_key:
-      id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
-      url: https://download.docker.com/linux/debian/gpg
-      state: present
-
-  - name: Add APT repository from docker
+  - name: Add ansible repository on remote droplet
     apt_repository:
-      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
-      state: present
+      repo: ppa:ansible/ansible
 
-  - name: Installing dependencies for docker and docker-machine
+  - name: Installing ansible
     apt:
       name: "{{ item }}"
       state: present
       update_cache: yes
     with_items:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-
-  - name: "Install docker-machine to /usr/local/bin"
-    shell: |
-      base=https://github.com/docker/machine/releases/latest/download && 
-      curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
-      sudo mv /tmp/docker-machine /usr/local/bin/docker-machine &&
-      chmod +x /usr/local/bin/docker-machine
-    args:
-      creates: "/usr/local/bin/docker-machine"
+      - 'ansible'
