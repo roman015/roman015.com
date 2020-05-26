@@ -23,8 +23,11 @@ namespace dotNetWorker.Services
         }
         public async void StartTask()
         {
+            await (_client
+                .GetChannel(ulong.Parse(_config["channel-shell-output"])) as IMessageChannel)
+                .SendMessageAsync("hello! from typecasting");
             // TODO: start a task, for now just write a message into discord
-            await _channel.SendMessageAsync("Message from ExampleTaskBoss - StartTask!");
+            await _channel.SendMessageAsync("hello from object!");
             for (int i = 1; i <= 5; i++) { 
                 await Task.Delay(2000);
                 await _channel.SendMessageAsync($"Loop iteration = {i}");
