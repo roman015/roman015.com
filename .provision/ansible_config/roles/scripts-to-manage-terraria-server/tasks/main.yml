@@ -37,3 +37,20 @@
       update_cache: yes
     with_items:
       - 'ansible'
+
+  - name: Add .ssh directory for webapp_user
+    file:
+      path: /home/{{ webapp_user }}/.ssh
+      state: directory
+      mode: 0700
+      owner: "{{ webapp_user }}"
+      group: "{{ webapp_user }}"
+
+  - name: Copy over SSH keys
+    copy:
+      src: /root/.ssh/id_rsa_e9f326a7c682d116c4fad602253958b4
+      dest: /home/{{ webapp_user }}/.ssh/id_rsa
+      owner: "{{ webapp_user }}"
+      group: "{{ webapp_user }}"
+      mode: 0600
+
