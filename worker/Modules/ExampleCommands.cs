@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using dotNetWorker.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,10 +19,12 @@ namespace dotNetWorker.Modules
     {
 
         private readonly ExampleTaskBoss _taskboss;
+        private readonly Microsoft.Extensions.Logging.ILogger _logger;
 
         public ExampleCommands(IServiceProvider services)
         {
             _taskboss = services.GetRequiredService<ExampleTaskBoss>();
+            _logger = services.GetRequiredService<ILogger<CommandHandler>>();
         }
 
         [Command("help")]
