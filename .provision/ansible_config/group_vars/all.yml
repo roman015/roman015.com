@@ -36,3 +36,6 @@ terraria_setup_server_repo: https://github.com/abrahamvarricatt/terraria_on_digi
 
 # The worker bot running on Discord
 worker_discord_bot_token: temp
+
+# Link to dropbox
+dropbox_access_token: temp
