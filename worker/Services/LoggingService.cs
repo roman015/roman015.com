@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 
 namespace dotNetWorker.Services
@@ -37,11 +38,15 @@ namespace dotNetWorker.Services
         {
             _logger.LogInformation($"Connected as -> [{_discord.CurrentUser}] :)");
             _logger.LogInformation($"We are on [{_discord.Guilds.Count}] servers");
+
+            var names = new List<string> { "🏌️‍♂️", "🎮", "🎸", "⛳", "🐰", "🎀" };
+            Random random = new Random();
+            int index = random.Next(names.Count);
             
             // Send a hello on Connecting
             (_discord
                 .GetChannel(ulong.Parse(_config["channel-shell-output"])) as IMessageChannel)
-                .SendMessageAsync("Howdy everyone! I'm back!");
+                .SendMessageAsync($"{names[index]} Howdy everyone! I'm back!");
             
             return Task.CompletedTask;
         }
