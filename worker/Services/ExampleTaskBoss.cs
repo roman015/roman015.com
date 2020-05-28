@@ -72,7 +72,7 @@ namespace dotNetWorker.Services
                     break;
                 case "stop-terraria":
                     // TODO: fill values
-                    process_arguments = @" stop-terraria.yml";
+                    process_arguments = @" stop-terraria.yml -i hosts.ini";
                     break;                
                 default:
                     return; // nothing to do
