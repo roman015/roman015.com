@@ -14,24 +14,14 @@ namespace www.roman015.com
     {
         public static void Main(string[] args)
         {
-            using (SentrySdk.Init(o =>
-            {
-                o.Dsn = new Dsn("https://d257da19dc22412fa4bc587737dbd577@o400378.ingest.sentry.io/5258767");
-                o.Debug = true;
-                o.Environment = "production";
-                o.AttachStacktrace = true;
-                o.SendDefaultPii = true;
-            }))
-            {
-                CreateHostBuilder(args).Build().Run();
-            }
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseSentry().UseStartup<Startup>();
                 });
     }
 }
