@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Sentry;
 
 namespace www.roman015.com
 {
@@ -13,7 +14,17 @@ namespace www.roman015.com
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            using (SentrySdk.Init(o =>
+            {
+                o.Dsn = new Dsn("https://d257da19dc22412fa4bc587737dbd577@o400378.ingest.sentry.io/5258767");
+                o.Debug = true;
+                o.Environment = "production";
+                o.AttachStacktrace = true;
+                o.SendDefaultPii = true;
+            }))
+            {
+                CreateHostBuilder(args).Build().Run();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
