@@ -24,7 +24,6 @@ namespace dotNetWorker
         private Microsoft.Extensions.Logging.ILogger _logger;
         private readonly IConfiguration _config;
         private DiscordSocketClient _client;
-        private static string _logLevel;
 
         public Worker(ILogger<Worker> logger)
         {
@@ -91,36 +90,7 @@ namespace dotNetWorker
                 .AddSingleton<LoggingService>()
                 .AddLogging(configure => configure.AddSerilog());
             
-            if (!string.IsNullOrEmpty(_logLevel)) 
-            {
-                switch (_logLevel.ToLower())
-                {
-                    case "info":
-                    {
-                        services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Information);
-                        break;
-                    }
-                    case "error":
-                    {
-                        services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Error);
-                        break;
-                    } 
-                    case "debug":
-                    {
-                        services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Debug);
-                        break;
-                    } 
-                    default: 
-                    {
-                        services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Error);
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Information);
-            }
+            services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Information);
 
             var serviceProvider = services.BuildServiceProvider();
             return serviceProvider;
