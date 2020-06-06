@@ -38,10 +38,6 @@ namespace www.roman015.com.Pages
         {
             QRUrl = GenerateQRcodeUrl(Request.Form["textdata"]);
             QRText = Request.Form["textdata"];
-            // Sentry experiment
-            int i = 4;
-            int j = 0;
-            Console.WriteLine(i/j);
         }
     }
 }
