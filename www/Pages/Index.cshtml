@@ -18,6 +18,18 @@
             height: 30px;
             max-width: 50px;
         }
+
+        .bmc-button {
+            color: #212529;
+            background-color:#FF813F !important;
+            border-color: #FF813F !important;
+        }
+
+        .bmc-button:hover {
+            color: #212529;
+            background-color:#F2773F !important;
+            border-color: #F2773F !important;
+        }
     </style>
 }
 
@@ -35,6 +47,13 @@
                 <img class="btn-icon" src="~/img/QRCode.png"/>
                 </br>
                 QR Code Generator
+            </button>
+        </div>
+        <div class="col-sm-12 col-lg-4">
+            <button type="button" onclick="location.href='https://www.buymeacoffee.com/roman015';" class="btn btn-warning btn-block btn-lg bmc-button">
+                <img class="btn-icon" src="~/img/bmc-new-btn-logo.png"/>
+                </br>
+                Wanna Buy Me Coffee?  
             </button>
         </div>
         @if (User.Identity.IsAuthenticated)
