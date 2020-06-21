@@ -14,15 +14,15 @@
 }
 @functions{
     private string GenerateQRcodeUrl(string input)
+    {
+        if(string.IsNullOrWhiteSpace(input))
         {
-            if(string.IsNullOrWhiteSpace(input))
-            {
-                return string.Empty;
-            }
-
-            return "/QRGenerator/Image/png?input="
-            + System.Web.HttpUtility.UrlEncode(input);
+            return string.Empty;
         }
+
+        return "/QRGenerator/Image/png?input="
+        + System.Web.HttpUtility.UrlEncode(input);
+    }
 }
 <h1>@ViewData["Title"]</h1>
 
