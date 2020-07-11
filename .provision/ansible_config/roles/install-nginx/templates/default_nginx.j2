@@ -3,5 +3,5 @@ server {
 
   server_name _;
 
-  return 301 https://{{ dns_www_record }}.{{ dns_zone }};
+  return 301 https://$host$request_uri;
 }

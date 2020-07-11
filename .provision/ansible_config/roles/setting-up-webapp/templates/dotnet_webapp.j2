@@ -3,6 +3,8 @@ server {
   server_name {{ dns_www_record }}.{{ dns_zone }}
               ""
               {{ working_host }}
+              ""
+              {{ dns_zone }}
               ;
 
   location / {
