@@ -1,12 +1,12 @@
 ---
 
-  - name: Create Default DNS record for www project
+  - name: Create Default CNAME record for www project
     cloudflare_dns:
       zone: "{{ dns_zone }}"
-      record: "@"
-      type: A
+      record: "{{ dns_www_record }}"
+      type: CNAME
       proxied: yes
-      value: "{{ working_host }}"
+      value: "@"
       account_email: "{{ dns_cloudflare_account_email }}"
       account_api_token: "{{ dns_cloudflare_api_token }}"
       state: present
@@ -14,7 +14,7 @@
   - name: Create DNS record for www project
     cloudflare_dns:
       zone: "{{ dns_zone }}"
-      record: "{{ dns_www_record }}"
+      record: "@"
       type: A
       proxied: yes
       value: "{{ working_host }}"
