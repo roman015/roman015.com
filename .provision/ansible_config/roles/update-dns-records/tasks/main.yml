@@ -3,7 +3,7 @@
   - name: Create Default DNS record for www project
     cloudflare_dns:
       zone: "{{ dns_zone }}"
-      record: ""
+      record: "@"
       type: A
       proxied: yes
       value: "{{ working_host }}"
