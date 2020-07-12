@@ -1,4 +1,4 @@
-Title: Buy me a coffee?
+Title: Guess the Number Game
 Published: 07/12/2020
 Tags: ["Guess the Number", "Game"]
 ---
