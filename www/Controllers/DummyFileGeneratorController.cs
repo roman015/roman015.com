@@ -21,6 +21,9 @@ namespace www.roman015.com
         private readonly long OneMegaByteInBytes = 1024 * 1024;
         private readonly long OneGigaByteInBytes = 1024 * 1024 * 1024;
 
+        // Max File size for safety reasons (100MB for now)
+        private readonly long MaxFileSize = (1024 * 1024) * 100;
+
         private readonly ILogger<QRGeneratorController> _logger;
 
         public DummyFileGeneratorController(ILogger<QRGeneratorController> logger)
@@ -92,6 +95,11 @@ namespace www.roman015.com
             if(byteSize <= 0)
             {
                 return BadRequest("Bad File Size Specified '" + size + "'");
+            }
+
+            if(byteSize > MaxFileSize)
+            {
+                return BadRequest("Maximum File Size Allowed is " + MaxFileSize + " bytes, requested " + byteSize + " Bytes");
             }
 
             if(string.IsNullOrWhiteSpace(extension))
