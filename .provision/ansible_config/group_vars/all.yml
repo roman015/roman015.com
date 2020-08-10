@@ -28,6 +28,9 @@ azureb2c_client_secret: temp
 azureb2c_api_uri_https: temp
 azureb2c_apiscopes: temp
 
+# Url Shortener
+urlshortener_connectionstring: temp
+
 # Variables for Terraria server
 terraria_dotoken: temp
 terraria_discord_bot_token: temp

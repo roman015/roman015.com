@@ -14,10 +14,12 @@ namespace www.roman015.com
     public class URLShortenerController : ControllerBase
     {
         private readonly ILogger<URLShortenerController> _logger;
+        private readonly UrlShortenerRepository _urlShortener;
 
-        public URLShortenerController(ILogger<URLShortenerController> logger)
+        public URLShortenerController(ILogger<URLShortenerController> logger, UrlShortenerRepository urlShortener)
         {
             _logger = logger;
+            _urlShortener = urlShortener;
         }
 
         //[Authorize]
@@ -29,10 +31,10 @@ namespace www.roman015.com
                 return BadRequest();
             }
             
-            // TODO : Generate Shortened url using input code, if present
-            var result = "https://www.roman015.com/urls/codeHere";
+            //"https://www.roman015.com/urls/codeHere"
+            var shortenedValue = _urlShortener.SetShortenedUrl(inputURL, inputCode);            
 
-            return Ok(result);
+            return Ok("https://www.roman015.com/urls/" + shortenedValue);
         }                
     
         [HttpGet("{inputCode}")]
@@ -43,8 +45,12 @@ namespace www.roman015.com
                 return BadRequest();
             }
 
-            // TODO : Rediret Shortened url, if present
-            var resultUrl = @"https://www.google.com";
+            var resultUrl = _urlShortener.GetDestinationUrl(inputCode);
+
+            if(!resultUrl.StartsWith("http:"))
+            {
+                resultUrl = "http://" + resultUrl;
+            }
 
             return Redirect(resultUrl);
         }        
