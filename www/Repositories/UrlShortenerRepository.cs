@@ -70,7 +70,7 @@ public class UrlShortenerRepository
             throw new ApplicationException("Unable to find an entry for customUrl : '" + customUrl + "'");
         }
 
-        return UrlShortenerContext.ShortenedUrls
+        return UrlShortenerContext.ShortenedUrls.AsQueryable()
             .Where(item => item.SourceUrl.Equals(customUrl))
             .First()
             .DestinaltionUrl;
@@ -79,7 +79,7 @@ public class UrlShortenerRepository
     private bool IsUrlPresent(string url)
     {
         // Check if customUrl does not exist
-        int count = UrlShortenerContext.ShortenedUrls
+        int count = UrlShortenerContext.ShortenedUrls.AsQueryable()
             .Where(item => item.SourceUrl.Equals(url))
             .Count();
 

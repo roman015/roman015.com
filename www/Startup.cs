@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using static AzureB2C.AzureAdB2CAuthenticationBuilderExtensions;
 using MySQL.Data.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Discord.WebSocket;
 
 namespace www.roman015.com
 {
@@ -30,6 +31,11 @@ namespace www.roman015.com
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region Add Civ 6 Turn Notification Handler
+            services.AddSingleton<DiscordSocketClient>();
+            services.AddSingleton<Civ6TurnNotificationHandler>();            
+            #endregion
+
             #region Add Repository/DBContext
             services.AddDbContext<UrlShortenerContext>(options =>
                     options.UseMySQL(Configuration["UrlShortenerConnectionString"])
@@ -89,5 +95,6 @@ namespace www.roman015.com
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
+        
     }
 }

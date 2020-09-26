@@ -42,3 +42,6 @@ worker_discord_bot_token: temp
 
 # Link to dropbox
 dropbox_access_token: temp
+
+# The civ6notibot bot
+civ6notibot_discord_bot_token: temp
