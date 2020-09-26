@@ -24,9 +24,16 @@ namespace www.roman015.com
         [HttpGet]
         public IActionResult Get()
         {
+            _civ6TurnNotificationHandler.HandleNotification(new Civ6TurnModel()
+            {
+                value1 = "FAKE",
+                value2 = "FAKE2",
+                value3 = "FAKE3"
+            });
+
             return BadRequest(
                 "No, use a POST Request pls. "
-                + "If you can read this, then ur bot is running.");
+                + "If you can read this, then ur bot should've sent a message by now");
         }        
 
         [HttpPost("NotifyTurn")]
