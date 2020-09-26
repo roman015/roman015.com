@@ -36,8 +36,7 @@ namespace www.roman015.com
             client.StartAsync().Wait();
             _logger.LogInformation("CIV6 NOTI BOT Logged in!");
             var channelGeneral = client.GetChannel(ulong.Parse(_config["channel-general"]));
-            var textChannel = channelGeneral as IMessageChannel;
-            _messageChannel = textChannel;
+            _messageChannel = channelGeneral as IMessageChannel;
             _logger.LogInformation("CIV6 NOTI BOT in the channel!");
             
             _logger.LogInformation("CIV6 NOTI BOT Started!");
@@ -46,7 +45,8 @@ namespace www.roman015.com
 
         public void HandleNotification(Civ6TurnModel data)
         {
-            _messageChannel.SendMessageAsync(data.ToString());
+            string message = data.ToString();
+            _messageChannel?.SendMessageAsync(message);
         }
     }
 }
