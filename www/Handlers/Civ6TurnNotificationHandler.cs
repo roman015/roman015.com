@@ -34,9 +34,11 @@ namespace www.roman015.com
             var token = Environment.GetEnvironmentVariable("CIV6NOTIBOT_DISCORD_BOT_TOKEN");
             client.LoginAsync(TokenType.Bot, token).Wait();
             client.StartAsync().Wait();
+            _logger.LogInformation("CIV6 NOTI BOT Logged in!");
             var channelGeneral = client.GetChannel(ulong.Parse(_config["channel-general"]));
             var textChannel = channelGeneral as IMessageChannel;
             _messageChannel = textChannel;
+            _logger.LogInformation("CIV6 NOTI BOT in the channel!");
             
             _logger.LogInformation("CIV6 NOTI BOT Started!");
             #endregion
