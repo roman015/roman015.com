@@ -1,3 +1,22 @@
+# About 2.0
+
+This 2.0 branch has been created for archival purposes. 
+
+This version was running on .Net Core, the next version will be running on .Net5
+(among other changes)
+
+If you're curious about how 1.0 looked like it's basically the following repositories
+
+https://github.com/roman015/ServerFrontEnd
+
+https://github.com/roman015/ServerCode
+
+https://github.com/roman015/ServerAPIs
+
+
+
+And before all that there was this ol'static website hosted at.... https://github.com/roman015/roman015.github.io
+
 # Logging into droplet
 
 The scripts in this project will provision a remote droplet on Digital Ocean. 
