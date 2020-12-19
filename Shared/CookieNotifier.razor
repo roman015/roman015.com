@@ -1,0 +1,36 @@
+﻿@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+
+@if (!IsCookiesAccepted)
+{
+<div class="container cookie-notifier">
+    <div class="row justify-content-center align-items-center">
+        <div class="form-inline">
+            <span class="mr-1 cookie-notifier-text">Heads up, this site uses Cookies!</span>
+            <button class="btn btn-success mr-1" @onclick="OnCookiesAccepted">Okay</button>
+            <a href="https://www.learn-about-cookies.com/" target="_blank" class="btn btn-warning mr-1">Tell me More</a>
+        </div>
+    </div>
+</div>
+}
+
+@code {
+
+    bool IsCookiesAccepted = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(string.IsNullOrEmpty(localStorage.GetItem<string>("IsCookiesAccepted"))
+            || localStorage.GetItem<string>("IsCookiesAccepted") != "true")
+        {
+            localStorage.SetItem("IsCookiesAccepted", "false");
+        }
+
+        IsCookiesAccepted = localStorage.GetItem<bool>("IsCookiesAccepted");
+    }
+
+    private void OnCookiesAccepted()
+    {
+        localStorage.SetItem("IsCookiesAccepted", "true");
+        IsCookiesAccepted = true;
+    }
+}

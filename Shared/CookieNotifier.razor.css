@@ -1,0 +1,32 @@
+﻿.cookie-notifier {
+    padding-top: 0.5rem !important;
+    padding-right: 1rem !important;
+    padding-bottom: 0.5rem !important;
+    padding-left: 1rem !important;
+    border: 0.5rem;
+    background: radial-gradient(circle, black 90%, transparent 100%);
+}
+
+.cookie-notifier-text {
+    color: white !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    .cookie-notifier {
+        background: radial-gradient(circle, #a6a6a6 90%, transparent 100%);
+    }
+
+    .cookie-notifier-text {
+        color: black !important;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    .cookie-notifier {
+        background: radial-gradient(circle, black 90%, transparent 100%);
+    }
+
+    .cookie-notifier-text {
+        color: white !important;
+    }
+}

@@ -1,0 +1,10 @@
+﻿.icon {   
+    background-repeat: no-repeat;
+    height: 1.3em;
+    margin: 0;
+    padding-right: 0.9rem;
+}
+
+.icon-github {
+    content: url("img/GitHub-Mark-Light-64px.png");
+}

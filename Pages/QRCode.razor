@@ -1,0 +1,47 @@
+﻿@page "/QRCode"
+@using QRCoder
+
+<h3>QR Code Generator</h3>
+
+<br />
+
+<div class="container">
+    <div class="form-group">
+        <input type="text" name="textdata" class="form-control" autofocus="autofocus"
+                @bind="@textdata"
+                @onkeyup="@((e) => { if (e.Key.Contains("Enter")) { SubmitTextData(); } })"
+                placeholder="Enter text to use in the QR Code here And press Generate"
+                title="Enter text to use in the QR Code" />
+    </div>
+    <button class="btn btn-success" @onclick="SubmitTextData">Generate</button>
+    <br />
+    @if (!string.IsNullOrEmpty(qrCodeImgString))
+    {
+    <img name="qrCodeImg"
+            src="@qrCodeImgString"
+            title="@textdata" />
+    }
+</div>
+
+@code {
+    string textdata = string.Empty;
+    string qrCodeImgString = string.Empty;
+    int bitsPerPixel = 10;
+
+    void SubmitTextData()
+    {
+        qrCodeImgString = string.Empty;
+
+        if (string.IsNullOrEmpty(textdata))
+        {
+            return;
+        }
+
+        QRCodeGenerator qrGenerator = new QRCodeGenerator();
+        QRCodeData qrCodeData = qrGenerator.CreateQrCode(textdata, QRCodeGenerator.ECCLevel.Q);
+        PngByteQRCode pngQrCode = new PngByteQRCode(qrCodeData);
+        byte[] pngByteArray = pngQrCode.GetGraphic(bitsPerPixel);
+
+        qrCodeImgString = "data:image/png;base64," + Convert.ToBase64String(pngByteArray);
+    }
+}

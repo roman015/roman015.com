@@ -1,0 +1,16 @@
+﻿.btn-icon {
+    height: 30px;
+    max-width: 50px;
+}
+
+.bmc-button {
+    color: #212529;
+    background-color: #FF813F !important;
+    border-color: #FF813F !important;
+}
+
+    .bmc-button:hover {
+        color: #212529;
+        background-color: #F2773F !important;
+        border-color: #F2773F !important;
+    }

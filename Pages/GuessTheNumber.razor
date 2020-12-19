@@ -1,0 +1,123 @@
+﻿@page "/GuessTheNumber"
+
+<h1>Guess The Number</h1>
+
+<br />
+
+<div class="container">
+    <div>
+        @if (!string.IsNullOrWhiteSpace(guessStatus))
+        {
+            <div class="form-group">
+                <label>@guessStatus</label>
+            </div>
+        }
+
+        <div class="form-group">
+            @{
+                if (guessCount > 0)
+                {
+                    if (answer == guess)
+                    {
+                        <label>@answer was guessed in @guessCount guesses</label>
+                    }
+                    else
+                    {
+                        <label>@guessCount @(guessCount > 1 ? "guesses" : "guess") made so far</label>
+                    }
+                }
+            }
+        </div>
+
+        <div class="form-group">
+            <input type="number" name="guess" class="form-control"
+                   @bind="guess"
+                   @ref="guessInput"
+                   min="@min"
+                   max="@max"
+                   step="1"
+                   placeholder="Enter A Value Between @min and @max here @(isGameOver ? "to start a new game" : string.Empty)"
+                   title="Guess the number between @min and @max" 
+                   @onkeyup="@((e) => { if (e.Key.Contains("Enter")) { OnGuessMade(); } })"/>
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-success" @onclick="OnGuessMade">Submit</button>
+        </div>
+
+        @if (isGameOver)
+        {
+            <div class="form-group">
+                <label><small>(Input a number to play again)</small></label>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    int? guess;
+    int min = 1;
+    int max = 100;
+    int guessCount = 0;
+    int answer = -1;
+    string guessStatus = string.Empty;
+    bool isGameOver = false;
+    ElementReference guessInput;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ResetGame();
+    }
+
+    private void OnGuessMade()
+    {
+        if (isGameOver)
+        {
+            ResetGame();
+        }
+
+        TryGuess(guess);
+
+        guess = null;
+
+        guessInput.FocusAsync();
+    }
+
+    private void TryGuess(int? input)
+    {
+        if (input == null || input < min || input > max)
+        {
+            guessStatus = "No, Guess the number between " + min + " and " + max;
+            return;
+        }
+
+        int attempt = input ?? 0;
+
+        if (attempt >= min && attempt <= max)
+        {
+            min = attempt < answer ? attempt : min;
+            max = attempt > answer ? attempt : max;
+        }
+
+        if (attempt != answer)
+        {
+            guessCount++;
+            guessStatus = "Wrong! Guess the number between " + min + " and " + max;
+        }
+        else
+        {
+            guessStatus = "Congrats, you guessed right! " + answer + " is the number!";
+            isGameOver = true;
+        }
+    }
+
+    private void ResetGame()
+    {
+        min = 1;
+        max = 100;
+        guessCount = 0;
+        answer = new Random().Next(min, max);
+        guessStatus = string.Empty;
+        isGameOver = false;
+    }
+}

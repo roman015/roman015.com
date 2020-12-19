@@ -1,0 +1,100 @@
+﻿@page "/DummyFile"
+@inject IJSRuntime JSRuntime;
+
+<h3>Dummy File Generator</h3>
+
+<br />
+
+<div class="container">
+
+    <div class="form-group">
+        <input type="number" name="textdata" class="form-control" autofocus="autofocus"
+               @bind="@_size"
+               @onkeyup="@((e) => { if (e.Key.Contains("Enter")) { GenerateDummyFile(); } })"
+               min="@min"
+               max="@max"
+               step="1"
+               placeholder="Enter File size between @min @unit and @max @unit"
+               title="Enter File size between @min @unit and @max @unit" />
+    </div>
+
+    <div class="form-group">
+        <label for="Units">Select Units</label>
+        <select class="form-control"
+                @onchange="OnUnitChange">
+            <option value="KB">KiloBytes</option>
+            <option value="MB">MegaBytes</option>
+            <option value="GB">GigaBytes</option>
+        </select>
+    </div>
+
+    <button id="ButtonDownload" class="btn btn-success" @onclick="GenerateDummyFile">
+        Download
+    </button>
+
+</div>
+
+@code {
+
+    int size = 0;
+    int min = 0;
+    int max = 1024;
+    string unit = "KB";
+
+    int _size
+    {
+        get => size;
+        set
+        {
+            size = value;
+            OnSizeChanged();
+        }
+    }
+
+    private void OnUnitChange(ChangeEventArgs e)
+    {
+        unit = e.Value.ToString();
+        switch (unit)
+        {
+            case "KB":
+                max = 1024;
+                break;
+            case "MB":
+                max = 1024;
+                break;
+            case "GB":
+                max = 1;
+                break;
+        }
+
+        if (size < min)
+        {
+            size = min;
+        }
+
+        if (size > max)
+        {
+            size = max;
+        }
+    }
+
+    private void OnSizeChanged()
+    {
+        if (size < min)
+        {
+            size = min;
+        }
+
+        if (size > max)
+        {
+            size = max;
+        }
+    }
+
+    private async void GenerateDummyFile()
+    {
+        string url = "api.roman015.com/DummyFileGenerator?size="
+            + size + unit;
+        await JSRuntime.InvokeAsync<object>("open", url, "_blank");
+    }
+}
