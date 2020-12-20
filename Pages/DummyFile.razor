@@ -93,7 +93,7 @@
 
     private async void GenerateDummyFile()
     {
-        string url = "api.roman015.com/DummyFileGenerator?size="
+        string url = "https://api.roman015.com/DummyFileGenerator?size="
             + size + unit;
         await JSRuntime.InvokeAsync<object>("open", url, "_blank");
     }
