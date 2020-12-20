@@ -1,6 +1,6 @@
 Title: Moving from Azure to DigitalOcean
 Published: 05/16/2020
-Tags: ["DigialOcean", "Moving", "Circle CI", "Github"]
+Tags: ["DigitalOcean", "Moving", "Circle CI", "Github"]
 ---
 I've moved from Azure to DigitalOcean!
 
