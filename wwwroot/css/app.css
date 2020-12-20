@@ -151,6 +151,32 @@ app {
     }
 }
 
+.align-bottom-m {
+    position: fixed !important;
+    bottom: 0 !important;
+    width: 300px;
+}
+
+@media (max-width:768px) {
+    .sidebar .nav-item:last-of-type {
+        padding-bottom: 0;
+    }
+
+    .align-bottom-m {
+        position: inherit !important;
+        bottom: unset !important;
+        width: auto;
+    }
+
+        .align-bottom-m .nav-item:first-of-type  {
+            padding-top: 0;
+        }
+
+        .align-bottom-m .nav-item:last-of-type {
+            padding-bottom: 1rem !important;
+        }
+}
+
 @media (min-width: 768px) {
     app {
         flex-direction: row;
@@ -180,5 +206,5 @@ app {
     .sidebar .collapse {
         /* Never collapse the sidebar for wide screens */
         display: block;
-    }
+    }    
 }
