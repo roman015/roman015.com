@@ -5,6 +5,10 @@ html, body {
     background-color: FloralWhite !important;
 }
 
+p {
+    text-align: justify;
+}
+
 a, .btn-link {
     color: #0366d6;
 }
@@ -159,7 +163,7 @@ app {
 
 @media (max-width:768px) {
     .sidebar .nav-item:last-of-type {
-        padding-bottom: 0;
+        padding-bottom: 0.5rem;
     }
 
     .align-bottom-m {

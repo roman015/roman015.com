@@ -4,16 +4,34 @@
     padding-bottom: 0.5rem !important;
     padding-left: 1rem !important;
     border: 0.5rem;
-    background: radial-gradient(circle, black 90%, transparent 100%);
+    background: black;
 }
 
 .cookie-notifier-text {
     color: white !important;
 }
 
+.animated {
+    animation-duration: 5s;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.fadeIn {
+    animation-name: fadeIn;
+}
+
 @media (prefers-color-scheme: dark) {
     .cookie-notifier {
-        background: radial-gradient(circle, #a6a6a6 90%, transparent 100%);
+        background: #a6a6a6;
     }
 
     .cookie-notifier-text {
@@ -23,7 +41,7 @@
 
 @media (prefers-color-scheme: light) {
     .cookie-notifier {
-        background: radial-gradient(circle, black 90%, transparent 100%);
+        background: black;
     }
 
     .cookie-notifier-text {
