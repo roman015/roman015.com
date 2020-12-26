@@ -1,0 +1,66 @@
+﻿@page "/TimezoneTool"
+
+<h3>TimezoneTool</h3>
+
+<div class="container text-center">
+    <div class="row justify-content-md-center">
+        <div class="col col-sm-12 col-lg-4 py-2">
+            <button class="btn btn-info btn-block btn-lg my-1" @onclick="AddNewTimeZone">
+                <span class="oi oi-plus" aria-hidden="true"></span> Add Clock
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        @for(int i = 0; i < timezones.Count; i++)
+        {
+            int idx = i;
+            var item = timezones[idx];
+            <div class="col col-xs-12 col-sm-12 col-lg-4">
+                <div class="border p-1 shadow p-1 ">
+                    <button class="close" @onclick="(() => RemoveTimeZone(idx))">x</button>
+                    <Clock displayTimeZone="item"
+                           selectedUtcDateTime="displayedDateTime"
+                           OnDateTimeChanged="OnClockChanged"
+                           OnTimeZoneInfoChanged="(e) => OnTimeZoneInfoChanged(idx, e)" />
+                </div>                
+            </div>
+        }
+        @if(timezones.Count == 0)
+        {
+            <div class="col col-12 p-1 text-center">
+                <label>Click on the "Add Clock" button to add a clock to compare with</label>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    List<TimeZoneInfo> timezones = new List<TimeZoneInfo>();
+    DateTime displayedDateTime = DateTime.Now.ToUniversalTime();
+    string displayDatetimeFormat = "ddd";
+
+    protected override void OnInitialized()
+    {
+        timezones.Add(TimeZoneInfo.Local);
+    }
+
+    private void AddNewTimeZone()
+    {
+        timezones.Add(TimeZoneInfo.Local);
+    }
+
+    private void RemoveTimeZone(int index)
+    {
+        timezones.RemoveAt(index);
+    }
+
+    private void OnClockChanged(DateTime newDateTime)
+    {
+        displayedDateTime = newDateTime;
+    }
+
+    private void OnTimeZoneInfoChanged(int index, TimeZoneInfo newTimeZoneInfo)
+    {
+        timezones[index] = newTimeZoneInfo;
+    }
+}
