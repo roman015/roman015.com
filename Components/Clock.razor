@@ -57,7 +57,7 @@
             }
             catch(Exception e)
             {
-                Console.Error.WriteLine("Invalid TimeZone: " + value);
+                Console.Error.WriteLine("Invalid TimeZone: " + value + ", Error: " + e.Message);
             }
             _selectedTimeZone = value;
         }

@@ -19,7 +19,7 @@
 
     bool IsCookiesAccepted = false;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         if(string.IsNullOrEmpty(localStorage.GetItem<string>("IsCookiesAccepted"))
             || localStorage.GetItem<string>("IsCookiesAccepted") != "true")
