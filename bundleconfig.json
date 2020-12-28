@@ -1,0 +1,8 @@
+[
+  {
+    "outputFileName": "wwwroot/decode.min.js",
+    "inputFiles": [
+      "wwwroot/decode.js"
+    ]
+  }
+]
