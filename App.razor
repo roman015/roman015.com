@@ -7,10 +7,18 @@
                 @code{
                     protected override void OnInitialized()
                     {
+                        // Force the www on the url to avoid bugs
                         if(!Navigation.BaseUri.Contains("localhost")
                             && !Navigation.BaseUri.Contains("www"))
-                        {       
+                        {
                             var newUrl = Navigation.Uri.Replace("https://", "https://www.");
+                            Navigation.NavigateTo(newUrl);
+                        }
+
+                        // Using "roman015.com/?" to redirect external pages to index.html initially
+                        if (Navigation.BaseUri.Contains("roman015.com/?"))
+                        {
+                            var newUrl = Navigation.Uri.Replace("roman015.com/?", "roman015.com/");
                             Navigation.NavigateTo(newUrl);
                         }
                     }
