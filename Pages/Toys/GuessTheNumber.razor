@@ -1,57 +1,64 @@
 ﻿@page "/GuessTheNumber"
 
-<h1>Guess The Number</h1>
-
-<br />
-
 <div class="container">
-    <div>
-        @if (!string.IsNullOrWhiteSpace(guessStatus))
-        {
-            <div class="form-group">
-                <label>@guessStatus</label>
-            </div>
-        }
+    <div class="row">
+        <div class="col-12">
+            <h1>Guess The Number</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @if (!string.IsNullOrWhiteSpace(guessStatus))
+            {
+                <div class="form-group">
+                    <label>@guessStatus</label>
+                </div>
+            }
 
-        <div class="form-group">
-            @{
-                if (guessCount > 0)
-                {
-                    if (answer == guess)
+            <div class="form-group">
+                @{
+                    if (guessCount > 0)
                     {
-                        <label>@answer was guessed in @guessCount guesses</label>
-                    }
-                    else
-                    {
-                        <label>@guessCount @(guessCount > 1 ? "guesses" : "guess") made so far</label>
+                        if (answer == guess)
+                        {
+                            <label>@answer was guessed in @guessCount guesses</label>
+                        }
+                        else
+                        {
+                            <label>@guessCount @(guessCount > 1 ? "guesses" : "guess") made so far</label>
+                        }
                     }
                 }
+            </div>
+
+            <div class="form-group">
+                <input type="number" name="guess" class="form-control"
+                       @bind="guess"
+                       @ref="guessInput"
+                       min="@min"
+                       max="@max"
+                       step="1"
+                       placeholder="Enter A Value Between @min and @max here @(isGameOver ? "to start a new game" : string.Empty)"
+                       title="Guess the number between @min and @max"
+                       @onkeyup="@((e) => {
+                                   if (!string.IsNullOrWhiteSpace(e.Key) && e.Key.Contains("Enter")) {
+                                       OnGuessMade();
+                                   }
+                               })" />
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-success" @onclick="OnGuessMade">Submit</button>
+            </div>
+
+            @if (isGameOver)
+            {
+                <div class="form-group">
+                    <label><small>(Input a number to play again)</small></label>
+                </div>
             }
         </div>
-
-        <div class="form-group">
-            <input type="number" name="guess" class="form-control"
-                   @bind="guess"
-                   @ref="guessInput"
-                   min="@min"
-                   max="@max"
-                   step="1"
-                   placeholder="Enter A Value Between @min and @max here @(isGameOver ? "to start a new game" : string.Empty)"
-                   title="Guess the number between @min and @max" 
-                   @onkeyup="@((e) => { if (e.Key.Contains("Enter")) { OnGuessMade(); } })"/>
-        </div>
-
-        <div class="form-group">
-            <button class="btn btn-success" @onclick="OnGuessMade">Submit</button>
-        </div>
-
-        @if (isGameOver)
-        {
-            <div class="form-group">
-                <label><small>(Input a number to play again)</small></label>
-            </div>
-        }
-    </div>
+    </div>    
 </div>
 
 @code {
