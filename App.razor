@@ -1,7 +1,21 @@
+@inject NavigationManager Navigation
+
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(Program).Assembly">
         <Found Context="routeData">
-            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                @code{
+                    protected override void OnInitialized()
+                    {
+                        if(!Navigation.BaseUri.Contains("localhost")
+                            && !Navigation.BaseUri.Contains("www"))
+                        {       
+                            var newUrl = Navigation.Uri.Replace("https://", "https://www.");
+                            Navigation.NavigateTo(newUrl);
+                        }
+                    }
+                }
+            </RouteView>
         </Found>
         <NotFound>
             <LayoutView Layout="@typeof(MainLayout)">
