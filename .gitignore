@@ -4,3 +4,4 @@ obj/
 /Properties/PublishProfiles/FolderProfile.pubxml.user
 /Properties/PublishProfiles/FolderProfile.pubxml
 /wwwroot/appsettings.json
+/wwwroot/appsettings.json.debug

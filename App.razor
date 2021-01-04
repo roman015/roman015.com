@@ -16,9 +16,9 @@
                         }
 
                         // Using "roman015.com/?" to redirect external pages to index.html initially
-                        if (Navigation.BaseUri.Contains("roman015.com/?"))
+                        if (Navigation.Uri.Contains("/?"))
                         {
-                            var newUrl = Navigation.Uri.Replace("roman015.com/?", "roman015.com/");
+                            var newUrl = Navigation.Uri.Replace("/?", "/");
                             Navigation.NavigateTo(newUrl);
                         }
                     }
