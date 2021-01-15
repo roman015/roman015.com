@@ -8,3 +8,13 @@
 .icon-github {
     content: url("img/GitHub-Mark-Light-64px.png");
 }
+
+.icon-blog {
+    filter: invert(100%);
+}
+
+.tiny-icon {
+    position: relative;
+    top: -0.5em;
+    font-size: 50%;
+}

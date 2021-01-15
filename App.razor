@@ -3,27 +3,28 @@
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(Program).Assembly">
         <Found Context="routeData">
-            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                @code{
-                    protected override void OnInitialized()
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <Authorizing>
+                    <div class="d-flex justify-content-center">
+                        <div>
+                            Please Wait...
+                        </div>
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </Authorizing>
+                <NotAuthorized>
+                    @if (!context.User.Identity.IsAuthenticated)
                     {
-                        // Force the www on the url to avoid bugs
-                        if(!Navigation.BaseUri.Contains("localhost")
-                            && !Navigation.BaseUri.Contains("www"))
-                        {
-                            var newUrl = Navigation.Uri.Replace("https://", "https://www.");
-                            Navigation.NavigateTo(newUrl);
-                        }
-
-                        // Using "roman015.com/?" to redirect external pages to index.html initially
-                        if (Navigation.Uri.Contains("/?"))
-                        {
-                            var newUrl = Navigation.Uri.Replace("/?", "/");
-                            Navigation.NavigateTo(newUrl);
-                        }
+                        <RedirectToLogin />
                     }
-                }
-            </RouteView>
+                    else
+                    {
+                        <p>You are not authorized to access this resource.</p>
+                    }
+                </NotAuthorized>
+            </AuthorizeRouteView>
         </Found>
         <NotFound>
             <LayoutView Layout="@typeof(MainLayout)">
@@ -32,3 +33,23 @@
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
+
+@code{
+    protected override void OnInitialized()
+    {
+        // Force the www on the url to avoid bugs
+        if (!Navigation.BaseUri.Contains("localhost")
+            && !Navigation.BaseUri.Contains("www"))
+        {
+            var newUrl = Navigation.Uri.Replace("https://", "https://www.");
+            Navigation.NavigateTo(newUrl);
+        }
+
+        // Using "roman015.com/?" to redirect external pages to index.html initially
+        if (Navigation.Uri.Contains("/?"))
+        {
+            var newUrl = Navigation.Uri.Replace("/?", "/");
+            Navigation.NavigateTo(newUrl);
+        }
+    }
+}
