@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script type="text/javascript">
+        // Example : 
+        // By replacing urls like "https://www.roman015.com/test.html?queryArg=1"
+        // With this "https://www.roman015.com/?test?queryArg=1"
+        // index.html can take over and the static app can then handle the argument.
+        // Digital Ocean has to be configured to send unknown links to this page first
+        window.location = window.location.href
+            .toString()
+            .replace(
+                window.location.origin.toString() + '/', 
+                window.location.origin.toString() + '/?')
+            .replace('.html', '');
+    </script>
+</head>
+<body>
+</body>
+</html>
