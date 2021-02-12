@@ -1,7 +1,0 @@
-www/obj/
-www/appsettings.Development.json
-blog/obj/
-blog/appsettings.Development.json
-id_rsa
-id_rsa.pub
-temp.txt
