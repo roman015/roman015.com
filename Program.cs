@@ -25,7 +25,6 @@ namespace HomePage
             {
                 builder.Configuration.Bind("Auth0", options.ProviderOptions);
                 options.ProviderOptions.ResponseType = "code";
-                options.ProviderOptions.RedirectUri = "authentication/login-callback.html";
                 options.ProviderOptions.PostLogoutRedirectUri = "/";
             });            
             builder.Services.AddBlazoredLocalStorage();
