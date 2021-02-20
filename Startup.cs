@@ -60,6 +60,7 @@ namespace Roman015API
             }
 
             app.UseRouting();
+            app.UseCors("_myAllowSpecificOrigins");
 
             app.UseAuthentication();
             app.UseAuthorization();
