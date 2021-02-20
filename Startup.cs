@@ -34,7 +34,7 @@ namespace Roman015API
                 options.AddPolicy(name: "_myAllowSpecificOrigins",
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://www.roman015.com");
+                                      builder.WithOrigins("https://www.roman015.com");
                                   });
             });
 
