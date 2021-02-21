@@ -1,7 +1,50 @@
 ﻿@page "/AuthorizedMenu"
 
-<h3>AuthorizedMenu</h3>
+@inject HttpClient Http
+@inject IAccessTokenProvider TokenProvider
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-12">
+            <h3>Authorized Menu</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-success" @onclick="CallTestApi">Test</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <label>@Result</label>
+        </div>
+    </div>
+</div>
 
 @code {
+    string Result = string.Empty;
 
+    private async void CallTestApi()
+    {
+        using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://api.roman015.com/Test"))
+        {
+            var tokenResult = await TokenProvider.RequestAccessToken();
+
+            if (tokenResult.TryGetToken(out var token))
+            {
+                requestMessage.Headers.Authorization =
+                  new AuthenticationHeaderValue("Bearer", token.Value);
+                var response = await Http.SendAsync(requestMessage);
+                Result = await response.Content.ReadAsStringAsync();
+            }
+        }
+
+        if(string.IsNullOrWhiteSpace(Result))
+        {
+            Result = "Failed!";
+        }
+    }
 }
