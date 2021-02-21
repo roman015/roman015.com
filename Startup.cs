@@ -29,16 +29,6 @@ namespace Roman015API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: "_myAllowSpecificOrigins",
-                                  builder =>
-                                  {
-                                      builder.WithOrigins("https://www.roman015.com");
-                                      builder.AllowAnyHeader();
-                                  });
-            });
-
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -61,7 +51,11 @@ namespace Roman015API
             }
 
             app.UseRouting();
-            app.UseCors("_myAllowSpecificOrigins");
+            app.UseCors(builder =>
+            {
+                builder.WithOrigins("https://www.roman015.com");
+                builder.AllowAnyHeader();
+            }); 
 
             app.UseAuthentication();
             app.UseAuthorization();
