@@ -35,6 +35,7 @@ namespace Roman015API
                                   builder =>
                                   {
                                       builder.WithOrigins("https://www.roman015.com");
+                                      builder.AllowAnyHeader();
                                   });
             });
 
