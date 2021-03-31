@@ -19,7 +19,7 @@
                 @{
                     if (guessCount > 0)
                     {
-                        if (answer == guess)
+                        if (isGameOver)
                         {
                             <label>@answer was guessed in @guessCount guesses</label>
                         }
@@ -106,9 +106,9 @@
             max = attempt > answer ? attempt : max;
         }
 
+        guessCount++;
         if (attempt != answer)
         {
-            guessCount++;
             guessStatus = "Wrong! Guess the number between " + min + " and " + max;
         }
         else
