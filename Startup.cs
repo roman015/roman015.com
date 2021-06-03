@@ -18,13 +18,13 @@ namespace Roman015API
 {
     public class Startup
     {
-        private string AzureAdString = @"""AzureAd"": {
-        ""Instance""    : ""https://login.microsoftonline.com/"",
-        ""Domain""      : ""AzureAdDomain"",
-        ""TenantId""    : ""AzureAdTenantId"",
-        ""ClientId""    : ""AzureAdClientId"",
-        ""CallbackPath"": ""/signin-oidc""
-        }";
+        private string AzureAdString = "{ \"AzureAd\": {" + System.Environment.NewLine
+        + "\"Instance\"    : \"https://login.microsoftonline.com/\"," + System.Environment.NewLine
+        + "\"Domain\"      : \"AzureAdDomain\"," + System.Environment.NewLine
+        + "\"TenantId\"    : \"AzureAdTenantId\"," + System.Environment.NewLine
+        + "\"ClientId\"    : \"AzureAdClientId\"," + System.Environment.NewLine
+        + "\"CallbackPath\": \"/signin-oidc\"" + System.Environment.NewLine
+        + "}}";
 
         public Startup(IConfiguration configuration)
         {         
