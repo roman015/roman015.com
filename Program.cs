@@ -21,12 +21,18 @@ namespace HomePage
             builder.Services.AddScoped(sp => new HttpClient { 
                 BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) 
             });
-            builder.Services.AddOidcAuthentication(options =>
+
+            builder.Services.AddMsalAuthentication(options =>
             {
-                builder.Configuration.Bind("Auth0", options.ProviderOptions);
-                options.ProviderOptions.ResponseType = "code";
-                options.ProviderOptions.PostLogoutRedirectUri = "/";
-            });            
+                builder.Configuration
+                    .Bind("AzureAd", options.ProviderOptions.Authentication);
+                
+                options.ProviderOptions.DefaultAccessTokenScopes
+                    .Add("https://graph.microsoft.com/User.Read");
+
+                options.ProviderOptions.LoginMode = "redirect";
+            });
+            
             builder.Services.AddBlazoredLocalStorage();
 
             await builder.Build().RunAsync();
