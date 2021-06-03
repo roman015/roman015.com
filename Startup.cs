@@ -28,9 +28,9 @@ namespace Roman015API
 
         public Startup(IConfiguration configuration)
         {         
-            Domain   = System.Environment.GetEnvironmentVariable(Configuration["AzureAdEnvironmentVars:AzureAdDomain"]);
-            TenantId = System.Environment.GetEnvironmentVariable(Configuration["AzureAdEnvironmentVars:AzureAdTenantId"]);
-            ClientId = System.Environment.GetEnvironmentVariable(Configuration["AzureAdEnvironmentVars:AzureAdClientId"]);
+            Domain   = System.Environment.GetEnvironmentVariable(configuration["AzureAdEnvironmentVars:AzureAdDomain"]);
+            TenantId = System.Environment.GetEnvironmentVariable(configuration["AzureAdEnvironmentVars:AzureAdTenantId"]);
+            ClientId = System.Environment.GetEnvironmentVariable(configuration["AzureAdEnvironmentVars:AzureAdClientId"]);
 
             string AzureAdJson = AzureAdString
                 .Replace("AzureAdDomain", Domain)
