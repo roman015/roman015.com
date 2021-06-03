@@ -6,38 +6,55 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Web;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Roman015API
 {
     public class Startup
     {
+        private string AzureAdString = @"""AzureAd"": {
+        ""Instance""    : ""https://login.microsoftonline.com/"",
+        ""Domain""      : ""AzureAdDomain"",
+        ""TenantId""    : ""AzureAdTenantId"",
+        ""ClientId""    : ""AzureAdClientId"",
+        ""CallbackPath"": ""/signin-oidc""
+        }";
+
         public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-            Authority = System.Environment.GetEnvironmentVariable(Configuration["Auth0EnvironmentVars:Authority"]);
-            ApiIdentifier = System.Environment.GetEnvironmentVariable(Configuration["Auth0EnvironmentVars:ApiIdentifier"]);
+        {         
+            Domain   = System.Environment.GetEnvironmentVariable(Configuration["AzureAdEnvironmentVars:AzureAdDomain"]);
+            TenantId = System.Environment.GetEnvironmentVariable(Configuration["AzureAdEnvironmentVars:AzureAdTenantId"]);
+            ClientId = System.Environment.GetEnvironmentVariable(Configuration["AzureAdEnvironmentVars:AzureAdClientId"]);
+
+            string AzureAdJson = AzureAdString
+                .Replace("AzureAdDomain", Domain)
+                .Replace("AzureAdTenantId", TenantId)
+                .Replace("AzureAdClientId", ClientId);
+
+            MemoryStream ms = new MemoryStream(Encoding.ASCII.GetBytes(AzureAdJson));
+
+            Configuration = new ConfigurationBuilder()
+                .AddConfiguration(configuration)
+                .AddJsonStream(ms)
+                .Build();
         }
 
         public IConfiguration Configuration { get; }
-        public string Authority { get; }
-        public string ApiIdentifier { get; }
+        public string Domain { get; }
+        public string TenantId { get; }
+        public string ClientId { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.Authority = Authority;
-                options.Audience = ApiIdentifier;
-            });
+        {            
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));           
 
             services.AddControllers();            
         }
