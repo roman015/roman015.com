@@ -52,9 +52,15 @@ namespace Roman015API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {            
+        {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));           
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://login.microsoftonline.com/" + TenantId  + "/";
+                    options.Audience = "https://graph.microsoft.com";
+                })
+                .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
+                       
 
             services.AddControllers();            
         }
