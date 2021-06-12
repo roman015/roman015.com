@@ -23,7 +23,7 @@ namespace Roman015API
         + "\"Domain\"      : \"AzureAdDomain\"," + System.Environment.NewLine
         + "\"TenantId\"    : \"AzureAdTenantId\"," + System.Environment.NewLine
         + "\"ClientId\"    : \"AzureAdClientId\"," + System.Environment.NewLine
-        + "\"Audience\"    : \"https://graph.microsoft.com\"," + System.Environment.NewLine
+        + "\"Audience\"    : \"https://api.roman015.com\"," + System.Environment.NewLine
         //+ "\"CallbackPath\": \"/signin-oidc\"" + System.Environment.NewLine
         + "}}";
 
@@ -55,12 +55,12 @@ namespace Roman015API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                //.AddJwtBearer(options =>
-                //{
-                //    //options.Authority = "https://login.microsoftonline.com/" + TenantId  + "/";
-                //    //options.Audience = "";
-                //})
-                .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://login.microsoftonline.com/" + TenantId  + "/";
+                    options.Audience = "https://api.roman015.com";
+                }).
+                AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
                        
 
             services.AddControllers();            
