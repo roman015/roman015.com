@@ -26,9 +26,9 @@ namespace HomePage
             {
                 builder.Configuration
                     .Bind("AzureAd", options.ProviderOptions.Authentication);
-                
+
                 options.ProviderOptions.DefaultAccessTokenScopes
-                    .Add("https://graph.microsoft.com/User.Read");
+                    .Add("api://b29baf51-2721-4e6c-a617-4d4ca35c007b/Access_As_User");
 
                 options.ProviderOptions.LoginMode = "redirect";
             });
