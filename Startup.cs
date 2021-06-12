@@ -18,20 +18,23 @@ namespace Roman015API
 {
     public class Startup
     {
-        private string AzureAdString = "{ \"AzureAd\": {" + System.Environment.NewLine
-        + "\"Instance\"    : \"https://login.microsoftonline.com/\"," + System.Environment.NewLine
-        + "\"Domain\"      : \"AzureAdDomain\"," + System.Environment.NewLine
-        + "\"TenantId\"    : \"AzureAdTenantId\"," + System.Environment.NewLine
-        + "\"ClientId\"    : \"AzureAdClientId\"," + System.Environment.NewLine
-        + "\"Audience\"    : \"https://api.roman015.com\"," + System.Environment.NewLine
-        //+ "\"CallbackPath\": \"/signin-oidc\"" + System.Environment.NewLine
-        + "}}";
+        private string AzureAdString = string.Empty;
 
         public Startup(IConfiguration configuration)
         {         
             Domain   = System.Environment.GetEnvironmentVariable(configuration["AzureAdEnvironmentVars:AzureAdDomain"]);
             TenantId = System.Environment.GetEnvironmentVariable(configuration["AzureAdEnvironmentVars:AzureAdTenantId"]);
             ClientId = System.Environment.GetEnvironmentVariable(configuration["AzureAdEnvironmentVars:AzureAdClientId"]);
+
+            AzureAdString = "{ \"AzureAd\": {" + System.Environment.NewLine
+                + "\"Instance\"    : \"https://login.microsoftonline.com/\"," + System.Environment.NewLine
+                + "\"Domain\"      : \"AzureAdDomain\"," + System.Environment.NewLine
+                + "\"TenantId\"    : \"AzureAdTenantId\"," + System.Environment.NewLine
+                + "\"ClientId\"    : \"AzureAdClientId\"," + System.Environment.NewLine
+                + "\"Audience\"    : \"https://api.roman015.com\"," + System.Environment.NewLine
+                + "\"Authority\"    : \"https://login.microsoftonline.com/" + TenantId + "\"," + System.Environment.NewLine
+                //+ "\"CallbackPath\": \"/signin-oidc\"" + System.Environment.NewLine
+                + "}}";
 
             string AzureAdJson = AzureAdString
                 .Replace("AzureAdDomain", Domain)
@@ -54,14 +57,8 @@ namespace Roman015API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.Authority = "https://login.microsoftonline.com/" + TenantId  + "/";
-                    options.Audience = "https://api.roman015.com";
-                }).
-                AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
-                       
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)                
+                .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));                       
 
             services.AddControllers();            
         }
