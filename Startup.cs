@@ -31,7 +31,6 @@ namespace Roman015API
                 + "\"Domain\"      : \"AzureAdDomain\"," + System.Environment.NewLine
                 + "\"TenantId\"    : \"AzureAdTenantId\"," + System.Environment.NewLine
                 + "\"ClientId\"    : \"AzureAdClientId\"," + System.Environment.NewLine
-                + "\"Audience\"    : \"api://b29baf51-2721-4e6c-a617-4d4ca35c007b\"," + System.Environment.NewLine
                 + "\"Authority\"    : \"https://login.microsoftonline.com/" + TenantId + "\"," + System.Environment.NewLine
                 //+ "\"CallbackPath\": \"/signin-oidc\"" + System.Environment.NewLine
                 + "}}";
