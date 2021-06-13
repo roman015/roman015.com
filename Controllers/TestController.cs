@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Roman015API.Controllers
@@ -30,8 +31,8 @@ namespace Roman015API.Controllers
         [HttpGet]
         [Route("BlogAdministrator2")]
         public string GetBlogAdministrator2()
-        {
-            return User.IsInRole("BlogAdministrator") ?
+        {            
+            return User.HasClaim(ClaimTypes.Role, "BlogAdministrator") ?
                 "You are Authorized as Blog Administrator"
                 : "NOT a Blog Administrator";
         }
