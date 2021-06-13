@@ -21,7 +21,7 @@ namespace Roman015API.Controllers
 
         [HttpGet]
         [Route("BlogAdministrator")]
-        [Authorize(Roles = "Blog Administrator")]
+        [Authorize(Roles = "BlogAdministrator")]
         public string GetBlogAdministrator()
         {
             return "You are Authorized as Blog Administrator";
