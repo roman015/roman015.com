@@ -33,8 +33,8 @@ namespace Roman015API.Controllers
         public string GetBlogAdministrator2()
         {            
             return User.HasClaim(ClaimTypes.Role, "BlogAdministrator") ?
-                "You are Authorized as Blog Administrator"
-                : "NOT a Blog Administrator";
+                User?.Identity?.Name + " is Authorized as Blog Administrator"
+                : User?.Identity?.Name + " is NOT a Blog Administrator";
         }
     }
 }

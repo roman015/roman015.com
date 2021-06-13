@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -57,7 +58,14 @@ namespace Roman015API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)                
-                .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));                       
+                .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
+
+            services.Configure<OpenIdConnectOptions>(
+               OpenIdConnectDefaults.AuthenticationScheme, options =>
+               {
+                   options.TokenValidationParameters.RoleClaimType = "roles";
+                   options.TokenValidationParameters.NameClaimType = "name";
+               });
 
             services.AddControllers();            
         }
