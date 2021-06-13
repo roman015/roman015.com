@@ -23,8 +23,17 @@ namespace Roman015API.Controllers
         [Route("BlogAdministrator")]
         [Authorize(Roles = "BlogAdministrator")]
         public string GetBlogAdministrator()
-        {
+        {            
             return "You are Authorized as Blog Administrator";
+        }
+
+        [HttpGet]
+        [Route("BlogAdministrator2")]
+        public string GetBlogAdministrator2()
+        {
+            return User.IsInRole("BlogAdministrator") ?
+                "You are Authorized as Blog Administrator"
+                : "NOT a Blog Administrator";
         }
     }
 }
