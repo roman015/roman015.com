@@ -28,7 +28,7 @@ namespace HomePage
                     .Bind("AzureAd", options.ProviderOptions.Authentication);
 
                 options.ProviderOptions.DefaultAccessTokenScopes
-                    .Add("api://b29baf51-2721-4e6c-a617-4d4ca35c007b/Access_As_User");
+                    .Add("api.roman015.com/ApiScope");
 
                 options.ProviderOptions.LoginMode = "redirect";
             });
