@@ -7,7 +7,7 @@
   <Target Name="MyPreCompileTarget" BeforeTargets="Build">
     
     <Exec Command="echo BUILDING WYAM" Condition="'$(OS)' == 'Windows_NT'" />
-    <Exec Command="wyam -c $(ProjectDir)WyamBlog\config.wyam -i $(ProjectDir)WyamBlog\input\ -o $(ProjectDir)Wyam\" Condition="'$(OS)' == 'Windows_NT'" />
+    <Exec Command="wyam -c $(ProjectDir)WyamBlog\config.wyam -i $(ProjectDir)WyamBlog\input\ -o $(ProjectDir)wwwroot\Wyam\" Condition="'$(OS)' == 'Windows_NT'" />
        
 
     <Exec Command="echo WYAM BUILD COMPLETE" Condition="'$(OS)' == 'Windows_NT'" />
@@ -44,6 +44,10 @@
 
   <ItemGroup>
     <PackageReference Include="Wyam" Version="2.2.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Wyam\" />
   </ItemGroup>
 
 </Project>
