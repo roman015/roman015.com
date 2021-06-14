@@ -26,4 +26,8 @@
     <None Remove="WyamBlog\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Wyam" Version="2.2.9" />
+  </ItemGroup>
+
 </Project>
