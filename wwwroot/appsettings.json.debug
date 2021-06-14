@@ -1,0 +1,12 @@
+{
+  /*
+  The following identity settings need to be configured
+  before the project can be successfully executed.
+  For more info see https://aka.ms/dotnet-template-ms-identity-platform 
+  */
+  "AzureAd": {
+    "Authority": "https://login.microsoftonline.com/f9ad9a8a-dafd-4e09-9133-b22d344e8672",
+    "ClientId": "69138bda-3606-4c8a-a9d6-0b6c993749c1",
+    "ValidateAuthority": true
+  }
+}
