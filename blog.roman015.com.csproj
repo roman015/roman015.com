@@ -5,12 +5,16 @@
   </PropertyGroup>
 
   <Target Name="MyPreCompileTarget" BeforeTargets="Build">    
-    <Exec Command="dotnet tool install -g Wyam.Tool" ContinueOnError="true" />
-    <Exec Command='export PATH="$PATH:/github/home/.dotnet/tools"' ContinueOnError="true" />
-    <Exec Command="wyam -c $(ProjectDir)WyamBlog\config.wyam -i $(ProjectDir)WyamBlog\input\ -o $(ProjectDir)Wyam\" />
+    <Exec Command="dotnet tool install -g Wyam.Tool" ContinueOnError="true"  Condition=" '$(OS)' != 'Windows_NT' " />
+        
+    <Exec Command="wyam -c $(ProjectDir)WyamBlog\config.wyam -i $(ProjectDir)WyamBlog\input\ -o $(ProjectDir)Wyam\" Condition="'$(OS)' == 'Windows_NT'"/>
+    <Exec Command="./github/home/.dotnet/tools/wyam -c $(ProjectDir)WyamBlog/config.wyam -i $(ProjectDir)WyamBlog/input/ -o $(ProjectDir)Wyam/" Condition=" '$(OS)' != 'Windows_NT' " />
+
     <Exec Command="echo WYAM BUILD COMPLETE" />
+    
     <Exec Command="copy $(ProjectDir)Wyam\index.html $(ProjectDir)wwwroot\index.html" Condition="'$(OS)' == 'Windows_NT'" />
     <Exec Command="cp $(ProjectDir)Wyam/index.html $(ProjectDir)wwwroot/index.html" Condition="'$(OS)' != 'Windows_NT'" />
+    
     <Exec Command="echo WYAM INDEX COPY COMPLETE " />
   </Target>
 
