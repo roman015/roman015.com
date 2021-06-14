@@ -18,11 +18,9 @@
   </Target>
 
   <Target Name="MyPostCompileTarget" AfterTargets="Publish">  
-    <Exec Command="echo COPYING WYAM FILES" />
+    <Exec Command="echo COPYING WYAM FILES" Condition="'$(OS)' == 'Windows_NT'"/>
     <Exec Command="xcopy /Y /I /S $(ProjectDir)Wyam $(PublishDir)Wyam" Condition="'$(OS)' == 'Windows_NT'" />
-    <Exec Command="mkdir $(PublishDir)Wyam" Condition="'$(OS)' != 'Windows_NT'" />
-    <Exec Command="cp -r $(ProjectDir)Wyam $(PublishDir)Wyam" Condition="'$(OS)' != 'Windows_NT'" />    
-    <Exec Command="echo COPYING WYAM FILES COMPLETE" />
+    <Exec Command="echo COPYING WYAM FILES COMPLETE" Condition="'$(OS)' == 'Windows_NT'"/>
   </Target>
 
   <ItemGroup>
