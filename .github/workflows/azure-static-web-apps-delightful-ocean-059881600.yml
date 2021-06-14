@@ -19,10 +19,19 @@ jobs:
         with:
           submodules: true
           
-      - name: Setup .NET Core SDK 2.2.104 For Wyam.Tool
-        uses: actions/setup-dotnet@v1.8.0
-        with:
-          dotnet-version: 2.2.104
+      - name: Get deb package
+        run: wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+      - name: dpkg
+        run: dpkg -i packages-microsoft-prod.deb        
+      - name: apt update
+        run: apt-get update
+      - name: apt install (1)
+        run: apt-get install -y apt-transport-https
+      - name: apt update
+        run: apt-get update 
+      - name: Install .NET Core SDK 2.2.104 For Wyam.Tool
+        run: apt-get install -y dotnet-sdk-2.1
+        
           
       - name: Install Wyam.Tool
         run: dotnet tool install -g Wyam.Tool
