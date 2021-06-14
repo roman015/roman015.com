@@ -9,14 +9,6 @@
     <Exec Command="echo INSTALLING WYAM" />
     <Exec Command="dotnet tool install -g Wyam.Tool" ContinueOnError="true" Condition=" '$(OS)' != 'Windows_NT' " />
 
-    <Exec Command="echo INSTALLING .NET 2.1 For Non-Windows System" Condition=" '$(OS)' != 'Windows_NT' " />
-    <Exec Command="wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb" ContinueOnError="true" Condition=" '$(OS)' != 'Windows_NT' " />
-    <Exec Command="dpkg -i packages-microsoft-prod.deb" ContinueOnError="true" Condition=" '$(OS)' != 'Windows_NT' " />
-    <Exec Command="apt-get update" ContinueOnError="true" Condition=" '$(OS)' != 'Windows_NT' " />
-    <Exec Command="apt-get install -y apt-transport-https" ContinueOnError="true" Condition=" '$(OS)' != 'Windows_NT' " />
-    <Exec Command="apt-get update" ContinueOnError="true" Condition=" '$(OS)' != 'Windows_NT' " />
-    <Exec Command="apt-get install -y dotnet-sdk-2.1" ContinueOnError="true" Condition=" '$(OS)' != 'Windows_NT' " />
-
     <Exec Command="echo BUILDING WYAM" />
     <Exec Command="/github/home/.dotnet/tools/wyam -c $(ProjectDir)WyamBlog/config.wyam -i $(ProjectDir)WyamBlog/input/ -o $(ProjectDir)Wyam/" Condition=" '$(OS)' != 'Windows_NT' " />
     <Exec Command="wyam -c $(ProjectDir)WyamBlog\config.wyam -i $(ProjectDir)WyamBlog\input\ -o $(ProjectDir)Wyam\" Condition="'$(OS)' == 'Windows_NT'" />
