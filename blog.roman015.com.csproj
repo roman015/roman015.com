@@ -1,13 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <Target Name="MyPreCompileTarget" BeforeTargets="Build">
-
-    <Exec Command="echo INSTALLING WYAM" />
-    <Exec Command="dotnet tool install -g Wyam.Tool" ContinueOnError="true" Condition=" '$(OS)' != 'Windows_NT' " />
 
     <Exec Command="echo BUILDING WYAM" />
     <Exec Command="/github/home/.dotnet/tools/wyam -c $(ProjectDir)WyamBlog/config.wyam -i $(ProjectDir)WyamBlog/input/ -o $(ProjectDir)Wyam/" Condition=" '$(OS)' != 'Windows_NT' " />
@@ -30,18 +27,24 @@
   </Target>
 
   <ItemGroup>
-    <Compile Remove="Pages\**" />
     <Compile Remove="WyamBlog\**" />
-    <Content Remove="Pages\**" />
     <Content Remove="WyamBlog\**" />
-    <EmbeddedResource Remove="Pages\**" />
     <EmbeddedResource Remove="WyamBlog\**" />
-    <None Remove="Pages\**" />
     <None Remove="WyamBlog\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Startup.cs" />
+    <None Remove="dotnet-install.sh" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\Error.cshtml" />
+    <None Include="Pages\Index.cshtml" />
+    <None Include="Pages\Privacy.cshtml" />
+    <None Include="Pages\Shared\_Layout.cshtml" />
+    <None Include="Pages\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Pages\_ViewImports.cshtml" />
+    <None Include="Pages\_ViewStart.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
