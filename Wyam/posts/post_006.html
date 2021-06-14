@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
 
-        <title>Missing Source Code</title>
+        <title>Missing Source Code - A New Website!</title>
         <meta name="description" content="Blog" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">        
 
@@ -27,9 +27,9 @@
         <meta name="msapplication-tooltip" content="Missing Source Code" />
         <meta name="msapplication-starturl" content="/" />
 
-        <meta property="og:title" content="Missing Source Code" />
+        <meta property="og:title" content="Missing Source Code - A New Website!" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="http://blog.roman015.com/index.html" />
+        <meta property="og:url" content="http://blog.roman015.com/posts/post_006.html" />
         <!-- TODO: More social graph meta tags -->
 
         
@@ -73,9 +73,18 @@
                                 <div class="row">
                                         <div class="col-md-12">
 
-    <div class="site-heading">
-        <h1>Blog</h1>
-    </div>
+    
+<div class="post-heading">
+    <h1>A New Website!</h1>
+    <div class="meta">        
+Published on Sunday, December 20, 2020<br>    </div>
+        <div class="tags">
+                    <a role="button" href="/tags/30.html" class="btn btn-default btn-xs">3.0</a>
+                    <a role="button" href="/tags/DigitalOcean.html" class="btn btn-default btn-xs">DigitalOcean</a>
+                    <a role="button" href="/tags/DigitalOcean-Apps.html" class="btn btn-default btn-xs">DigitalOcean Apps</a>
+                    <a role="button" href="/tags/Website.html" class="btn btn-default btn-xs">Website</a>
+        </div>     
+</div>
                                         </div>
                                 </div>
                         </div>
@@ -86,79 +95,21 @@
                         <div class="row">
                                 <div id="content" class="col-md-12">
                                         
-<div class="row">
-    <div class="col-sm-8 right-border">
-                <div class="post-preview">
-                    <a href="/posts/post_008.html">
-                        <h2 class="post-title">Cookie Clicker using UiPath</h2>
-                    </a>
-                    <p class="post-meta">Posted on Thursday, June 3, 2021</p>
-<p>Tried giving <a href="uipath.com">UiPath</a> a shot, and while going through the tutorials and documentation I thought to myself, "Hey, this is perfect for that <a href="https://orteil.dashnet.org/cookieclicker/">Cookie Clicker Game</a>!".</p>                    <a class="post-entry" href="/posts/post_008.html">View Post &rarr;</a>
-                </div>
-                    <br/>
-                    <hr /> 
-                <div class="post-preview">
-                    <a href="/posts/post_007.html">
-                        <h2 class="post-title">Timezone Tool</h2>
-                    </a>
-                    <p class="post-meta">Posted on Saturday, December 26, 2020</p>
-<p>This time it's a simple tool to view the same time across multiple timezones. Add as many clocks as desired, and if you change the time on any of the clocks the others will change to show the exact same time on the time zone selected above it. I'll be adding the daylight savings feature sometime later.</p>                    <a class="post-entry" href="/posts/post_007.html">View Post &rarr;</a>
-                </div>
-                    <br/>
-                    <hr /> 
-                <div class="post-preview">
-                    <a href="/posts/post_006.html">
-                        <h2 class="post-title">A New Website!</h2>
-                    </a>
-                    <p class="post-meta">Posted on Sunday, December 20, 2020</p>
-<p>So <a href="https://docs.microsoft.com/en-us/dotnet/core/dotnet-five">.Net5.0</a> came out sometime back and I figured it's time to do some remodelling! And so the website's architechture is now completly changed.</p>                    <a class="post-entry" href="/posts/post_006.html">View Post &rarr;</a>
-                </div>
-        <ul class="pager">
-            <li class="previous">                
-            </li>
-            <li class="next">
-            </li>
-        </ul>
-    </div>
-    <div class="col-sm-4 sidebar">
-        <hr class="visible-xs-block" />
 
-            <h5>Tags</h5>
-            <div>
-                    <a role="button" href="/tags/Azure.html" class="btn btn-default btn-sm"> Azure (2)</a>
-                    <a role="button" href="/tags/DigitalOcean.html" class="btn btn-default btn-sm"> DigitalOcean (2)</a>
-                    <a role="button" href="/tags/Buy-Me-A-Coffee.html" class="btn btn-default btn-sm"> Buy Me A Coffee (1)</a>
-                    <a role="button" href="/tags/Timezone.html" class="btn btn-default btn-sm"> Timezone (1)</a>
-                    <a role="button" href="/tags/Game.html" class="btn btn-default btn-sm"> Game (1)</a>
-                    <a role="button" href="/tags/Webassembly.html" class="btn btn-default btn-sm"> Webassembly (1)</a>
-                    <a role="button" href="/tags/Moving.html" class="btn btn-default btn-sm"> Moving (1)</a>
-                    <a role="button" href="/tags/Website.html" class="btn btn-default btn-sm"> Website (1)</a>
-                    <a role="button" href="/tags/Circle-CI.html" class="btn btn-default btn-sm"> Circle CI (1)</a>
-                    <a role="button" href="/tags/Blazor.html" class="btn btn-default btn-sm"> Blazor (1)</a>
-            </div>
-            <ul class="pager">
-                <li class="next">
-                    <a href="/tags/index.html">View All Tags &rarr;</a>
-                </li>
-            </ul>
+<p>So <a href="https://docs.microsoft.com/en-us/dotnet/core/dotnet-five">.Net5.0</a> came out sometime back and I figured it's time to do some remodelling! And so the website's architechture is now completly changed.</p>
+<p>Previously it was completely built on .Net Core and was running on a single Droplet in Digital Ocean.</p>
+<p>Now it's running on the Digital Ocean Apps Platform in three pieces -</p>
+<ol>
+<li>The Static Site for <a href="http://www.roman015.com">www.roman015.com</a>. This one is done in .Net5 webassembly.</li>
+<li>The Static Site for blog.roman015.com. This one is still using wyam.io</li>
+<li>The APIs will be hosted in api.roman015.com</li>
+</ol>
+<p>Now the main benefit of running it on the Apps Platform is that there's potential for scalability (not that I'll actually need it, but it's good to know there's a backup plan)</p>
+<p>The code for these three can be found in different branches in <a href="https://github.com/roman015/roman015.com">github</a>. You can even find the source code for the old version in the 2.0 Branch.</p>
+<p>Two things I'll need to do is to consider updating the static site generator for the blog and to add some extra documentation (I think I'll use the master branch for that from now on)</p>
+<p>One extra thing I'd like to point out - QR Code generation in <a href="http://www.roman015.com/QRCode">www.roman015.com/QRCode</a> is now comletely client side and is no longer dependent on any server side execution, hurray!</p>
 
-            <hr />
-            <h5>Older Posts</h5>
-            <ul class="list-unstyled">
-                    <li><a href="/posts/post_005.html">Guess the Number Game</a></li>
-                    <li><a href="/posts/post_004.html">Buy me a coffee?</a></li>
-                    <li><a href="/posts/post_003.html">Moving from Azure to DigitalOcean</a></li>
-                    <li><a href="/posts/post_002.html">Setting up SSL</a></li>
-            </ul>
-                <ul class="pager">
-                    <li class="next">
-                        <a href="/posts">Archive &rarr;</a>
-                    </li>
-                </ul>
 
-        
-    </div> 
-</div>
 
                                 </div>
                         </div>
