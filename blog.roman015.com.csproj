@@ -10,7 +10,7 @@
     <Exec Command="dotnet tool install -g Wyam.Tool" ContinueOnError="true" Condition=" '$(OS)' != 'Windows_NT' " />
 
     <Exec Command="echo BUILDING WYAM" />
-    <Exec Command="/github/home/.dotnet/tools/wyam -c $(ProjectDir)WyamBlog/config.wyam -i $(ProjectDir)WyamBlog/input/ -o $(ProjectDir)Wyam/" Condition=" '$(OS)' != 'Windows_NT' " />
+    <Exec Command="dotnet /github/home/.dotnet/tools/.store/wyam.tool/2.2.9/wyam.tool/2.2.9/tools/netcoreapp2.1/any/Wyam.dll -c $(ProjectDir)WyamBlog/config.wyam -i $(ProjectDir)WyamBlog/input/ -o $(ProjectDir)Wyam/" Condition=" '$(OS)' != 'Windows_NT' " />
     <Exec Command="wyam -c $(ProjectDir)WyamBlog\config.wyam -i $(ProjectDir)WyamBlog\input\ -o $(ProjectDir)Wyam\" Condition="'$(OS)' == 'Windows_NT'" />
        
 
