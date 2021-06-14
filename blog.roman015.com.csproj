@@ -7,12 +7,6 @@
   <Target Name="MyPreCompileTarget" BeforeTargets="Build">
 
     <Exec Command="echo INSTALL WYAM" />
-    <Exec Command="wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb" Condition=" '$(OS)' != 'Windows_NT' " />
-    <Exec Command="dpkg -i packages-microsoft-prod.deb" Condition=" '$(OS)' != 'Windows_NT' " />
-    <Exec Command="apt-get update" Condition=" '$(OS)' != 'Windows_NT' " />
-    <Exec Command="apt-get install -y apt-transport-https" Condition=" '$(OS)' != 'Windows_NT' " />
-    <Exec Command="apt-get update" Condition=" '$(OS)' != 'Windows_NT' " />
-    <Exec Command="apt-get install -y dotnet-sdk-2.1" Condition=" '$(OS)' != 'Windows_NT' " />
     <Exec Command="dotnet tool install -g Wyam.Tool" Condition=" '$(OS)' != 'Windows_NT' " />
     
     <Exec Command="echo BUILDING WYAM" />
