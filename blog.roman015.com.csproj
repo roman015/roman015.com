@@ -7,7 +7,7 @@
   <Target Name="MyPreCompileTarget" BeforeTargets="Build">
 
     <Exec Command="echo INSTALL WYAM" />
-    <Exec Command="dotnet tool install -g Wyam.Tool" Condition=" '$(OS)' != 'Windows_NT' " />
+    <Exec Command="dotnet tool install -g Wyam.Tool  --framework netcoreapp2.1" Condition=" '$(OS)' != 'Windows_NT' " />
     
     <Exec Command="echo BUILDING WYAM" />
     <Exec Command="/github/home/.dotnet/tools/wyam -c $(ProjectDir)WyamBlog/config.wyam -i $(ProjectDir)WyamBlog/input/ -o $(ProjectDir)Wyam/" Condition=" '$(OS)' != 'Windows_NT' " />
