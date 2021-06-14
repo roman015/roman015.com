@@ -2,7 +2,7 @@ Title: Cookie Clicker using UiPath
 Published: 06/03/2021
 Tags: ["UiPath", "Cookie Clicker"]
 ---
-Tried giving [UiPath](uipath.com) a shot, and while going through the tutorials and documentation I thought to myself, "Hey, this is perfect for that [Cookie Clicker Game](https://orteil.dashnet.org/cookieclicker/)!".
+Tried giving [UiPath](https://www.uipath.com) a shot, and while going through the tutorials and documentation I thought to myself, "Hey, this is perfect for that [Cookie Clicker Game](https://orteil.dashnet.org/cookieclicker/)!".
 
 And so, I proudly present - [Cookie Clicker](https://github.com/roman015/CookieClickerUiPath) Played in UiPath! 
 

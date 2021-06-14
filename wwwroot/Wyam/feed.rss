@@ -5,15 +5,15 @@
 		<link>http://blog.roman015.com/</link>
 		<description>Blog</description>
 		<copyright>2021</copyright>
-		<pubDate>Mon, 14 Jun 2021 16:14:09 GMT</pubDate>
-		<lastBuildDate>Mon, 14 Jun 2021 16:14:09 GMT</lastBuildDate>
+		<pubDate>Mon, 14 Jun 2021 17:53:07 GMT</pubDate>
+		<lastBuildDate>Mon, 14 Jun 2021 17:53:07 GMT</lastBuildDate>
 		<item>
 			<title>Cookie Clicker using UiPath</title>
 			<link>http://blog.roman015.com/posts/post_008.html</link>
-			<description>&lt;p&gt;Tried giving &lt;a href="uipath.com"&gt;UiPath&lt;/a&gt; a shot, and while going through the tutorials and documentation I thought to myself, "Hey, this is perfect for that &lt;a href="https://orteil.dashnet.org/cookieclicker/"&gt;Cookie Clicker Game&lt;/a&gt;!".&lt;/p&gt;</description>
+			<description>&lt;p&gt;Tried giving &lt;a href="https://www.uipath.com"&gt;UiPath&lt;/a&gt; a shot, and while going through the tutorials and documentation I thought to myself, "Hey, this is perfect for that &lt;a href="https://orteil.dashnet.org/cookieclicker/"&gt;Cookie Clicker Game&lt;/a&gt;!".&lt;/p&gt;</description>
 			<guid>http://blog.roman015.com/posts/post_008.html</guid>
 			<pubDate>Thu, 03 Jun 2021 00:00:00 GMT</pubDate>
-			<content:encoded>&lt;p&gt;Tried giving &lt;a href="uipath.com"&gt;UiPath&lt;/a&gt; a shot, and while going through the tutorials and documentation I thought to myself, &amp;quot;Hey, this is perfect for that &lt;a href="https://orteil.dashnet.org/cookieclicker/"&gt;Cookie Clicker Game&lt;/a&gt;!&amp;quot;.&lt;/p&gt;
+			<content:encoded>&lt;p&gt;Tried giving &lt;a href="https://www.uipath.com"&gt;UiPath&lt;/a&gt; a shot, and while going through the tutorials and documentation I thought to myself, &amp;quot;Hey, this is perfect for that &lt;a href="https://orteil.dashnet.org/cookieclicker/"&gt;Cookie Clicker Game&lt;/a&gt;!&amp;quot;.&lt;/p&gt;
 &lt;p&gt;And so, I proudly present - &lt;a href="https://github.com/roman015/CookieClickerUiPath"&gt;Cookie Clicker&lt;/a&gt; Played in UiPath!&lt;/p&gt;
 &lt;p&gt;I'm still going through this but I gotta say, UiPath is really easy to pick up! If you can figure out the nuances of dragging and dropping instead of traditional coding and typing and once you get the hang of the syntax for &lt;a href="https://docs.uipath.com/studio/docs/about-selectors"&gt;Selectors&lt;/a&gt;, it's a piece of cake!&lt;/p&gt;
 </content:encoded>

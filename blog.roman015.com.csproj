@@ -12,7 +12,7 @@
 
     <Exec Command="echo WYAM BUILD COMPLETE" Condition="'$(OS)' == 'Windows_NT'" />
     
-    <Exec Command="copy $(ProjectDir)Wyam\index.html $(ProjectDir)wwwroot\index.html" Condition="'$(OS)' == 'Windows_NT'" />   
+    <Exec Command="copy $(ProjectDir)wwwroot\Wyam\index.html $(ProjectDir)wwwroot\index.html" Condition="'$(OS)' == 'Windows_NT'" />   
     
     <Exec Command="echo WYAM INDEX COPY COMPLETE " Condition="'$(OS)' == 'Windows_NT'" />
   </Target>
