@@ -24,13 +24,13 @@ jobs:
       - name: dpkg
         run: sudo dpkg -i packages-microsoft-prod.deb        
       - name: apt update
-        run: apt-get update
+        run: sudo apt-get update
       - name: apt install (1)
-        run: apt-get install -y apt-transport-https
+        run: sudo apt-get install -y apt-transport-https
       - name: apt update
-        run: apt-get update 
+        run: sudo apt-get update 
       - name: Install .NET Core SDK 2.2.104 For Wyam.Tool
-        run: apt-get install -y dotnet-sdk-2.1
+        run: sudo apt-get install -y dotnet-sdk-2.1
         
           
       - name: Install Wyam.Tool
