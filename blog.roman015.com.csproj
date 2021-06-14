@@ -4,7 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <Target Name="MyPreCompileTarget" BeforeTargets="Build">
+  <Target Name="MyPreCompileTarget" BeforeTargets="Build">    
+    <Exec Command="dotnet tool install -g Wyam.Tool" ContinueOnError="true" />
     <Exec Command="wyam -c $(ProjectDir)WyamBlog\config.wyam -i $(ProjectDir)WyamBlog\input\ -o $(ProjectDir)Wyam\" />
     <Exec Command="echo WYAM BUILD COMPLETE" />
     <Exec Command="copy $(ProjectDir)Wyam\index.html $(ProjectDir)wwwroot\index.html" Condition="'$(OS)' == 'Windows_NT'" />
