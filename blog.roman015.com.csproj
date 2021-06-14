@@ -10,7 +10,7 @@
     <Exec Command="dotnet tool install -g Wyam.Tool" ContinueOnError="true"  Condition=" '$(OS)' != 'Windows_NT' " />
 
     <Exec Command="echo INSTALLING .NET 2.1 For Non-Windows System" Condition=" '$(OS)' != 'Windows_NT' "/>
-    <Exec Command="sudo apt-get install -y dotnet-sdk-2.1" ContinueOnError="true"  Condition=" '$(OS)' != 'Windows_NT' " />
+    <Exec Command="apt-get install -y dotnet-sdk-2.1" ContinueOnError="true"  Condition=" '$(OS)' != 'Windows_NT' " />
 
     <Exec Command="echo BUILDING WYAM" />
     <Exec Command="/github/home/.dotnet/tools/wyam -c $(ProjectDir)WyamBlog/config.wyam -i $(ProjectDir)WyamBlog/input/ -o $(ProjectDir)Wyam/" Condition=" '$(OS)' != 'Windows_NT' " />
