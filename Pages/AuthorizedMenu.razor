@@ -15,7 +15,7 @@
 
     <div class="row">
         <div class="col-12">
-            <button class="btn btn-success" @onclick="CallTestApi">Test</button>
+            <button class="btn btn-success" @onclick="@(async () => await CallTestApi())">Test</button>
         </div>
     </div>
 
@@ -29,7 +29,7 @@
 @code {
     string Result = string.Empty;
 
-    private async void CallTestApi()
+    private async Task CallTestApi()
     {
         using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://api.roman015.com/Test"))
         {
@@ -39,10 +39,10 @@
             {
                 requestMessage.Headers.Authorization =
                   new AuthenticationHeaderValue("Bearer", token.Value);
-                Http.SendAsync(requestMessage)
-                    .ContinueWith((response) =>
+                await Http.SendAsync(requestMessage)
+                    .ContinueWith(async (response) =>
                     {
-                        response.Result.Content.ReadAsStringAsync().ContinueWith((val) =>
+                        await response.Result.Content.ReadAsStringAsync().ContinueWith((val) =>
                         {
                             if (!val.IsFaulted && !string.IsNullOrWhiteSpace(val.Result))
                             {
@@ -52,8 +52,8 @@
                             {
                                 Result = "Something went Wrong";
                             }
-                        }).Wait();
-                    }).Wait();                
+                        });
+                    });                
             }
         }
 
