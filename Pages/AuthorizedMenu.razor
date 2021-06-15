@@ -42,7 +42,7 @@
                 var response = await Http.SendAsync(requestMessage);
                 var temp = response.Content.ReadAsStringAsync().ContinueWith((val) =>
                 {
-                    if (!val.IsFaulted && string.IsNullOrWhiteSpace(val.Result))
+                    if (!val.IsFaulted && !string.IsNullOrWhiteSpace(val.Result))
                     {
                         Result = val.Result;
                     }
