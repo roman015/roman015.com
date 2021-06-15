@@ -10,7 +10,7 @@ The three components of the current iteration is kept in three branches:
 2. Blog
 3. Roman015API
 
-These are currently hosted using Digital Ocean's App Platform with HomePage and Blog as static sites and Roman015API as a docker app. 
+These are currently hosted using Azure & Digital Ocean's App Platform with HomePage and Blog as static sites in Azure and Roman015API as a docker app in Digital Ocean. 
 
 # Previous Code
 
