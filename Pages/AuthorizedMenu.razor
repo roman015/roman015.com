@@ -39,7 +39,7 @@
             {
                 requestMessage.Headers.Authorization =
                   new AuthenticationHeaderValue("Bearer", token.Value);
-                var temp = Http.SendAsync(requestMessage)
+                Http.SendAsync(requestMessage)
                     .ContinueWith((response) =>
                     {
                         response.Result.Content.ReadAsStringAsync().ContinueWith((val) =>
@@ -52,8 +52,8 @@
                             {
                                 Result = "Something went Wrong";
                             }
-                        });
-                    });                
+                        }).Wait();
+                    }).Wait();                
             }
         }
 
