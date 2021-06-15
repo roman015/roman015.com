@@ -39,21 +39,18 @@
             {
                 requestMessage.Headers.Authorization =
                   new AuthenticationHeaderValue("Bearer", token.Value);
-                await Http.SendAsync(requestMessage)
-                    .ContinueWith(async (response) =>
+                var response = await Http.SendAsync(requestMessage);
+                await response.Content.ReadAsStringAsync().ContinueWith((val) =>
+                {
+                    if (!string.IsNullOrWhiteSpace(val.Result))
                     {
-                        await response.Result.Content.ReadAsStringAsync().ContinueWith((val) =>
-                        {
-                            if (!val.IsFaulted && !string.IsNullOrWhiteSpace(val.Result))
-                            {
-                                Result = val.Result;
-                            }
-                            else
-                            {
-                                Result = "Something went Wrong";
-                            }
-                        });
-                    });                
+                        Result = val.Result;
+                    }
+                    else
+                    {
+                        Result = "Something went Wrong";
+                    }
+                });
             }
         }
 
