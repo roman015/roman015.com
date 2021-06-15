@@ -1,5 +1,7 @@
 ﻿@page "/AuthorizedMenu"
 
+@attribute [Authorize]
+
 @inject HttpClient Http
 @inject IAccessTokenProvider TokenProvider
 
@@ -38,11 +40,21 @@
                 requestMessage.Headers.Authorization =
                   new AuthenticationHeaderValue("Bearer", token.Value);
                 var response = await Http.SendAsync(requestMessage);
-                Result = await response.Content.ReadAsStringAsync();
+                var temp = response.Content.ReadAsStringAsync().ContinueWith((val) =>
+                {
+                    if (!val.IsFaulted && string.IsNullOrWhiteSpace(val.Result))
+                    {
+                        Result = val.Result;
+                    }
+                    else
+                    {
+                        Result = "Something went Wrong";
+                    }
+                });
             }
         }
 
-        if(string.IsNullOrWhiteSpace(Result))
+        if (string.IsNullOrWhiteSpace(Result))
         {
             Result = "Failed!";
         }
