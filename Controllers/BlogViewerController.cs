@@ -90,7 +90,7 @@ namespace Roman015API.Controllers
             var allPosts = GetAllPosts()
                     .Where(post => string.IsNullOrWhiteSpace(searchQuery)
                         || post.Title.Contains(searchQuery)
-                        || post.Tags.Contains(searchQuery))
+                        || post.Tags.Any(tag => tag.Contains(searchQuery)))
                     .OrderByDescending(item => item.PublishedOn);
 
             var totalPostsCount = allPosts.Count();
