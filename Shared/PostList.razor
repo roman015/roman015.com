@@ -18,7 +18,12 @@
         }
     }
 
-    @if(Posts == null || Posts.Count == 0)
+    @if (Posts == null)
+    {
+        <div style="margin-left: auto; margin-right: auto;" class="dot-elastic"></div>
+    }
+
+    @if (Posts != null && Posts.Count == 0)
     {
         <span>No Posts Found</span>
     }

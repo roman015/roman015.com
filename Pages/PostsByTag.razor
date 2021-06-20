@@ -2,7 +2,7 @@
 
 @inject HttpClient Http
 
-<MainTitle Name='@("Tag :" + tagName)'/>
+<MainTitle Name='@("Tag : " + tagName.Replace("-", " "))'/>
 
 <div class="container">
     <div class="row">
@@ -42,6 +42,8 @@
         {
             requestUrl = testUrl;
         }
+
+        Posts = null;
 
         await Http.GetFromJsonAsync<List<Models.Post>>(requestUrl)
         .ContinueWith((val) =>
