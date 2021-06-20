@@ -45,16 +45,19 @@ namespace Roman015API.Controllers
             List<string> selectedTags = tags
                 .Split(",")
                 .Select(item => item.Trim())
+                .Distinct()
                 .ToList();
 
+            // Get Posts where the number of tags that match the list of selectedTags EQUALS the entire count of selectedTags
             return Ok(
                 GetAllPosts()
-                    .Where(item => item.Tags.Any(tag => selectedTags.Contains(tag)))
+                    .Where(item => selectedTags.Count(selectedItem => item.Tags.Contains(selectedItem)) == selectedTags.Count)
                 );
         }    
         
         private List<Post> GetAllPosts()
         {
+            // TODO : Add Caching
             return GetPostsFromServer();
         }
 

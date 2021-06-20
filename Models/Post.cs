@@ -34,10 +34,11 @@ namespace Roman015API.Models
                     .Trim()
                     .Split(",")
                     .Select(item => item.Trim().Replace("\"", string.Empty)) // To remove the double quotes from each entry
+                    .Distinct()
                     .ToList();
             this.PostMarkDown = MarkDownFileContent
                     .Substring(MarkDownFileContent.IndexOf("---") + "---".Length)
-                    .Split(Environment.NewLine)
+                    .Split("\n")
                     .First(); // Only the first line of the markdown
             
         }
