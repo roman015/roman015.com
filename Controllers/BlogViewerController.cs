@@ -75,7 +75,7 @@ namespace Roman015API.Controllers
 
         [HttpGet]
         [Route("GetPostsForPreview")]
-        public IActionResult GetPostsForPreview([FromQuery]int pageIdx = 0, [FromQuery]int pageSize = 10)
+        public IActionResult GetPostsForPreview([FromQuery]int pageIdx = 0, [FromQuery]int pageSize = 10, [FromQuery]String searchQuery = "")
         {
             if(pageIdx < 0)
             {
@@ -87,9 +87,14 @@ namespace Roman015API.Controllers
                 return BadRequest("Invalid PageSize Value");
             }
 
-            var totalPostsCount = GetAllPosts().Count;
-            var posts = GetAllPosts()
-                    .OrderByDescending(item => item.PublishedOn)
+            var allPosts = GetAllPosts()
+                    .Where(post => string.IsNullOrWhiteSpace(searchQuery)
+                        || post.Title.Contains(searchQuery)
+                        || post.Tags.Contains(searchQuery))
+                    .OrderByDescending(item => item.PublishedOn);
+
+            var totalPostsCount = allPosts.Count();
+            var posts = allPosts
                     .Skip(pageIdx * pageSize)
                     .Take(pageSize);
 
