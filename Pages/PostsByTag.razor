@@ -36,7 +36,7 @@
     private async Task GetLatestPosts(string searchQuery = "")
     {
         string testUrl = "/test/GetPostsForPreview.json";
-        string requestUrl = "https://api.roman015.com/BlogViewer/GetAllPostsWithTags?tags=" + tagName;
+        string requestUrl = "https://api.roman015.com/BlogViewer/GetAllPostsWithTags?tags=" + tagName.Replace("-", " ");
 
         if (Http.BaseAddress.Host.Contains("localhost"))
         {
