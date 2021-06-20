@@ -88,12 +88,21 @@ namespace Roman015API.Controllers
             }
 
             var allPosts = GetAllPosts()
-                    .Where(post => string.IsNullOrWhiteSpace(searchQuery)
-                        || post.Title.Contains(searchQuery)
-                        || post.Tags.Any(tag => tag.Contains(searchQuery)))
-                    .OrderByDescending(item => item.PublishedOn);
+                    .OrderByDescending(item => item.PublishedOn)
+                    .ToList();
 
-            var totalPostsCount = allPosts.Count();
+            if(!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                allPosts = allPosts
+                        .Where(post =>
+                            post.Title.Contains(searchQuery)
+                            || post.Tags.Any(tag => tag.Contains(searchQuery)))
+                        .ToList();
+            }
+                    
+                    
+
+            var totalPostsCount = allPosts.Count;
             var posts = allPosts
                     .Skip(pageIdx * pageSize)
                     .Take(pageSize);
@@ -145,7 +154,7 @@ namespace Roman015API.Controllers
             return new MemoryCacheEntryOptions()
             {                
                 AbsoluteExpiration = DateTime.Now.AddDays(1),
-                SlidingExpiration = TimeSpan.FromDays(1)
+                SlidingExpiration = TimeSpan.FromDays(1)                
             };
         }
 
