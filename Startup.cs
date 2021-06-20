@@ -63,7 +63,7 @@ namespace Roman015API
             app.UseRouting();
             app.UseCors(builder =>
             {
-                builder.WithOrigins("https://www.roman015.com");
+                builder.WithOrigins("https://www.roman015.com", "https://blog.roman015.com");
                 builder.AllowAnyHeader();
             }); 
 
