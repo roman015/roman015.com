@@ -7,7 +7,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-8 right-border">
-            <PostList Posts="@(PostList.posts)" />
+            <PostList Posts="@Posts" />
         </div>
         <div class="col-sm-4 sidebar">
             <hr class="visible-xs-block">
@@ -24,7 +24,7 @@
     [Parameter]
     public string tagName { get; set; }
 
-    public Models.PostList PostList { get; set; } = new Models.PostList();
+    public List<Models.Post> Posts { get; set; } = new List<Models.Post>();
     public List<string> Tags { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -43,10 +43,10 @@
             requestUrl = testUrl;
         }
 
-        await Http.GetFromJsonAsync<Models.PostList>(requestUrl)
+        await Http.GetFromJsonAsync<List<Models.Post>>(requestUrl)
         .ContinueWith((val) =>
         {
-            PostList = val.Result;
+            Posts = val.Result;
         });
     }
 
