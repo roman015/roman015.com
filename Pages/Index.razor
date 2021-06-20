@@ -66,10 +66,10 @@
     {
         string testUrl = "/test/GetPostsForPreview.json";
         string requestUrl = "https://api.roman015.com/BlogViewer/GetPostsForPreview?"
-            + "&pageSize=" + pageSize
-            + "&pageIdx=" + pageIdx;
+            + "pageSize=" + pageSize + "&"
+            + "pageIdx=" + pageIdx;
 
-        if (string.IsNullOrWhiteSpace(searchQuery))
+        if (!string.IsNullOrWhiteSpace(searchQuery))
         {
             requestUrl += "&searchQuery=" + searchQuery;
         }
