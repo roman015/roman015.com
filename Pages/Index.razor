@@ -1,0 +1,105 @@
+﻿@page "/"
+
+@inject HttpClient Http
+
+<MainTitle Name="Blog" />
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 right-border">
+            <div class="form-group">
+                <input type="text" name="guess" class="form-control"
+                       @bind="searchQuery"
+                       placeholder="Click here to search by Title and Tag then press Enter"
+                       title="Click here to search by Title and Tag then press Enter"
+                       @onkeyup="@(async (e) => {
+                                   if (!string.IsNullOrWhiteSpace(e.Key) && e.Key.Contains("Enter")) {
+                                       await GetLatestPosts(searchQuery);
+                                   }
+                               })" />
+            </div>
+            <PostList Posts="@(PostList.posts)" />
+
+            @if (PostList.TotalPages > 1)
+            {
+                <ul class="pager">
+                
+                    <li class='prev @((PostList.CurrentPage > 0) ? "" : "disabled")'>
+                        <a href="#" @onclick="@(async () => await GetLatestPosts(searchQuery, PostList.CurrentPage - 1))">←  Prev</a>
+                    </li>
+                
+                    <li>
+                        (@(PostList.CurrentPage + 1) of @(PostList.TotalPages))
+                    </li>
+                
+                    <li class='prev @((PostList.CurrentPage < PostList.TotalPages - 1) ? "" : "disabled")'>
+                        <a href="#" @onclick="@(async () => await GetLatestPosts(searchQuery, PostList.CurrentPage + 1))">Next  →</a>
+                    </li>
+                
+                </ul>           
+            }
+        </div>
+        <div class="col-sm-4 sidebar">
+            <hr class="visible-xs-block">
+
+            <h5>Tags</h5>
+            <div>
+                <TagList Tags="@Tags"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code{
+    public Models.PostList PostList { get; set; } = new Models.PostList();
+    public List<string> Tags { get; set; }
+    public string searchQuery { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetLatestPosts();
+        await GetAllTags();
+    }
+
+    private async Task GetLatestPosts(string searchQuery = "", int pageIdx = 0, int pageSize = 4)
+    {
+        string testUrl = "/test/GetPostsForPreview.json";
+        string requestUrl = "https://api.roman015.com/BlogViewer/GetPostsForPreview?"
+            + "&pageSize=" + pageSize
+            + "&pageIdx=" + pageIdx;
+
+        if (string.IsNullOrWhiteSpace(searchQuery))
+        {
+            requestUrl += "&searchQuery=" + searchQuery;
+        }
+
+        if (Http.BaseAddress.Host.Contains("localhost"))
+        {
+            requestUrl = testUrl;
+        }
+
+        await Http.GetFromJsonAsync<Models.PostList>(requestUrl)
+        .ContinueWith((val) =>
+        {
+            PostList = val.Result;
+        });
+    }
+
+    private async Task GetAllTags()
+    {
+        string testUrl = "/test/GetAllTags.json";
+        string requestUrl = "https://api.roman015.com/BlogViewer/GetAllTags";
+
+        if (Http.BaseAddress.Host.Contains("localhost"))
+        {
+            requestUrl = testUrl;
+        }
+
+        await Http.GetFromJsonAsync<List<string>>(requestUrl)
+            .ContinueWith((val) =>
+            {
+                Tags = val.Result;
+            });
+    }
+}

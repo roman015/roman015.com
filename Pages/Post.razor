@@ -1,0 +1,58 @@
+﻿@page "/posts/{PostID}"
+
+@inject HttpClient Http
+
+<BlogTitle Name="@(post.Title)" PublishedOn="@(post.PublishedOn)" Tags="@(post.Tags)" />
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @PostHtml
+        </div>
+    </div>    
+</div>
+
+@code {
+    [Parameter]
+    public string PostID { get; set; }
+    private MarkupString PostHtml { get; set; }
+
+    private Models.Post post = new Models.Post();
+
+    protected override async Task OnInitializedAsync()
+    {
+        PostID = PostID.Replace(".html", string.Empty);
+
+        if (string.IsNullOrWhiteSpace(PostID))
+        {
+            PostHtml = new MarkupString("Unable to load Post, please check the url");
+        }
+
+        PostHtml = new MarkupString("Loading post from server...");
+
+        await RetrievePostData(PostID);
+    }
+
+    private async Task RetrievePostData(string postID)
+    {
+        string testPath = "test/";
+        string contentPath = "https://content.roman015.com/blog/";
+
+        string requestPath = postID.ToLower().Contains("test") ? testPath : contentPath;
+
+        await Http.GetStringAsync(requestPath + postID + ".md")
+            .ContinueWith((val) =>
+            {
+                if(!string.IsNullOrWhiteSpace(val.Result))
+                {
+                    post = new Models.Post(postID, val.Result);
+                    PostHtml = new MarkupString(post.PostHTML);
+                }
+                else
+                {
+                    PostHtml = new MarkupString("Unable to load post from server");
+                    Console.Write("Unable to load post from server");
+                }
+            });
+    }
+}

@@ -1,0 +1,31 @@
+﻿@inherits LayoutComponentBase
+
+<NavMenu />
+
+<div class="page">
+    @Body
+</div>
+
+<hr />
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p class="copyright text-muted">
+                    Copyright © @CurrentYear
+                    <br />
+                    <a href="#"><i class="fa fa-rss"></i> RSS Feed</a>
+
+                    <br />
+                    Built using <strong><a href="https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor">Blazor</a></strong>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+@code {
+    // TODO : Make sure this is the current year
+    int CurrentYear = 2021;
+}

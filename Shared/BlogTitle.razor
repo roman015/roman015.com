@@ -1,0 +1,53 @@
+﻿@inject IJSRuntime JS
+
+<header class="intro-header" id="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="post-heading">
+                    <h1>@Name</h1>
+                    <div class="meta">
+                        Published on @(PublishedOn.ToString("D"))
+                    </div>
+                    <div class="tags">
+                        @for (int i = 0; i < (Tags?.Count ?? 0); i++)
+                        {
+                            int idx = i;
+                            var item = Tags[idx];
+                            <a role="button" href="/tags/@(item.Replace(" ","-")).html" class="btn btn-default btn-xs">@item</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+@code {
+    [Parameter]
+    public string Name { get; set; }
+
+    [Parameter]
+    public string PageTitle { get; set; } = "Missing Source Code";
+
+    [Parameter]
+    public DateTime PublishedOn { get; set; }
+
+    [Parameter]
+    public List<String> Tags { get; set; } = new List<string>();
+
+    protected override void OnInitialized()
+    {
+        JS.InvokeVoidAsync("SetPageTitle", PageTitle);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if(firstRender)
+        {
+            // TODO : Remove the second one
+            JS.InvokeVoidAsync("CreateTriangles");
+            JS.InvokeVoidAsync("CreateTriangles");
+        }
+    }
+}

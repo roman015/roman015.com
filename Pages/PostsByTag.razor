@@ -1,0 +1,69 @@
+﻿@page "/tags/{tagName}"
+
+@inject HttpClient Http
+
+<MainTitle Name='@("Tag :" + tagName)'/>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 right-border">
+            <PostList Posts="@(PostList.posts)" />
+        </div>
+        <div class="col-sm-4 sidebar">
+            <hr class="visible-xs-block">
+
+            <h5>All Tags</h5>
+            <div>
+                <TagList Tags="@Tags" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string tagName { get; set; }
+
+    public Models.PostList PostList { get; set; } = new Models.PostList();
+    public List<string> Tags { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetLatestPosts();
+        await GetAllTags();
+    }
+
+    private async Task GetLatestPosts(string searchQuery = "")
+    {
+        string testUrl = "/test/GetPostsForPreview.json";
+        string requestUrl = "https://api.roman015.com/BlogViewer/GetAllPostsWithTags?tags=" + tagName;
+
+        if (Http.BaseAddress.Host.Contains("localhost"))
+        {
+            requestUrl = testUrl;
+        }
+
+        await Http.GetFromJsonAsync<Models.PostList>(requestUrl)
+        .ContinueWith((val) =>
+        {
+            PostList = val.Result;
+        });
+    }
+
+    private async Task GetAllTags()
+    {
+        string testUrl = "/test/GetAllTags.json";
+        string requestUrl = "https://api.roman015.com/BlogViewer/GetAllTags";
+
+        if (Http.BaseAddress.Host.Contains("localhost"))
+        {
+            requestUrl = testUrl;
+        }
+
+        await Http.GetFromJsonAsync<List<string>>(requestUrl)
+            .ContinueWith((val) =>
+            {
+                Tags = val.Result;
+            });
+    }
+}

@@ -1,0 +1,15 @@
+﻿<div>
+    @for (int i = 0; i < (Tags?.Count ?? 0); i++)
+    {
+        int idx = i;
+        var item = Tags[idx];
+        <span class="tagBtn">
+            <a role="button" href='/tags/@(item.Replace(" ", "-")).html' class="btn btn-default btn-sm"> @item</a>
+        </span>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<string> Tags { get; set; }
+}

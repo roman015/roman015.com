@@ -1,0 +1,44 @@
+{
+  "currentPage": 0,
+  "pageSize": 3,
+  "totalPages": 1,
+  "totalPosts": 8,
+  "posts": [
+    {
+      "id": "post_008",
+      "title": "Fake Cookie Clicker Post",
+      "publishedOn": "2021-06-03T00:00:00",
+      "lastModifiedOn": "2021-06-16T17:04:22Z",
+      "tags": [
+        "UiPath",
+        "Cookie Clicker"
+      ],
+      "postMarkDown": "Tried giving [UiPath](https://www.uipath.com) a shot, and while going through the tutorials and documentation I thought to myself, \"Hey, this is perfect for that [Cookie Clicker Game](https://orteil.dashnet.org/cookieclicker/)!\".\r"
+    },
+    {
+      "id": "post_007",
+      "title": "Timezone Tool",
+      "publishedOn": "2020-12-26T00:00:00",
+      "lastModifiedOn": "2021-06-16T17:04:22Z",
+      "tags": [
+        "Timezone",
+        "Blazor",
+        "Webassembly"
+      ],
+      "postMarkDown": "This time it's a simple tool to view the same time across multiple timezones. Add as many clocks as desired, and if you change the time on any of the clocks the others will change to show the exact same time on the time zone selected above it. I'll be adding the daylight savings feature sometime later.\r"
+    },
+    {
+      "id": "post_006",
+      "title": "A New Website!",
+      "publishedOn": "2020-12-20T00:00:00",
+      "lastModifiedOn": "2021-06-16T17:04:22Z",
+      "tags": [
+        "Website",
+        "DigitalOcean",
+        "3.0",
+        "DigitalOcean Apps"
+      ],
+      "postMarkDown": "So [.Net5.0](https://docs.microsoft.com/en-us/dotnet/core/dotnet-five) came out sometime back and I figured it's time to do some remodelling! And so the website's architechture is now completly changed. \r"
+    }
+  ]
+}

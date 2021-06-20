@@ -1,0 +1,33 @@
+﻿<div>
+    @for (int i = 0; i < (Posts?.Count ?? 0); i++)
+    {
+        int idx = i;
+        var item = Posts[idx];
+        <div class="post-preview">
+            <a href="/posts/@(item.ID)">
+                <h2 class="post-title">@(item.Title)</h2>
+            </a>
+            <p class="post-meta">Published on @(item.PublishedOn.ToString("D"))</p>
+            <p>@(new MarkupString(item.PostHTML))</p>
+            <a class="post-entry" href="/posts/@(item.ID)">View Post →</a>
+        </div>
+        if (i != Posts.Count - 1)
+        {
+            <br />
+            <hr />
+        }
+    }
+
+    @if(Posts == null || Posts.Count == 0)
+    {
+        <span>No Posts Found</span>
+    }
+</div>
+
+@code {
+
+    [Parameter]
+    public List<Models.Post> Posts { get; set; }
+
+
+}
