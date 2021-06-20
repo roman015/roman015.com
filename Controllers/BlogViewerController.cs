@@ -74,7 +74,7 @@ namespace Roman015API.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllPostsWithTags")]
+        [Route("GetPostsForPreview")]
         public IActionResult GetPostsForPreview([FromQuery]int pageIdx = 0, [FromQuery]int pageSize = 10)
         {
             if(pageIdx < 0)
