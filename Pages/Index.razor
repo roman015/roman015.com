@@ -79,11 +79,13 @@
             requestUrl = testUrl;
         }
 
+        this.PostList.posts = null;
+
         await Http.GetFromJsonAsync<Models.PostList>(requestUrl)
-        .ContinueWith((val) =>
-        {
-            PostList = val.Result;
-        });
+            .ContinueWith((val) =>
+            {
+                PostList = val.Result;
+            });
     }
 
     private async Task GetAllTags()
