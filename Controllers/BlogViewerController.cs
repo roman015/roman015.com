@@ -89,11 +89,13 @@ namespace Roman015API.Controllers
 
             var totalPostsCount = GetAllPosts().Count;
             var posts = GetAllPosts()
+                    .OrderByDescending(item => item.PublishedOn)
                     .Skip(pageIdx * pageSize)
                     .Take(pageSize);
 
             return Ok(new {                                
                 CurrentPage = pageIdx,
+                PageSize = pageSize,
                 TotalPages = totalPostsCount / pageSize,
                 TotalPosts = totalPostsCount,
                 Posts = posts
