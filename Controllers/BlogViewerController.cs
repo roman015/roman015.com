@@ -47,19 +47,59 @@ namespace Roman015API.Controllers
         [Route("GetAllPostsWithTags")]
         public IActionResult GetPostsWithTags([FromQuery]string tags)
         {
+            if(string.IsNullOrWhiteSpace(tags))
+            {
+                return BadRequest(
+                    "Use Query String Argument 'tags' to enter tags to search for. "
+                    + "Separate multiple tags using comma");
+            }
+
             List<string> selectedTags = tags
                 .Split(",")
                 .Select(item => item.Trim())
+                .Where(item => string.IsNullOrWhiteSpace(item))
                 .Distinct()
                 .ToList();
+
+            if(selectedTags.Count == 0)
+            {
+                return BadRequest("No valid tag in found in Query String Argument 'tags'");
+            }
 
             // Get Posts where the number of tags that match the list of selectedTags EQUALS the entire count of selectedTags
             return Ok(
                 GetAllPosts()
                     .Where(item => selectedTags.Count(selectedItem => item.Tags.Contains(selectedItem)) == selectedTags.Count)
                 );
-        }    
-        
+        }
+
+        [HttpGet]
+        [Route("GetAllPostsWithTags")]
+        public IActionResult GetPostsForPreview([FromQuery]int pageIdx = 0, [FromQuery]int pageSize = 10)
+        {
+            if(pageIdx < 0)
+            {
+                return BadRequest("Invalid PageIdx Value");
+            }
+
+            if(pageSize <= 0)
+            {
+                return BadRequest("Invalid PageSize Value");
+            }
+
+            var totalPostsCount = GetAllPosts().Count;
+            var posts = GetAllPosts()
+                    .Skip(pageIdx * pageSize)
+                    .Take(pageSize);
+
+            return Ok(new {                                
+                CurrentPage = pageIdx,
+                TotalPages = totalPostsCount / pageSize,
+                TotalPosts = totalPostsCount,
+                Posts = posts
+            });
+        }
+
         private List<Post> GetAllPosts()
         {
             List<Post> result;
