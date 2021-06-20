@@ -39,7 +39,7 @@ namespace Roman015API.Models
             this.PostMarkDown = MarkDownFileContent
                     .Substring(MarkDownFileContent.IndexOf("---") + "---".Length)
                     .Split("\n")
-                    .First(); // Only the first line of the markdown
+                    .First(item => !string.IsNullOrWhiteSpace(item.Trim())); // Only the first line of the markdown
             
         }
     }
