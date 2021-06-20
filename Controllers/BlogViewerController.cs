@@ -57,7 +57,7 @@ namespace Roman015API.Controllers
             List<string> selectedTags = tags
                 .Split(",")
                 .Select(item => item.Trim())
-                .Where(item => string.IsNullOrWhiteSpace(item))
+                .Where(item => !string.IsNullOrWhiteSpace(item))
                 .Distinct()
                 .ToList();
 
