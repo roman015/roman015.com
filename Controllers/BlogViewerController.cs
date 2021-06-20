@@ -39,9 +39,14 @@ namespace Roman015API.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllPostsWithTag")]
-        public IActionResult GetPostsWithTag([FromQuery]List<string> selectedTags)
+        [Route("GetAllPostsWithTags")]
+        public IActionResult GetPostsWithTags([FromQuery]string tags)
         {
+            List<string> selectedTags = tags
+                .Split(",")
+                .Select(item => item.Trim())
+                .ToList();
+
             return Ok(
                 GetAllPosts()
                     .Where(item => item.Tags.Any(tag => selectedTags.Contains(tag)))
