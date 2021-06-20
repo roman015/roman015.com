@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Azure.Storage.Blobs.Models;
 using Roman015API.Models;
 using System.IO;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Roman015API.Controllers
 {
@@ -20,11 +21,15 @@ namespace Roman015API.Controllers
     {
         private IConfiguration Configuration { get; }
         private BlobContainerClient BlogContainer { get; }
+        private IMemoryCache MemoryCache { get; }
 
-        public BlogViewerController(IConfiguration Configuration)
+        private readonly string AllPostsCacheKey = "AllPosts";
+
+        public BlogViewerController(IConfiguration Configuration, IMemoryCache MemoryCache)
         {
             this.Configuration = Configuration;
-            this.BlogContainer = new BlobContainerClient(Configuration["AzureBlobConnectionString"], "blog");
+            this.MemoryCache = MemoryCache;
+            this.BlogContainer = new BlobContainerClient(Configuration["AzureBlobConnectionString"], "blog");           
         }
 
         [HttpGet]
@@ -57,8 +62,44 @@ namespace Roman015API.Controllers
         
         private List<Post> GetAllPosts()
         {
-            // TODO : Add Caching
-            return GetPostsFromServer();
+            List<Post> result;
+
+            // Ensure Cache is good
+            if (!MemoryCache.TryGetValue<List<Post>>(AllPostsCacheKey, out result))
+            {
+                // Set Cache if Empty
+                MemoryCache.Set<List<Post>>(AllPostsCacheKey, GetPostsFromServer(), GetPostMemoryCacheEntryOptions());
+                
+                // Read from cache again
+                MemoryCache.TryGetValue<List<Post>>(AllPostsCacheKey, out result);
+            }
+            //else
+            //{                
+            //    var lastModifiedOn_InStorage = BlogContainer.GetBlobs(BlobTraits.Metadata, BlobStates.None, "post_")
+            //        .Where(item => item.Name.EndsWith(".md"))
+            //        .OrderByDescending(item => item.Properties.LastModified)
+            //        .Select(item => item.Properties.LastModified)
+            //        .First();
+
+            //    var lastModifiedOn_InCache = result.OrderByDescending(item => item.LastModifiedOn).First().LastModifiedOn;
+
+            //    if(lastModifiedOn_InStorage.Value.Date > lastModifiedOn_InCache.Date)
+            //    {
+            //        // Reload Cache if Rotten Data (Check the element with the latest ModifiedOn)
+            //        MemoryCache.Set<List<Post>>(AllPostsCacheKey, GetPostsFromServer(), GetPostMemoryCacheEntryOptions());
+            //    }
+            //}            
+
+            return result;
+        }
+
+        private MemoryCacheEntryOptions GetPostMemoryCacheEntryOptions()
+        {
+            return new MemoryCacheEntryOptions()
+            {                
+                AbsoluteExpiration = DateTime.Now.AddDays(1),
+                SlidingExpiration = TimeSpan.FromDays(1)
+            };
         }
 
         private List<Post> GetPostsFromServer()
