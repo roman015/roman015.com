@@ -27,16 +27,16 @@
     public List<Models.Post> Posts { get; set; } = new List<Models.Post>();
     public List<string> Tags { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        await GetLatestPosts();
+        await GetLatestPosts(tagName);
         await GetAllTags();
     }
 
-    private async Task GetLatestPosts(string searchQuery = "")
+    private async Task GetLatestPosts(string tagname = "")
     {
         string testUrl = "/test/GetPostsForPreview.json";
-        string requestUrl = "https://api.roman015.com/BlogViewer/GetAllPostsWithTags?tags=" + tagName.Replace("-", " ");
+        string requestUrl = "https://api.roman015.com/BlogViewer/GetAllPostsWithTags?tags=" + tagname.Replace("-", " ");
 
         if (Http.BaseAddress.Host.Contains("localhost"))
         {
