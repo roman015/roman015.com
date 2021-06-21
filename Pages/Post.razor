@@ -1,6 +1,7 @@
 ﻿@page "/posts/{PostID}"
 
 @inject HttpClient Http
+@inject NavigationManager Navigation
 
 <BlogTitle Name="@(post.Title)" PublishedOn="@(post.PublishedOn)" Tags="@(post.Tags)" />
 
@@ -9,7 +10,23 @@
         <div class="col-md-12">
             @PostHtml
         </div>
-    </div>    
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="pager">
+                <li class='prev'>
+                    <a href="/">← Home</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="pager">
+                <ShareEnabler Url="@(Navigation.Uri)" Text='@(TextToShare)' />
+            </ul>
+        </div>
+    </div>
 </div>
 
 @code {
@@ -21,6 +38,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        Console.WriteLine(Navigation.Uri);
         PostID = PostID.Replace(".html", string.Empty);
 
         if (string.IsNullOrWhiteSpace(PostID))
@@ -43,7 +61,7 @@
         await Http.GetStringAsync(requestPath + postID + ".md")
             .ContinueWith((val) =>
             {
-                if(!string.IsNullOrWhiteSpace(val.Result))
+                if (!string.IsNullOrWhiteSpace(val.Result))
                 {
                     post = new Models.Post(postID, val.Result);
                     PostHtml = new MarkupString(post.PostHTML);
@@ -54,5 +72,18 @@
                     Console.Write("Unable to load post from server");
                 }
             });
+    }
+
+    private string TextToShare {
+        get {
+            if (string.IsNullOrWhiteSpace(post?.Title))
+            {
+                return "Checkout this Blog ";
+            }
+            else
+            {
+                return "Checkout this Blog '" + post.Title + "' ";
+            }
+        }
     }
 }
