@@ -39,11 +39,14 @@ namespace Roman015API.Controllers
             List<string> tags = new List<string>();
 
             GetAllPosts()
-                .OrderByDescending(post => post.PublishedOn)
+                .OrderBy(post => post.PublishedOn)
                 .ToList()
-                .ForEach(item => tags.AddRange(item.Tags));
+                .ForEach(item => 
+                    tags.AddRange(
+                        item.Tags.Where(tag => !tags.Contains(tag))
+                    ));
 
-            return Ok(tags);
+            return Ok(tags.Distinct().Reverse());
         }
 
         [HttpGet]
