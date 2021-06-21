@@ -56,7 +56,7 @@ namespace Roman015API.Controllers
 
             List<string> selectedTags = tags
                 .Split(",")
-                .Select(item => item.Trim())
+                .Select(item => item.ToLower().Trim())
                 .Where(item => !string.IsNullOrWhiteSpace(item))
                 .Distinct()
                 .ToList();
@@ -69,7 +69,9 @@ namespace Roman015API.Controllers
             // Get Posts where the number of tags that match the list of selectedTags EQUALS the entire count of selectedTags
             return Ok(
                 GetAllPosts()
-                    .Where(item => selectedTags.Count(selectedItem => item.Tags.Contains(selectedItem)) == selectedTags.Count)
+                    .Where(item => 
+                        selectedTags.Count(selectedItem => item.Tags.Select(tag => tag.ToLower()).Contains(selectedItem)) 
+                        == selectedTags.Count)
                 );
         }
 
@@ -93,10 +95,12 @@ namespace Roman015API.Controllers
 
             if(!string.IsNullOrWhiteSpace(searchQuery))
             {
+                searchQuery = searchQuery.ToLower(); // For case insensitive search
+
                 allPosts = allPosts
                         .Where(post =>
-                            post.Title.Contains(searchQuery)
-                            || post.Tags.Any(tag => tag.Contains(searchQuery)))
+                            post.Title.ToLower().Contains(searchQuery)
+                            || post.Tags.Any(tag => tag.ToLower().Contains(searchQuery)))
                         .ToList();
             }
                     
