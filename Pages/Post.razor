@@ -36,6 +36,8 @@
 
     private Models.Post post = new Models.Post();
 
+    private string TextToShare => "Checkout this Blog Post On '" + "Missing Source Code" + "' ";
+
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine(Navigation.Uri);
@@ -72,18 +74,5 @@
                     Console.Write("Unable to load post from server");
                 }
             });
-    }
-
-    private string TextToShare {
-        get {
-            if (string.IsNullOrWhiteSpace(post?.Title))
-            {
-                return "Checkout this Blog ";
-            }
-            else
-            {
-                return "Checkout this Blog '" + post.Title + "' ";
-            }
-        }
     }
 }
