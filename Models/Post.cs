@@ -39,7 +39,7 @@ namespace Blog.Models
                     .ToList();
             this.PostMarkDown = MarkDownFileContent
                     .Substring(MarkDownFileContent.IndexOf("---") + "---".Length)
-                    .Replace("\"/assets/img/", "https://content.roman015.com/blog/"); // To remove old image references
+                    .Replace("\"/assets/img/", "\"https://content.roman015.com/blog/"); // To remove old image references
         }
     }
 
