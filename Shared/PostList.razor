@@ -8,6 +8,7 @@
                 <h2 class="post-title">@(item.Title)</h2>
             </a>
             <p class="post-meta">Published on @(item.PublishedOn.ToString("D"))</p>
+            <p class="tags-display">Tags : @(string.Join(", ", item.Tags))</p>
             <p>@(new MarkupString(item.PostHTML))</p>
             <a class="post-entry" href="/posts/@(item.ID)">View Post →</a>
         </div>

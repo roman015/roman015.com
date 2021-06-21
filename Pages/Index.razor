@@ -10,8 +10,8 @@
             <div class="form-group">
                 <input type="text" name="guess" class="form-control"
                        @bind="searchQuery"
-                       placeholder="Click here to search by Title and Tag then press Enter"
-                       title="Click here to search by Title and Tag then press Enter"
+                       placeholder="Filter By Title/Tag"
+                       title="Filter By Title/Tag"
                        @onkeyup="@(async (e) => {
                                    if (!string.IsNullOrWhiteSpace(e.Key) && e.Key.Contains("Enter")) {
                                        await GetLatestPosts(searchQuery);
@@ -24,7 +24,7 @@
             {
                 <ul class="pager">
                 
-                    <li class='prev @((PostList.CurrentPage > 0) ? "" : "disabled")'>
+                    <li class='prev @((PostList.CurrentPage > 0) ? "" : " disabled invisible")'>
                         <a href="#" @onclick="@(async () => await GetLatestPosts(searchQuery, PostList.CurrentPage - 1))">←  Prev</a>
                     </li>
                 
@@ -32,7 +32,7 @@
                         (@(PostList.CurrentPage + 1) of @(PostList.TotalPages))
                     </li>
                 
-                    <li class='prev @((PostList.CurrentPage < PostList.TotalPages - 1) ? "" : "disabled")'>
+                    <li class='prev @((PostList.CurrentPage < PostList.TotalPages - 1) ? "" : "disabled invisible")'>
                         <a href="#" @onclick="@(async () => await GetLatestPosts(searchQuery, PostList.CurrentPage + 1))">Next  →</a>
                     </li>
                 
