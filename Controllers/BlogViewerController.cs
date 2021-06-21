@@ -38,7 +38,10 @@ namespace Roman015API.Controllers
         {
             List<string> tags = new List<string>();
 
-            GetAllPosts().ForEach(item => tags.AddRange(item.Tags));
+            GetAllPosts()
+                .OrderByDescending(post => post.PublishedOn)
+                .ToList()
+                .ForEach(item => tags.AddRange(item.Tags));
 
             return Ok(tags);
         }
