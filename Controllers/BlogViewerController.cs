@@ -38,13 +38,12 @@ namespace Roman015API.Controllers
         {
             List<string> tags = new List<string>();
 
-            GetAllPosts()
-                .OrderBy(post => post.PublishedOn)
-                .ToList()
-                .ForEach(item => 
-                    tags.AddRange(
-                        item.Tags.Where(tag => !tags.Contains(tag))
-                    ));
+            var posts = GetAllPosts();
+
+            foreach(var post in posts)
+            {
+                tags.AddRange(post.Tags.Where(tag => !tags.Contains(tag)));
+            }
 
             return Ok(tags.Distinct().Reverse());
         }
@@ -60,14 +59,14 @@ namespace Roman015API.Controllers
                     + "Separate multiple tags using comma");
             }
 
-            List<string> selectedTags = tags
+            string[] selectedTags = tags
                 .Split(",")
                 .Select(item => item.ToLower().Trim())
                 .Where(item => !string.IsNullOrWhiteSpace(item))
                 .Distinct()
-                .ToList();
+                .ToArray();
 
-            if(selectedTags.Count == 0)
+            if(selectedTags.Length == 0)
             {
                 return BadRequest("No valid tag in found in Query String Argument 'tags'");
             }
@@ -77,7 +76,7 @@ namespace Roman015API.Controllers
                 GetAllPosts()
                     .Where(item => 
                         selectedTags.Count(selectedItem => item.Tags.Select(tag => tag.ToLower()).Contains(selectedItem)) 
-                        == selectedTags.Count)
+                        == selectedTags.Length)
                 );
         }
 
@@ -95,9 +94,7 @@ namespace Roman015API.Controllers
                 return BadRequest("Invalid PageSize Value");
             }
 
-            var allPosts = GetAllPosts()
-                    .OrderByDescending(item => item.PublishedOn)
-                    .ToList();
+            var allPosts = GetAllPosts();
 
             if(!string.IsNullOrWhiteSpace(searchQuery))
             {
@@ -107,12 +104,12 @@ namespace Roman015API.Controllers
                         .Where(post =>
                             post.Title.ToLower().Contains(searchQuery)
                             || post.Tags.Any(tag => tag.ToLower().Contains(searchQuery)))
-                        .ToList();
+                        .ToArray();
             }
                     
                     
 
-            var totalPostsCount = allPosts.Count;
+            var totalPostsCount = allPosts.Length;
             var posts = allPosts
                     .Skip(pageIdx * pageSize)
                     .Take(pageSize);
@@ -126,18 +123,18 @@ namespace Roman015API.Controllers
             });
         }
 
-        private List<Post> GetAllPosts()
+        private Post[] GetAllPosts()
         {
-            List<Post> result;
+            Post[] result;
 
             // Ensure Cache is good
-            if (!MemoryCache.TryGetValue<List<Post>>(AllPostsCacheKey, out result))
+            if (!MemoryCache.TryGetValue<Post[]>(AllPostsCacheKey, out result))
             {
                 // Set Cache if Empty
-                MemoryCache.Set<List<Post>>(AllPostsCacheKey, GetPostsFromServer(), GetPostMemoryCacheEntryOptions());
+                MemoryCache.Set<Post[]>(AllPostsCacheKey, GetPostsFromServer(), GetPostMemoryCacheEntryOptions());
                 
                 // Read from cache again
-                MemoryCache.TryGetValue<List<Post>>(AllPostsCacheKey, out result);
+                MemoryCache.TryGetValue<Post[]>(AllPostsCacheKey, out result);
             }
             //else
             //{                
@@ -168,7 +165,7 @@ namespace Roman015API.Controllers
             };
         }
 
-        private List<Post> GetPostsFromServer()
+        private Post[] GetPostsFromServer()
         {
             List<Post> posts = new List<Post>();
             var blobList = BlogContainer.GetBlobs(BlobTraits.Metadata, BlobStates.None, "post_")
@@ -185,7 +182,9 @@ namespace Roman015API.Controllers
                     ));
             }
 
-            return posts;
+            return posts
+                .OrderByDescending(post => post.PublishedOn)
+                .ToArray();
         }
     }
 }
