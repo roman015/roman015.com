@@ -6,14 +6,15 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div id='myMap' style='width: 100%; height: 75vh;'>
+            <div id='myMap' style='width: 100%; height: 80vh;'>
                 <div class="container @StartButtonClass">
                     <div class="row justify-content-center">
                         <div class="col-sm-12 col-md-6">
-                            <div class="d-flex justify-content-center">
-                                The data about to be shown on the map may not be accurate, and should not be used as the basis for your
-                                decisions. Kindly use official and verifiable sources of information before coming to your conclusions.
-                                This map has been made for demonstration purposes only.
+                            <div class="d-flex justify-content-center" style="text-align: justify;">                                
+                                The data about to be shown on the map may not be accurate, and should not be used as the basis of your
+                                decisions or actions. Use official and verifiable sources of information before coming to your conclusions.
+                                <br />
+                                <br />This map has been made for demonstration purposes only.                                
                             </div>
                         </div>
                     </div>
@@ -28,15 +29,17 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row @ControlsClass">
         <div class="col-md-12">
             <div class="form-group d-flex  justify-content-center py-2">
                 <span class="px-2">
                     <button class="btn btn-success" title="@("Min :" + MinDateTime.Date.ToString("dd/MMM/yyyy"))" 
                             @onclick="(async() => { await DecrementDate(); })">← Prev</button>
                 </span>
-                <span class="px-3">
-                    @(CurrentDateTime.Date.ToString("dd/MMM/yyyy"))
+                <span class="px-3 font-weight-bold">
+                    <button class="btn btn-icon" disabled="true">
+                        @(CurrentDateTime.Date.ToString("dd MMM yyyy"))
+                    </button>                    
                 </span>
                 <span class="px-2">
                     <button class="btn btn-success" title="@("Max :" + MaxDateTime.Date.ToString("dd/MMM/yyyy"))" 
@@ -52,10 +55,10 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
+                            <th class="d-none d-sm-table-cell" scope="col">#</th>
                             <th scope="col">Time</th>
                             <th scope="col">Location (Address)</th>
-                            <th scope="col">Posted On<sup>*</sup></th>
+                            <th class="d-none d-sm-table-cell" scope="col">Posted On<sup>*</sup></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,17 +67,17 @@
                             int idx = i;
                             var item = SelectedVisits[idx];
                             <tr>
-                                <th scope="row">@(idx + 1)</th>                                
+                                <th class="d-none d-sm-table-cell" scope="row">@(idx + 1)</th>                                
                                 <td>@(item.Time)</td>
                                 <td>
                                     @(((MarkupString)(item.LocationFormatted)))
                                 </td>
-                                <td>@(item.SourcedOn.Replace("_","/"))</td>
+                                <td class="d-none d-sm-table-cell">@(item.SourcedOn.Replace("_","/"))</td>
                             </tr>
                         }
                     </tbody>
                 </table>   
-                <div>
+                <div class="d-none d-sm-block">
                     <sup>
                         <i>
                             * - "Posted On" means this data was extracted from a Press Release created on this date.
@@ -94,6 +97,7 @@
     private string ProcessedJsonURL = "https://content.roman015.com/blog/TotalAnnouncements.json";
 
     private string StartButtonClass = "";
+    private string ControlsClass = "d-none";
 
     IJSObjectReference jsMOHMapTimelineModule;
 
@@ -109,6 +113,7 @@
     private async Task LoadBingMapsJs()
     {
         StartButtonClass += " d-none";
+        ControlsClass = string.Empty;
 
         jsMOHMapTimelineModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", MOHMapTimelineJSUrl);
 
@@ -194,7 +199,7 @@
 
         public string LocationFormatted => Location
                 .Replace("\\r", " <br/>")
-                .Replace("\\u2022", "•");
+                .Replace("\\u2022", "  • ");
     }
 
     public class Pin
