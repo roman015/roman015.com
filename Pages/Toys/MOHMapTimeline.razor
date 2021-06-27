@@ -1,0 +1,208 @@
+﻿@page "/MOHTimeLine"
+@using System.Globalization 
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id='myMap' style='width: 100%; height: 75vh;'>
+                <div class="container @StartButtonClass">
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="d-flex justify-content-center">
+                                The data about to be shown on the map may not be accurate, and should not be used as the basis for your
+                                decisions. Kindly use official and verifiable sources of information before coming to your conclusions.
+                                This map has been made for demonstration purposes use only.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="d-flex justify-content-center py-2">
+                                <button class="btn btn-success" @onclick="(async() => { await LoadBingMapsJs(); })">I Agree</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group d-flex  justify-content-center py-2">
+                <span class="px-2">
+                    <button class="btn btn-success" title="@("Min :" + MinDateTime.Date.ToString("dd/MMM/yyyy"))" 
+                            @onclick="(async() => { await DecrementDate(); })">← Prev</button>
+                </span>
+                <span class="px-3">
+                    @(CurrentDateTime.Date.ToString("dd/MMM/yyyy"))
+                </span>
+                <span class="px-2">
+                    <button class="btn btn-success" title="@("Max :" + MaxDateTime.Date.ToString("dd/MMM/yyyy"))" 
+                            @onclick="(async() => { await IncrementDate(); })">Next →</button>
+                </span>
+            </div>
+        </div>
+    </div> 
+    <div class="row">
+        <div class="col-md-12">
+            @if (SelectedVisits.Count > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Location (Address)</th>
+                            <th scope="col">Posted On<sup>*</sup></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < SelectedVisits.Count; i++)
+                        {
+                            int idx = i;
+                            var item = SelectedVisits[idx];
+                            <tr>
+                                <th scope="row">@(idx + 1)</th>                                
+                                <td>@(item.Time)</td>
+                                <td>
+                                    @(((MarkupString)(item.LocationFormatted)))
+                                </td>
+                                <td>@(item.SourcedOn.Replace("_","/"))</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>   
+                <div>
+                    <sup>
+                        <i>
+                            * - "Posted On" means this data was extracted from a Press Release created on this date.
+                            There may be more than one Press Release with the same data.
+                        </i>
+                    </sup>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private string BingMapsKey = "AtYQNPq-ZbH4AbJChu2jypAc8spO1cgsmZ-OviyjVFcOXVF22WuIvz3pTzE6DFHU";
+    private string MOHMapTimelineJSUrl = "./js/MOHMapTimeline.js";
+    private string ProcessedJsonURL = "https://content.roman015.com/blog/TotalAnnouncements.json";
+
+    private string StartButtonClass = "";
+
+    IJSObjectReference jsMOHMapTimelineModule;
+
+    DateTime MinDateTime = DateTime.Today;
+    DateTime MaxDateTime = DateTime.Today;
+    DateTime CurrentDateTime = DateTime.Today;
+
+    List<VisitedSite> visitedSites = new List<VisitedSite>();
+    List<VisitedSite> SelectedVisits = new List<VisitedSite>();
+
+    // pin mark by KP Arts from the Noun Project
+
+    private async Task LoadBingMapsJs()
+    {
+        StartButtonClass += " d-none";
+
+        jsMOHMapTimelineModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", MOHMapTimelineJSUrl);
+
+        await jsMOHMapTimelineModule.InvokeVoidAsync("loadMap", BingMapsKey);
+
+        var val = await Http.GetFromJsonAsync<List<VisitedSite>>(ProcessedJsonURL);
+
+        visitedSites = val
+                        .OrderByDescending(item => item.PeriodStart)
+                        .ToList();
+
+        MinDateTime = visitedSites.Last().Date.Date;
+        MaxDateTime = visitedSites.First().Date.Date;
+        CurrentDateTime = MaxDateTime;
+
+        await LoadPinsFor(CurrentDateTime);
+    }
+
+    private async Task IncrementDate()
+    {
+        CurrentDateTime = CurrentDateTime.AddDays(1);
+        if (CurrentDateTime.Date >= MaxDateTime.Date)
+        {
+            CurrentDateTime = MaxDateTime;
+        }
+
+        await RemoveAllPins();
+        await LoadPinsFor(CurrentDateTime);
+    }
+
+    private async Task DecrementDate()
+    {
+        CurrentDateTime = CurrentDateTime.AddDays(-1);
+        if (CurrentDateTime.Date <= MinDateTime.Date)
+        {
+            CurrentDateTime = MinDateTime;
+        }
+
+        await RemoveAllPins();
+        await LoadPinsFor(CurrentDateTime);
+    }
+
+    private async Task LoadPinsFor(DateTime selectedDateTime)
+    {
+        SelectedVisits = visitedSites
+            .Where(item => item.Date.Date == selectedDateTime.Date)
+            .OrderBy(item => item.PeriodStart)
+            .ToList();
+
+        Console.WriteLine("Adding " + SelectedVisits.Count + " pins");
+
+        foreach(var visit in SelectedVisits)
+        {
+            await jsMOHMapTimelineModule.InvokeVoidAsync(
+                "pushPin",
+                new Pin()
+                {
+                    Latitude = visit.Latitude,
+                    Longitude = visit.Longitude,
+                    Color = "red",
+                    Title = visit.Address,
+                    Subtitle = visit.Time //+ " (" + visit.SourcedOn + ")"
+                });
+        }
+    }
+
+    private async Task RemoveAllPins()
+    {
+        await jsMOHMapTimelineModule.InvokeVoidAsync("removeAllPins");
+    }
+
+    public class VisitedSite
+    {
+        public DateTime Date { get; set; }
+        public string Time { get; set; }
+        public string Location { get; set; }
+        public string Address { get; set; }
+        public DateTime PeriodStart { get; set; }
+        public DateTime PeriodEnd { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public string SourcedOn { get; set; }
+
+        public string LocationFormatted => Location
+                .Replace("\\r", " <br/>")
+                .Replace("\\u2022", "•");
+    }
+
+    public class Pin
+    {
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public string Color { get; set; }
+        public string Title { get; set; }
+        public string Subtitle { get; set; }
+    }
+}
