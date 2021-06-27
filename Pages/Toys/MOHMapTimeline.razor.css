@@ -8,3 +8,10 @@
 .dissappear {
     display:none;
 }
+
+.dateLabel {
+    padding-left: 0px;
+    padding-right: 0px;
+    font-weight: bold;
+    color: black;
+}

@@ -36,10 +36,10 @@
                     <button class="btn btn-success" title="@("Min :" + MinDateTime.Date.ToString("dd/MMM/yyyy"))" 
                             @onclick="(async() => { await DecrementDate(); })">← Prev</button>
                 </span>
-                <span class="px-3 font-weight-bold">
-                    <button class="btn btn-icon" disabled="true">
+                <span class="font-weight-bold">
+                    <span class="btn btn-icon dateLabel" >
                         @(CurrentDateTime.Date.ToString("dd MMM yyyy"))
-                    </button>                    
+                    </span>                    
                 </span>
                 <span class="px-2">
                     <button class="btn btn-success" title="@("Max :" + MaxDateTime.Date.ToString("dd/MMM/yyyy"))" 
