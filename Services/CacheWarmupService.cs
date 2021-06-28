@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
+using Roman015API.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +11,19 @@ namespace Roman015API.Services
 {
     public class CacheWarmupService : IHostedService, IDisposable
     {
-        private Timer timer;       
+        private Timer timer;
+        private BlogViewerController blogViewerController;
+
+        public CacheWarmupService(BlogViewerController blogViewerController)
+        {
+            this.blogViewerController = blogViewerController;
+        }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            timer = new Timer(async (state) =>
+            timer = new Timer((state) =>
             {
-                // Just call Any BlogViewerController API to keep the cache warm
-                var result = await new HttpClient().GetStringAsync(@"http://localhost/BlogViewer/GetAllTags");
-                Console.WriteLine(result);
+                blogViewerController.GetTags();
             }, 
             null, 
             TimeSpan.Zero,

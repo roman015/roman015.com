@@ -50,7 +50,7 @@ namespace Roman015API
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)                
                 .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));            
 
-            services.AddControllers();
+            services.AddControllers().AddControllersAsServices();
 
             services.AddHostedService<CacheWarmupService>();
 
