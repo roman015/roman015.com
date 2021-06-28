@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
+using Roman015API.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -49,7 +50,10 @@ namespace Roman015API
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)                
                 .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));            
 
-            services.AddControllers();            
+            services.AddControllers();
+
+            services.AddHostedService<CacheWarmupService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
