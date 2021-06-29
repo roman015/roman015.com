@@ -5,6 +5,10 @@
     
 }
 
+.hidden {
+    visibility:hidden;
+}
+
 .dissappear {
     display:none;
 }

@@ -32,7 +32,7 @@
     <div class="row @ControlsClass">
         <div class="col-md-12">
             <div class="form-group d-flex  justify-content-center py-2">
-                <span class="px-2">
+                <span class="px-2 @(HideOnMinDateClass())">
                     <button class="btn btn-success" title="@("Min :" + MinDateTime.Date.ToString("dd/MMM/yyyy"))" 
                             @onclick="(async() => { await DecrementDate(); })">← Prev</button>
                 </span>
@@ -41,7 +41,7 @@
                         @(CurrentDateTime.Date.ToString("dd MMM yyyy"))
                     </span>                    
                 </span>
-                <span class="px-2">
+                <span class="px-2 @(HideOnMaxDateClass())">
                     <button class="btn btn-success" title="@("Max :" + MaxDateTime.Date.ToString("dd/MMM/yyyy"))" 
                             @onclick="(async() => { await IncrementDate(); })">Next →</button>
                 </span>
@@ -94,7 +94,7 @@
 @code {
     private string BingMapsKey = "AtYQNPq-ZbH4AbJChu2jypAc8spO1cgsmZ-OviyjVFcOXVF22WuIvz3pTzE6DFHU";
     private string MOHMapTimelineJSUrl = "./js/MOHMapTimeline.js";
-    private string ProcessedJsonURL = "https://content.roman015.com/blog/TotalAnnouncements.json";
+    private string ProcessedJsonURL = "https://content.roman015.com/moh-timeline/TotalAnnouncements.json";
 
     private string StartButtonClass = "";
     private string ControlsClass = "d-none";
@@ -109,6 +109,16 @@
     List<VisitedSite> SelectedVisits = new List<VisitedSite>();
 
     // pin mark by KP Arts from the Noun Project
+
+    private string HideOnMinDateClass()
+    {
+        return CurrentDateTime  == MinDateTime ? "hidden" : string.Empty;
+    }
+
+    private string HideOnMaxDateClass()
+    {
+        return CurrentDateTime == MaxDateTime ? "hidden" : string.Empty;
+    }
 
     private async Task LoadBingMapsJs()
     {
