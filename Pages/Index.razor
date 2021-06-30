@@ -13,10 +13,10 @@
                        placeholder="Filter By Title/Tag"
                        title="Filter By Title/Tag"
                        @onkeyup="@(async (e) => {
-                                   if (!string.IsNullOrWhiteSpace(e.Key) && e.Key.Contains("Enter")) {
-                                       await GetLatestPosts(searchQuery);
-                                   }
-                               })" />
+                                       if (!string.IsNullOrWhiteSpace(e.Key) && e.Key.Contains("Enter")) {
+                                           await GetLatestPosts(searchQuery);
+                                       }
+                                   })" />
             </div>
             <PostList Posts="@(PostList.posts)" />
 
@@ -28,7 +28,7 @@
                         <a href="#" @onclick="@(async () => await GetLatestPosts(searchQuery, PostList.CurrentPage - 1))">←  Prev</a>
                     </li>
                 
-                    <li>
+                    <li class='@(isDataLoading ? "disabled invisible" : "")'>
                         (@(PostList.CurrentPage + 1) of @(PostList.TotalPages))
                     </li>
                 
@@ -55,6 +55,7 @@
     public Models.PostList PostList { get; set; } = new Models.PostList();
     public List<string> Tags { get; set; }
     public string searchQuery { get; set; }
+    public bool isDataLoading { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -80,11 +81,12 @@
         }
 
         this.PostList.posts = null;
-
+        this.isDataLoading = true;
         await Http.GetFromJsonAsync<Models.PostList>(requestUrl)
             .ContinueWith((val) =>
             {
                 PostList = val.Result;
+                this.isDataLoading = false;
             });
     }
 
