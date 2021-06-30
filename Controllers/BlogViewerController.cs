@@ -94,7 +94,7 @@ namespace Roman015API.Controllers
                 return BadRequest("Invalid PageSize Value");
             }
 
-            var allPosts = GetAllPosts();
+            var allPosts = GetAllPosts();            
 
             if(!string.IsNullOrWhiteSpace(searchQuery))
             {
@@ -110,6 +110,13 @@ namespace Roman015API.Controllers
                     
 
             var totalPostsCount = allPosts.Length;
+            var totalPages = totalPostsCount / pageSize + (totalPostsCount % pageSize > 0 ? 1 : 0);
+
+            if(pageIdx >= totalPages)
+            {
+                return BadRequest("Invalid PageIdx Value");
+            }
+
             var posts = allPosts
                     .Skip(pageIdx * pageSize)
                     .Take(pageSize);
@@ -117,7 +124,7 @@ namespace Roman015API.Controllers
             return Ok(new {                                
                 CurrentPage = pageIdx,
                 PageSize = pageSize,
-                TotalPages = totalPostsCount / pageSize,
+                TotalPages = totalPages,
                 TotalPosts = totalPostsCount,
                 Posts = posts
             });
