@@ -21,7 +21,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="d-flex justify-content-center py-2">
-                                <button class="btn btn-success" @onclick="(async() => { await LoadBingMapsJs(); })">I Agree</button>
+                                <button class="btn btn-success" @onclick="(async() => await LoadBingMapsJs())">I Agree</button>
                             </div>
                         </div>
                     </div>
@@ -34,16 +34,18 @@
             <div class="form-group d-flex  justify-content-center py-2">
                 <span class="px-2 @(HideOnMinDateClass())">
                     <button class="btn btn-success" title="@("Min :" + MinDateTime.Date.ToString("dd/MMM/yyyy"))" 
-                            @onclick="(async() => { await DecrementDate(); })">← Prev</button>
+                            @onclick="(async() => await DecrementDate())">← Prev</button>
                 </span>
                 <span class="font-weight-bold">
-                    <span class="btn btn-icon dateLabel" >
-                        @(CurrentDateTime.Date.ToString("dd MMM yyyy"))
+                    <span>
+                        <RadzenDatePicker @bind-Value=@CurrentDateTime DateFormat="dd MMM yyyy"
+                                          DateRender=@DateRender  
+                                          Change=@(async args => await OnChange(args, "DatePicker", "MM/dd/yyyy")) />
                     </span>                    
                 </span>
                 <span class="px-2 @(HideOnMaxDateClass())">
                     <button class="btn btn-success" title="@("Max :" + MaxDateTime.Date.ToString("dd/MMM/yyyy"))" 
-                            @onclick="(async() => { await IncrementDate(); })">Next →</button>
+                            @onclick="(async() => await IncrementDate())">Next →</button>
                 </span>
             </div>
         </div>
@@ -174,6 +176,28 @@
         if (CurrentDateTime.Date <= MinDateTime.Date)
         {
             CurrentDateTime = MinDateTime;
+        }
+
+        await RemoveAllPins();
+        await LoadPinsFor(CurrentDateTime);
+    }
+
+    private void DateRender(DateRenderEventArgs args)
+    {
+        args.Disabled = !(MinDateTime.Date <= args.Date.Date && args.Date.Date <= MaxDateTime.Date);
+    }
+
+    private async Task OnChange(DateTime? value, string name, string format)
+    {
+        CurrentDateTime = value.Value;
+        if (CurrentDateTime.Date <= MinDateTime.Date)
+        {
+            CurrentDateTime = MinDateTime;
+        }
+
+        if (CurrentDateTime.Date >= MaxDateTime.Date)
+        {
+            CurrentDateTime = MaxDateTime;
         }
 
         await RemoveAllPins();
