@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div id='myMap' style='width: 100%; height: 80vh;'>
+            <div id='myMap'>
                 <div class="container @StartButtonClass">
                     <div class="row justify-content-center">
                         <div class="col-sm-12 col-md-6">
@@ -33,8 +33,11 @@
         <div class="col-md-12">
             <div class="form-group d-flex  justify-content-center py-2">
                 <span class="px-2 @(HideOnMinDateClass())">
-                    <button class="btn btn-success" title="@("Min :" + MinDateTime.Date.ToString("dd/MMM/yyyy"))" 
-                            @onclick="(async() => await DecrementDate())">← Prev</button>
+                    <button class="btn btn-success" title="@("Min :" + MinDateTime.Date.ToString("dd/MMM/yyyy"))"
+                            @onclick="(async() => await DecrementDate())">
+                        <span class="ButtonText">← Prev</span>
+                        <span class="ButtonTextMobile">←</span>
+                    </button>
                 </span>
                 <span class="font-weight-bold">
                     <span>
@@ -44,8 +47,11 @@
                     </span>                    
                 </span>
                 <span class="px-2 @(HideOnMaxDateClass())">
-                    <button class="btn btn-success" title="@("Max :" + MaxDateTime.Date.ToString("dd/MMM/yyyy"))" 
-                            @onclick="(async() => await IncrementDate())">Next →</button>
+                    <button id="nextButton" class="btn btn-success" title="@("Max :" + MaxDateTime.Date.ToString("dd/MMM/yyyy"))"
+                            @onclick="(async() => await IncrementDate())">
+                        <span class="ButtonText">→ Next</span>
+                        <span class="ButtonTextMobile">→</span>
+                    </button>
                 </span>
             </div>
         </div>
