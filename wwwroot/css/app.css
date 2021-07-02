@@ -212,3 +212,8 @@ app {
         display: block;
     }    
 }
+
+.infobox-info, .infobox-actions {
+    height: auto !important;
+    font-size: 8pt !important;
+}

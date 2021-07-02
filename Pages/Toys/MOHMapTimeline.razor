@@ -217,14 +217,7 @@
         {
             await jsMOHMapTimelineModule.InvokeVoidAsync(
                 "pushPin",
-                new Pin()
-                {
-                    Latitude = visit.Latitude,
-                    Longitude = visit.Longitude,
-                    Color = "red",
-                    Title = visit.Address,
-                    Subtitle = visit.Time //+ " (" + visit.SourcedOn + ")"
-                });
+                new Pin(visit));
         }
     }
 
@@ -248,15 +241,35 @@
         public double Longitude { get; set; }
 
         public string LocationFormatted => Location
+                .Replace("\r", "")
                 .Replace("•", "<br/>&nbsp;&nbsp;•&nbsp;");
     }
 
-    public class Pin
+    public class Pin : VisitedSite
     {
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        //public double Latitude { get; set; }
+        //public double Longitude { get; set; }
         public string Color { get; set; }
         public string Title { get; set; }
         public string Subtitle { get; set; }
+
+        public Pin(VisitedSite site)
+        {
+            Date = site.Date;
+            Time = site.Time;
+            Location = site.Location;
+            Address = site.Address;
+            PeriodStart = site.PeriodStart;
+            PeriodEnd = site.PeriodEnd;
+            PdfUrl = "https://www.moh.gov.sg" + site.PdfUrl;
+            SourcedOn = site.SourcedOn;
+            ArticleUrl = site.ArticleUrl;
+            Latitude = site.Latitude;
+            Longitude = site.Longitude;
+
+            Color = "red";
+            Title = site.Address;
+            Subtitle = site.Time;
+        }
     }
 }
