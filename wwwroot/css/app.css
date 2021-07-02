@@ -221,4 +221,32 @@ app {
 .infobox-title {
     font-size: 8pt !important;
     padding-bottom: 0px !important;
-} 
+}
+
+#myMap {
+    width: 100%;
+    height: 80vh;
+}
+
+.ButtonText {
+    display: inherit;
+}
+
+.ButtonTextMobile {
+    display: none;
+}
+
+@media only screen and (max-device-width: 480px) {
+    #myMap {
+        width: 100%;
+        height: 50vh;
+    }
+
+    .ButtonText {
+        display: none;
+    }
+
+    .ButtonTextMobile {
+        display: inherit;
+    }
+}
