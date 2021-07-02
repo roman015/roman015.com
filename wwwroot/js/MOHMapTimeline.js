@@ -27,7 +27,8 @@ export function pushPin(newPin) {
     pin.metadata = {
         pdfUrl: newPin.pdfUrl,
         articleUrl: newPin.articleUrl,
-        location: newPin.locationFormatted
+        location: newPin.locationFormatted,
+        time: newPin.time
     }
 
     // Add Click Event Handler
@@ -68,7 +69,7 @@ export function displayInfobox(e) {
             maxHeight: 640,
             maxWidth: 640,
             location: e.target.getLocation(),
-            title: e.title + (e.subTitle),
+            title: e.target.metadata.time,
             description: e.target.metadata.location,
             visible: true,
             actions: [{
