@@ -58,6 +58,8 @@ export function removeAllPins() {
         }
     }
     console.log(count + ' Pins Removed');
+
+    infobox.setOptions({ visible: false });
 }
 
 export function displayInfobox(e) {
