@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using HomePage.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +41,8 @@ namespace HomePage
             builder.Services.AddScoped<NotificationService>();
             builder.Services.AddScoped<TooltipService>();
             builder.Services.AddScoped<ContextMenuService>();
+
+            builder.Services.AddScoped<BlogEditorAPIService>();
 
             await builder.Build().RunAsync();
         }

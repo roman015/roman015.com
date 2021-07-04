@@ -1,0 +1,128 @@
+﻿@page "/BlogEditor"
+@attribute [Authorize]
+
+@inject BlogEditorAPIService BlogEditorApi
+@inject HttpClient Http
+
+<ul class="nav nav-pills mb-3" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#markdown" role="tab"
+           aria-controls="home" aria-selected="true">
+            MarkDown
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#preview" role="tab"
+           aria-controls="profile" aria-selected="false" @onclick="ReloadPreview">
+            Preview
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#properties" role="tab"
+           aria-controls="profile" aria-selected="false">
+            Options
+        </a>
+    </li>
+
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="markdown" role="tabpanel" aria-labelledby="home-tab">
+        <div class="input-group">
+            <textarea class="form-control markDownInput" @bind="Post.PostMarkDown"></textarea>
+        </div>        
+    </div>
+    <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="profile-tab">
+        @HtmlPreview
+    </div>
+    <div class="tab-pane fade" id="properties" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="form-group d-flex  justify-content-center py-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Post Id</span>
+            </div>
+            <input class="px-2" type="text" placeholder="PostId" title="PostId" @bind="Post.ID" />
+            <button class="btn btn-success px-2" @onclick="(async() => await LoadPost())">Load</button>
+        </div>
+
+        <div class="form-group d-flex  justify-content-center py-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Title</span>
+            </div>
+            <input class="px-1" type="text" placeholder="Title" title="Title" @bind="Post.Title" />
+        </div>
+
+        <div class="form-group d-flex  justify-content-center py-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Tags</span>
+            </div>
+            <input class="px-1" type="text" placeholder="Tags" title="Tags" @bind="PostTags" />
+        </div>
+
+        <div class="form-group d-flex  justify-content-center py-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Published On</span>
+            </div>
+            <RadzenDatePicker @bind-Value=@(Post.PublishedOn) DateFormat="dd MMM yyyy" />
+        </div>
+
+        <div class="form-group d-flex  justify-content-center py-2">
+            <button class="btn btn-success px-2" @onclick="(async() => await SavePost())">Save</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Post Post { get; set; } = new Post()
+    {
+        ID = "post_000",
+        PostMarkDown = "",
+        PublishedOn = DateTime.Today,
+        Title = "",
+        Tags = new List<string>()
+    };
+
+    public string PostTags {
+        get
+        {
+            return string.Join(",", Post.Tags);
+        }
+
+        set
+        {
+            Post.Tags.Clear();
+            Post.Tags.AddRange(value.Split(","));
+        }
+    }
+    MarkupString HtmlPreview = new MarkupString(string.Empty);
+
+    protected override async Task OnInitializedAsync()
+    {
+        var posts = await BlogEditorApi.GetBlogPosts();
+
+        Post.ID = string.Format("post_{0:000}", posts.TotalPosts);
+        Post.PublishedOn = DateTime.Today;
+    }
+
+    private void ReloadPreview()
+    {
+        HtmlPreview = new MarkupString(Post.PostHTML);
+    }
+
+    private async Task LoadPost()
+    {
+        var selectedPost = await BlogEditorApi.GetSelectedBlogPost(Post.ID);
+
+        Post = selectedPost;
+    }
+
+    private async Task SavePost()
+    {
+        string markdownFileString = "Title: " + Post.Title
+                + Environment.NewLine + "Published: " + Post.PublishedOn.ToString("MM/dd/yyyy")
+                + Environment.NewLine + "Tags:[" + string.Join(",", Post.Tags.Select(item => "\"" + item + "\"")) + "]" 
+                + Environment.NewLine + "---" 
+                + Environment.NewLine + Post.PostMarkDown;
+
+        await BlogEditorApi.UploadPost(Post.ID, markdownFileString);
+    }
+}
