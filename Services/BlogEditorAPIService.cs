@@ -37,7 +37,7 @@ namespace HomePage.Services
         public async Task<Post> GetSelectedBlogPost(string postId)
         {
             string FileName = postId + ".md";
-            string requestUrl = "https://content.roman015.com/Blog/" + FileName;
+            string requestUrl = "https://content.roman015.com/blog/" + FileName;
 
             string postMarkDown = await Http.GetStringAsync(requestUrl);
 
