@@ -2,61 +2,16 @@
 
 @attribute [Authorize]
 
-@inject HttpClient Http
-@inject IAccessTokenProvider TokenProvider
-
-<div class="container">
-
+<div class="container text-center">
     <div class="row">
-        <div class="col-12">
-            <h3>Authorized Menu</h3>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12">
-            <button class="btn btn-success" @onclick="@(async () => await CallTestApi())">Test</button>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12">
-            <label>@Result</label>
-        </div>
+        <div class="col-sm-12 col-lg-4">
+            <NavLink href="BlogEditor" class="btn btn-info btn-block btn-lg my-1"
+                     title="Edit Blog">
+                <img class="btn-icon" src="img/Blog.png" />
+                <br />
+                Blog Editor
+            </NavLink>
+        </div>        
     </div>
 </div>
 
-@code {
-    string Result = string.Empty;
-
-    private async Task CallTestApi()
-    {
-        using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://api.roman015.com/Test"))
-        {
-            var tokenResult = await TokenProvider.RequestAccessToken();
-
-            if (tokenResult.TryGetToken(out var token))
-            {
-                requestMessage.Headers.Authorization =
-                  new AuthenticationHeaderValue("Bearer", token.Value);
-                var response = await Http.SendAsync(requestMessage);
-                await response.Content.ReadAsStringAsync().ContinueWith((val) =>
-                {
-                    if (!string.IsNullOrWhiteSpace(val.Result))
-                    {
-                        Result = val.Result;
-                    }
-                    else
-                    {
-                        Result = "Something went Wrong";
-                    }
-                });
-            }
-        }
-
-        if (string.IsNullOrWhiteSpace(Result))
-        {
-            Result = "Failed!";
-        }
-    }
-}
