@@ -64,7 +64,9 @@ namespace Roman015API.Controllers
         [Authorize(Roles = "BlogAdministrator")]
         public IActionResult UploadPost(UploadedPost uploadedPost)
         {
-            if (uploadedPost.PostId < 0)
+            int postId = int.Parse(uploadedPost.PostId.Replace("post_",""));
+
+            if (postId < 0)
             {
                 return BadRequest("Invalid postID");
             }
@@ -76,7 +78,7 @@ namespace Roman015API.Controllers
 
             try
             {
-                string FileName = string.Format("post_{0:000}.md", uploadedPost.PostId);
+                string FileName = uploadedPost.PostId + ".md";
                 BlogContainer.DeleteBlobIfExists(FileName);
                 BlogContainer.UploadBlob(FileName, BinaryData.FromString(uploadedPost.PostMarkDown));
 

@@ -7,7 +7,7 @@ namespace Roman015API.Models
 {
     public class UploadedPost
     {
-        public int PostId { get; set; }
+        public string PostId { get; set; }
         public string PostMarkDown { get; set; }
     }
 }
