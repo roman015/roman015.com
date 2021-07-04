@@ -23,7 +23,7 @@ namespace Roman015API.Services
         {
             timer = new Timer((state) =>
             {
-                blogViewerController.GetTags();
+                blogViewerController.ReloadCache();
             }, 
             null, 
             TimeSpan.Zero,

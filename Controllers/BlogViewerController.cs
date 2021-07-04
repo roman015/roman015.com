@@ -130,6 +130,12 @@ namespace Roman015API.Controllers
             });
         }
 
+        public void ReloadCache()
+        {
+            MemoryCache.Remove(AllPostsCacheKey);
+            MemoryCache.Set<Post[]>(AllPostsCacheKey, GetPostsFromServer(), GetPostMemoryCacheEntryOptions());
+        }
+
         private Post[] GetAllPosts()
         {
             Post[] result;
