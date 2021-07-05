@@ -26,6 +26,7 @@ namespace Roman015API
             TenantId = System.Environment.GetEnvironmentVariable(configuration["AzureAdEnvironmentVars:AzureAdTenantId"]);
             ClientId = System.Environment.GetEnvironmentVariable(configuration["AzureAdEnvironmentVars:AzureAdClientId"]);
             BlogBlobConnectionString = System.Environment.GetEnvironmentVariable(configuration["AzureStorageEnvironmentVars:AzureStorageBlobConnectionString"]);
+            CorsOrigins = System.Environment.GetEnvironmentVariable(configuration["CorsOriginsEnvironmentVar"]);
 
             Configuration = new ConfigurationBuilder()
                 .AddConfiguration(configuration)
@@ -39,6 +40,7 @@ namespace Roman015API
         public string TenantId { get; }
         public string ClientId { get; }
         public string BlogBlobConnectionString { get; }
+        public string CorsOrigins { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -67,7 +69,8 @@ namespace Roman015API
             app.UseRouting();
             app.UseCors(builder =>
             {
-                builder.WithOrigins("https://www.roman015.com", "https://blog.roman015.com");
+                // https://www.roman015.com,https://blog.roman015.com
+                builder.WithOrigins(CorsOrigins.Split(",")); 
                 builder.AllowAnyHeader();
             }); 
 
