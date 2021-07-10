@@ -1,5 +1,5 @@
 ﻿@page "/BlogEditor"
-@attribute [Authorize(Roles = "BlogAdministrator")]
+@attribute [PermittedRoleAuthorize("BlogAdministrator")]
 
 @inject BlogEditorAPIService BlogEditorApi
 @inject HttpClient Http
