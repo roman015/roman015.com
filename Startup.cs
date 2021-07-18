@@ -31,6 +31,7 @@ namespace Roman015API
             BlogBlobConnectionString = System.Environment.GetEnvironmentVariable(configuration["AzureStorageEnvironmentVars:AzureStorageBlobConnectionString"]);
             CorsOrigins = System.Environment.GetEnvironmentVariable(configuration["CorsOriginsEnvironmentVar"]);
             RedisBackplaneConnectionString = System.Environment.GetEnvironmentVariable(configuration["RedisBackplaneConnectionStringEnvironmentVar"]);
+            RedisBackplanePassword = System.Environment.GetEnvironmentVariable(configuration["RedisBackplanePasswordEnvironmentVar"]);
 
             Configuration = new ConfigurationBuilder()
                 .AddConfiguration(configuration)
@@ -47,6 +48,7 @@ namespace Roman015API
         public string BlogBlobConnectionString { get; }
         public string CorsOrigins { get; }
         public string RedisBackplaneConnectionString { get; }
+        public string RedisBackplanePassword { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -57,18 +59,15 @@ namespace Roman015API
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)                
                 .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
-
-            //password@host:port
-            string connectionString = Configuration["RedisBackplaneConnectionString"].ToString();
-            string password = connectionString.Substring(0, connectionString.IndexOf('@'));
-            connectionString = connectionString.Substring(connectionString.IndexOf('@') + 1);
+            
             services.AddSignalR()
                 .AddStackExchangeRedis(
-                    connectionString,
+                    //host:port
+                    Configuration["RedisBackplane:ConnectionString"],
                     options =>
                     {
                         options.Configuration.ChannelPrefix = "roman015api";
-                        options.Configuration.Password = password;                        
+                        options.Configuration.Password = Configuration["RedisBackplane:Password"];                        
                     });
 
             services.AddControllers().AddControllersAsServices();
@@ -137,9 +136,14 @@ namespace Roman015API
 
         private Stream GetRedisBackplaneConnectionStringSettings()
         {
-            string jsonString = "{ \"RedisBackplaneConnectionString\": \""
-                + RedisBackplaneConnectionString + "\"" + System.Environment.NewLine
-                + "}";
+            string jsonString = "{ \"RedisBackplane\": {" + System.Environment.NewLine
+               + "\"ConnectionString\"  : \"RedisBackplaneConnectionString\"," + System.Environment.NewLine
+               + "\"Password\"          : \"RedisBackplanePassword\"" + System.Environment.NewLine
+               + "}}";
+
+            jsonString = jsonString
+                    .Replace("RedisBackplaneConnectionString", RedisBackplaneConnectionString)
+                    .Replace("RedisBackplanePassword", RedisBackplanePassword);
 
             MemoryStream ms = new MemoryStream(Encoding.ASCII.GetBytes(jsonString));
 
