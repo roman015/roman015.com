@@ -13,9 +13,29 @@ namespace Roman015API.Hubs
 
     public class NotificationHub : Hub<INotificationHub>
     {
+        public override Task OnConnectedAsync()
+        {
+            Console.WriteLine("OnConnectedAsync");
+            return null;
+        }
+        
+        public override Task OnDisconnectedAsync(Exception e)
+        {
+            Console.WriteLine("OnDisconnectedAsync :" + e.Message);
+            return null;
+        }
+
         public async Task SendTestMessage(string message)
         {
-            await Clients.All.TestMessage(message);
+            Console.WriteLine("SendTestMessage");
+            try
+            {
+                await Clients.All.TestMessage(message);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("SendTestMessage : " + e.Message);
+            }
         }
     }
 }
