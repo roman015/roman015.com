@@ -21,28 +21,16 @@ namespace Roman015API.Hubs
             this.logger = logger;
         }
 
-        public override Task OnConnectedAsync()
-        {
-            logger.Log(LogLevel.Information, "OnConnectedAsync");
-            return new Task(() => { }); // TODO : Cleanup
-        }
-        
-        public override Task OnDisconnectedAsync(Exception? exception)
-        {
-            logger.Log(LogLevel.Information, "OnDisconnectedAsync :" + exception?.Message);
-            return new Task(() => { }); // TODO : Cleanup
-        }
-
         public async Task SendTestMessage(string message)
         {
-            Console.WriteLine("SendTestMessage");
+            logger.Log(LogLevel.Information, "SendTestMessage");
             try
             {
                 await Clients.All.TestMessage(message);
             }
             catch(Exception e)
             {
-                Console.WriteLine("SendTestMessage : " + e.Message);
+                logger.Log(LogLevel.Error, "SendTestMessage : " + e.Message);
             }
         }
     }
