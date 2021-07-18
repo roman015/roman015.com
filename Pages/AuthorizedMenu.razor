@@ -3,6 +3,8 @@
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
 
+@inject BlogEditorAPIService BlogEditorApi
+
 @attribute [Authorize]
 
 <div class="container text-center">
@@ -19,6 +21,21 @@
             </div>
         }
     </div>
+    <div class="row">
+        <div class="col-sm-12 col-lg-4">
+            <div class="form-group">
+                <input type="text" class="form-control"
+                       @bind="message"
+                       placeholder="Enter Message Here"
+                       title="Enter Message Here"
+                       @onkeyup="@(async (e) => {
+                                   if (!string.IsNullOrWhiteSpace(e.Key) && e.Key.Contains("Enter")) {
+                                       await TriggerMesssage();
+                                   }
+                               })" />
+            </div>
+        </div>
+    </div>
 </div>
 
 @code{
@@ -26,9 +43,18 @@
     private Task<AuthenticationState> authenticationStateTask { get; set; }
     private bool IsBlogAdminstrator = false;
 
+    private string message { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         var user = (await authenticationStateTask).User;
         IsBlogAdminstrator = (await AuthorizationService.AuthorizeAsync(user, "BlogAdministratorsOnly")).Succeeded;
+    }
+
+    protected async Task TriggerMesssage()
+    {
+        var result = await BlogEditorApi.TriggerMessage(message);
+
+        Console.WriteLine("Result : " + result);
     }
 }

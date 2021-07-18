@@ -111,6 +111,31 @@ namespace HomePage.Services
 
             return result;
         }
+
+        // TODO : Clean this up
+        public async Task<string> TriggerMessage(string message)
+        {
+            string result = string.Empty;
+
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://api.roman015.com/Test/SignalRTest?message=" + message))
+            {
+                var tokenResult = await TokenProvider.RequestAccessToken();
+
+                if (tokenResult.TryGetToken(out var token))
+                {
+                    requestMessage.Headers.Authorization =
+                      new AuthenticationHeaderValue("Bearer", token.Value);                    
+
+                    var response = await Http.SendAsync(requestMessage);
+                    await response.Content.ReadAsStringAsync().ContinueWith((val) =>
+                    {
+                        result = val.Result;
+                    });
+                }
+            }
+
+            return result;
+        }
     }
 
 }

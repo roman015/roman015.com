@@ -1,0 +1,35 @@
+﻿@page "/SignalR"
+
+@inject HubConnection HubConnection
+
+<h3>SignalRTest</h3>
+
+<div>
+    @IncomingMessage
+</div>
+
+@code {
+    string IncomingMessage { get; set; } = "No Message";
+
+    protected override async Task OnInitializedAsync()
+    {
+        #region HubConnection Setup
+        HubConnection.Closed += error =>
+        {
+            Console.Error.WriteLine("Hub Connection Closed, Reconnecting : " + error.Message);
+
+            return HubConnection.StartAsync();
+        };
+
+        IncomingMessage = "Connecting...";
+        await HubConnection.StartAsync();
+        IncomingMessage = "Connected, Listening...please wait.";
+        #endregion
+
+        HubConnection.On<string>("TestMessage", message =>
+        {
+            IncomingMessage = message;
+            StateHasChanged();
+        });
+    }
+}

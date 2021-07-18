@@ -3,6 +3,7 @@ using HomePage.Authorization;
 using HomePage.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -40,6 +41,13 @@ namespace HomePage
             builder.Services.AddAuthorizationCore(config =>
             {
                 config.AddPolicy("BlogAdministratorsOnly", policy => policy.AddRequirements(new PermittedRoleRequirement("BlogAdministrator")));
+            });
+
+            builder.Services.AddSingleton<HubConnection>(sp => {
+                return new HubConnectionBuilder()
+                  .WithUrl("https://api.roman015.com/NotificationHub")                  
+                  .WithAutomaticReconnect()
+                  .Build();
             });
 
             #region For FE RBAC
