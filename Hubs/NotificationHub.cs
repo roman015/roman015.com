@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +14,23 @@ namespace Roman015API.Hubs
 
     public class NotificationHub : Hub<INotificationHub>
     {
+        private readonly ILogger<NotificationHub> logger;
+
+        public NotificationHub(ILogger<NotificationHub> logger)
+        {
+            this.logger = logger;
+        }
+
         public override Task OnConnectedAsync()
         {
-            Console.WriteLine("OnConnectedAsync");
-            return null;
+            logger.Log(LogLevel.Information, "OnConnectedAsync");
+            return new Task(() => { }); // TODO : Cleanup
         }
         
-        public override Task OnDisconnectedAsync(Exception e)
+        public override Task OnDisconnectedAsync(Exception? exception)
         {
-            Console.WriteLine("OnDisconnectedAsync :" + e.Message);
-            return null;
+            logger.Log(LogLevel.Information, "OnDisconnectedAsync :" + exception?.Message);
+            return new Task(() => { }); // TODO : Cleanup
         }
 
         public async Task SendTestMessage(string message)
