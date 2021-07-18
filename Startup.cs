@@ -108,6 +108,8 @@ namespace Roman015API
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseWebSockets();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
