@@ -33,6 +33,9 @@
             return null;
         };
 
+        Console.WriteLine("ServerTimeout Set to : " + HubConnection.ServerTimeout);
+        Console.WriteLine("KeepAliveInterval Set to : " + HubConnection.KeepAliveInterval);
+
         IncomingMessage = "Connecting...";
         await HubConnection.StartAsync();
         IncomingMessage = "Connected, Listening...please wait.";
@@ -40,6 +43,7 @@
 
         HubConnection.On<string>("TestMessage", message =>
         {
+            Console.WriteLine("TestMessage : " + message);
             IncomingMessage = message;
             StateHasChanged();
         });
