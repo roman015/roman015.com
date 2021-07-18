@@ -21,21 +21,6 @@
             return HubConnection.StartAsync();
         };
 
-        HubConnection.Reconnecting += param =>
-        {
-            Console.WriteLine("Reconnecting : " + param.Message);
-            return null;
-        };
-
-        HubConnection.Reconnected += msg =>
-        {
-            Console.WriteLine("Reconnected : " + msg);
-            return null;
-        };
-
-        Console.WriteLine("ServerTimeout Set to : " + HubConnection.ServerTimeout);
-        Console.WriteLine("KeepAliveInterval Set to : " + HubConnection.KeepAliveInterval);
-
         IncomingMessage = "Connecting...";
         await HubConnection.StartAsync();
         IncomingMessage = "Connected, Listening...please wait.";
@@ -43,7 +28,6 @@
 
         HubConnection.On<string>("TestMessage", message =>
         {
-            Console.WriteLine("TestMessage : " + message);
             IncomingMessage = message;
             StateHasChanged();
         });
