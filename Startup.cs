@@ -10,10 +10,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Roman015API.Hubs;
 using Roman015API.Services;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -58,11 +60,27 @@ namespace Roman015API
 
             services.AddSignalR()
                 .AddStackExchangeRedis(
-                    //host:port?password=pass
+                    //password@host:port
                     Configuration["RedisBackplaneConnectionString"],
                     options =>
                     {
                         options.Configuration.ChannelPrefix = "api.roman015.com";
+
+                        options.ConnectionFactory = async writer =>
+                        {
+                            var connection = await ConnectionMultiplexer.ConnectAsync(options.Configuration, writer);
+                            connection.ConnectionFailed += (sender, e) =>
+                            {
+                                Console.WriteLine("Connection to Redis failed :" + e.Exception.Message);
+                            };
+
+                            if (!connection.IsConnected)
+                            {
+                                Console.WriteLine("Did not connect to Redis.");
+                            }
+
+                            return connection;
+                        };
                     });
 
             services.AddControllers().AddControllersAsServices();
