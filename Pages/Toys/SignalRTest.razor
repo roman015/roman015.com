@@ -17,8 +17,20 @@
         HubConnection.Closed += error =>
         {
             Console.Error.WriteLine("Hub Connection Closed, Reconnecting : " + error.Message);
-
+            Console.WriteLine("Hub Connection Closed, Reconnecting : " + error.Message);
             return HubConnection.StartAsync();
+        };
+
+        HubConnection.Reconnecting += param =>
+        {
+            Console.WriteLine("Reconnecting : " + param.Message);
+            return null;
+        };
+
+        HubConnection.Reconnected += msg =>
+        {
+            Console.WriteLine("Reconnected : " + msg);
+            return null;
         };
 
         IncomingMessage = "Connecting...";
