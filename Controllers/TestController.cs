@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Roman015API.Hubs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,13 @@ namespace Roman015API.Controllers
     [Authorize]
     public class TestController : ControllerBase
     {
+        private readonly IHubContext<NotificationHub, INotificationHub> hubContext;
+
+        public TestController(IHubContext<NotificationHub, INotificationHub> hubContext)
+        {
+            this.hubContext = hubContext;
+        }
+
         [HttpGet]
         public string Get()
         {
@@ -35,6 +44,15 @@ namespace Roman015API.Controllers
             return User.HasClaim(ClaimTypes.Role, "BlogAdministrator") ?
                 User?.Identity?.Name + " is Authorized as Blog Administrator"
                 : User?.Identity?.Name + " is NOT a Blog Administrator";
+        }
+
+        [HttpGet]
+        [Route("SignalRTest")]
+        [Authorize(Roles = "BlogAdministrator")]
+        public string SendSignalR([FromQuery] string message)
+        {
+            hubContext.Clients.All.TestMessage(message);
+            return "Okay";
         }
     }
 }

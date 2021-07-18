@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
+using Roman015API.Hubs;
 using Roman015API.Services;
 using System;
 using System.Collections.Generic;
@@ -27,11 +28,13 @@ namespace Roman015API
             ClientId = System.Environment.GetEnvironmentVariable(configuration["AzureAdEnvironmentVars:AzureAdClientId"]);
             BlogBlobConnectionString = System.Environment.GetEnvironmentVariable(configuration["AzureStorageEnvironmentVars:AzureStorageBlobConnectionString"]);
             CorsOrigins = System.Environment.GetEnvironmentVariable(configuration["CorsOriginsEnvironmentVar"]);
+            RedisBackplaneConnectionString = System.Environment.GetEnvironmentVariable(configuration["RedisBackplaneConnectionStringEnvironmentVar"]);
 
             Configuration = new ConfigurationBuilder()
                 .AddConfiguration(configuration)
                 .AddJsonStream(GetAzureAdSettings())
                 .AddJsonStream(GetAzureBlogSettings())
+                .AddJsonStream(GetRedisBackplaneConnectionStringSettings())
                 .Build();
         }
 
@@ -41,6 +44,7 @@ namespace Roman015API
         public string ClientId { get; }
         public string BlogBlobConnectionString { get; }
         public string CorsOrigins { get; }
+        public string RedisBackplaneConnectionString { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -50,7 +54,16 @@ namespace Roman015API
             services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)                
-                .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));            
+                .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
+
+            services.AddSignalR()
+                .AddStackExchangeRedis(
+                    //host:port?password=pass
+                    Configuration["RedisBackplaneConnectionString"],
+                    options =>
+                    {
+                        options.Configuration.ChannelPrefix = "api.roman015.com";
+                    });
 
             services.AddControllers().AddControllersAsServices();
 
@@ -80,6 +93,7 @@ namespace Roman015API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<NotificationHub>("/NotificationHub");
             });
         }
 
@@ -111,6 +125,17 @@ namespace Roman015API
                 + "}";
 
             MemoryStream ms = new MemoryStream(Encoding.ASCII.GetBytes(AzureBlobString));
+
+            return ms;
+        }
+
+        private Stream GetRedisBackplaneConnectionStringSettings()
+        {
+            string jsonString = "{ \"RedisBackplaneConnectionString\": \""
+                + RedisBackplaneConnectionString + "\"" + System.Environment.NewLine
+                + "}";
+
+            MemoryStream ms = new MemoryStream(Encoding.ASCII.GetBytes(jsonString));
 
             return ms;
         }
