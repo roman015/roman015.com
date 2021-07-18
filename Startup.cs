@@ -58,29 +58,17 @@ namespace Roman015API
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)                
                 .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
 
+            //password@host:port
+            string connectionString = Configuration["RedisBackplaneConnectionString"].ToString();
+            string password = connectionString.Substring(0, connectionString.IndexOf('@'));
+            connectionString = connectionString.Substring(connectionString.IndexOf('@') + 1);
             services.AddSignalR()
                 .AddStackExchangeRedis(
-                    //password@host:port
-                    Configuration["RedisBackplaneConnectionString"],
+                    connectionString,
                     options =>
                     {
                         options.Configuration.ChannelPrefix = "roman015api";
-
-                        options.ConnectionFactory = async writer =>
-                        {
-                            var connection = await ConnectionMultiplexer.ConnectAsync(options.Configuration, writer);
-                            connection.ConnectionFailed += (sender, e) =>
-                            {
-                                Console.WriteLine("Connection to Redis failed :" + e.Exception.Message);
-                            };
-
-                            if (!connection.IsConnected)
-                            {
-                                Console.WriteLine("Did not connect to Redis.");
-                            }
-
-                            return connection;
-                        };
+                        options.Configuration.Password = password;                        
                     });
 
             services.AddControllers().AddControllersAsServices();
