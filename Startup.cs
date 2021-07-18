@@ -64,7 +64,7 @@ namespace Roman015API
                     Configuration["RedisBackplaneConnectionString"],
                     options =>
                     {
-                        options.Configuration.ChannelPrefix = "api.roman015.com";
+                        options.Configuration.ChannelPrefix = "roman015api";
 
                         options.ConnectionFactory = async writer =>
                         {
@@ -107,8 +107,6 @@ namespace Roman015API
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseWebSockets();
 
             app.UseEndpoints(endpoints =>
             {
