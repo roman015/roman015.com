@@ -78,7 +78,7 @@ namespace Roman015API.Services
         public String media_type{ get; set; }
         public String media_url{ get; set; }
         public String thumbnail_url{ get; set; }
-        public DateTime timestamp { get; set; }
+        public String timestamp { get; set; }
         public String permalink{ get; set; }
         public String css{ get; set; }
     }
