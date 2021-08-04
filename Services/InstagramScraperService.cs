@@ -47,6 +47,12 @@ namespace Roman015API.Services
                 var response = await (new HttpClient()).GetStringAsync(url);
                 List<InstagramPost> postsFromApi = JsonSerializer.Deserialize<InstagramResponse>(response).data.ToList();
 
+                // Setup css
+                for(int i = 0; i < postsFromApi.Count; i++)
+                {
+                    postsFromApi[i].css = i % 7 == 0 ? "big" : "small";
+                }
+
                 // Upload data to file
                 BlobContainer.DeleteBlobIfExists(this.HomeFileName);
                 BlobContainer.UploadBlob(this.HomeFileName, BinaryData.FromString(JsonSerializer.Serialize(postsFromApi)));
