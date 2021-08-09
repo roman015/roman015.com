@@ -68,9 +68,9 @@ namespace Roman015API.Services
                 #region Home
                 string HomeFileName = "home.json";
                 List<InstagramPost> HomePosts = postsFromApi
-                    .Where(item => item.caption.Contains("#home "))
+                    .Where(item => item.caption.Contains("#Home "))
                     .Select(item => { 
-                        item.caption.Replace("#home ", string.Empty); 
+                        item.caption.Replace("#Home ", string.Empty); 
                         return item; 
                     })
                     .ToList();
