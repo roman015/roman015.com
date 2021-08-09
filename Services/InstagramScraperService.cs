@@ -19,8 +19,7 @@ namespace Roman015API.Services
 
         private readonly string InstagramApi = "https://graph.instagram.com/me/media" 
             + "?fields=id,caption,media_type,media_url,thumbnail_url,timestamp,permalink" 
-            + "&access_token=";
-        private readonly string HomeFileName = "home.json";
+            + "&access_token=";        
 
         private string LongLivedAccessToken { get; } // These last for 60 days
         private IConfiguration Configuration { get; }
@@ -37,6 +36,8 @@ namespace Roman015API.Services
         {
             timer = new Timer(async (state) =>
             {
+                string[] ids;
+
                 // Load Existing Data From Json
                 //var blobClient = BlobContainer.GetBlobClient(this.HomeFileName);
                 //var jsonData = new StreamReader(blobClient.OpenRead()).ReadToEnd();
@@ -45,17 +46,45 @@ namespace Roman015API.Services
                 // Load Data From Instagram
                 string url = InstagramApi + this.LongLivedAccessToken;
                 var response = await (new HttpClient()).GetStringAsync(url);
-                List<InstagramPost> postsFromApi = JsonSerializer.Deserialize<InstagramResponse>(response).data.ToList();
+                List<InstagramPost> postsFromApi = JsonSerializer.Deserialize<InstagramResponse>(response).data.ToList();                
 
-                // Setup css
-                for(int i = 0; i < postsFromApi.Count; i++)
-                {
-                    postsFromApi[i].css = i % 7 == 0 ? "big" : "small";
-                }
+                #region Sort & Store Data
+                #region Game
+                string GameFileName = "game.json";
+                List<InstagramPost> GamePosts = postsFromApi
+                    .Where(item => item.caption.Contains("#GameA ") || item.caption.Contains("#GameN "))                    
+                    .ToList();
 
-                // Upload data to file
-                BlobContainer.DeleteBlobIfExists(this.HomeFileName);
-                BlobContainer.UploadBlob(this.HomeFileName, BinaryData.FromString(JsonSerializer.Serialize(postsFromApi)));
+                ids = GamePosts.Select(item => item.id).ToArray();
+                postsFromApi = postsFromApi
+                    .Where(item => !ids.Contains(item.id))
+                    .ToList();
+
+                // Upload data to files
+                BlobContainer.DeleteBlobIfExists(GameFileName);
+                BlobContainer.UploadBlob(GameFileName, BinaryData.FromString(JsonSerializer.Serialize(GamePosts)));
+                #endregion
+
+                #region Home
+                string HomeFileName = "home.json";
+                List<InstagramPost> HomePosts = postsFromApi
+                    .Where(item => item.caption.Contains("#home "))
+                    .Select(item => { 
+                        item.caption.Replace("#home ", string.Empty); 
+                        return item; 
+                    })
+                    .ToList();
+
+                ids = HomePosts.Select(item => item.id).ToArray();
+                postsFromApi = postsFromApi
+                    .Where(item => !ids.Contains(item.id))
+                    .ToList();
+
+                // Upload data to files
+                BlobContainer.DeleteBlobIfExists(HomeFileName);
+                BlobContainer.UploadBlob(HomeFileName, BinaryData.FromString(JsonSerializer.Serialize(HomePosts)));
+                #endregion
+                #endregion                
             },
             null,
             TimeSpan.Zero,
