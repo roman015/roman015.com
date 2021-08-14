@@ -84,7 +84,38 @@ namespace Roman015API.Services
                 BlobContainer.DeleteBlobIfExists(HomeFileName);
                 BlobContainer.UploadBlob(HomeFileName, BinaryData.FromString(JsonSerializer.Serialize(HomePosts)));
                 #endregion
-                #endregion                
+
+                #region Announcement
+                string AnnouncementFileName = "announcement.json";
+                List<InstagramPost> AnnouncementPosts = postsFromApi
+                    .Where(item => item.caption.Contains("#Announcement "))
+                    .Select(item => {
+                        item.caption.Replace("#Announcement ", string.Empty);
+                        return item;
+                    })
+                    .ToList();
+
+                ids = AnnouncementPosts.Select(item => item.id).ToArray();
+                postsFromApi = postsFromApi
+                    .Where(item => !ids.Contains(item.id))
+                    .ToList();
+
+                // Upload data to files
+                BlobContainer.DeleteBlobIfExists(AnnouncementFileName);
+                BlobContainer.UploadBlob(AnnouncementFileName, BinaryData.FromString(JsonSerializer.Serialize(AnnouncementPosts)));
+                #endregion
+
+                #region LiveStream (i.e., Anything else not filtered out)
+                string LiveStreamFileName = "live.json";
+                List<InstagramPost> LivePosts = postsFromApi
+                    .ToList();
+
+                
+                // Upload data to files
+                BlobContainer.DeleteBlobIfExists(LiveStreamFileName);
+                BlobContainer.UploadBlob(LiveStreamFileName, BinaryData.FromString(JsonSerializer.Serialize(LivePosts)));
+                #endregion
+                #endregion
             },
             null,
             TimeSpan.Zero,
