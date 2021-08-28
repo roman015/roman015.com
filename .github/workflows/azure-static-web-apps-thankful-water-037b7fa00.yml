@@ -32,7 +32,7 @@ jobs:
           output_location: "wwwroot" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
         env:
-          PRE_BUILD_COMMAND: echo 'HELLO TEST'
+          PRE_BUILD_COMMAND: dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }}  --store-password-in-clear-text --name "Roman015Github" "https://nuget.pkg.github.com/roman015-com/index.json"
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
