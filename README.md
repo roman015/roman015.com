@@ -8,3 +8,5 @@ This code is a blazor webassembly project that runs on the client's web browser.
 To add GitHub Packages as a NuGet Repository (This is a system wide change):
 
     dotnet nuget add source --username <USERNAME_HERE> --password <TOKEN_HERE_>  --store-password-in-clear-text --name "Roman015Github" "https://nuget.pkg.github.com/roman015-com/index.json"
+
+Static web app is built using Oryx. Environment varibles for Oryx can be found [here](https://github.com/microsoft/Oryx/blob/main/doc/configuration.md#oryx-configuration). 
