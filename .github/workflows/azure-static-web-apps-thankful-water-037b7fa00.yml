@@ -18,6 +18,17 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
+      - name: GitHub NuGet Private Source Authorisation
+        # You may pin to the exact commit or the version.
+        # uses: StirlingLabs/GithubNugetAuthAction@917c3028a69d882dc6239f3f6c80166c759febbe
+        uses: StirlingLabs/GithubNugetAuthAction@v21.08.0
+        with:
+          # The owner of the NuPkg repository you would like to access, as displayed in their GitHub URL.
+          owner: ${{ github.repository_owner }}
+          # The name of the NuPkg source
+          name: Github-roman015
+          # Personal Access Token with permission to read packages.
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
