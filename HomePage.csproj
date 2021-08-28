@@ -25,6 +25,7 @@
     <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="5.0.1" />
     <PackageReference Include="QRCoder" Version="1.4.1" />
     <PackageReference Include="Radzen.Blazor" Version="3.6.3" />
+    <PackageReference Include="Roman015ApiClient" Version="1.0.1" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
 
