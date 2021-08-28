@@ -24,9 +24,9 @@ jobs:
         uses: StirlingLabs/GithubNugetAuthAction@v21.08.0
         with:
           # The owner of the NuPkg repository you would like to access, as displayed in their GitHub URL.
-          owner: ${{ github.repository_owner }}
+          owner: roman015-com
           # The name of the NuPkg source
-          name: Github-roman015
+          name: Roman015Github
           # Personal Access Token with permission to read packages.
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build And Deploy
