@@ -93,6 +93,7 @@ namespace Roman015API.Services
                         item.caption.Replace("#Announcement ", string.Empty);
                         return item;
                     })
+                    .OrderBy(item => item.caption)
                     .ToList();
 
                 ids = AnnouncementPosts.Select(item => item.id).ToArray();
