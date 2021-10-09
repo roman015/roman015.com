@@ -36,87 +36,96 @@ namespace Roman015API.Services
         {
             timer = new Timer(async (state) =>
             {
-                string[] ids;
+                try
+                {
+                    string[] ids;
 
-                // Load Existing Data From Json
-                //var blobClient = BlobContainer.GetBlobClient(this.HomeFileName);
-                //var jsonData = new StreamReader(blobClient.OpenRead()).ReadToEnd();
-                //List<InstagramPost> instagramPosts = JsonSerializer.Deserialize<List<InstagramPost>>(jsonData);
+                    // Load Existing Data From Json
+                    //var blobClient = BlobContainer.GetBlobClient(this.HomeFileName);
+                    //var jsonData = new StreamReader(blobClient.OpenRead()).ReadToEnd();
+                    //List<InstagramPost> instagramPosts = JsonSerializer.Deserialize<List<InstagramPost>>(jsonData);
 
-                // Load Data From Instagram
-                string url = InstagramApi + this.LongLivedAccessToken;
-                var response = await (new HttpClient()).GetStringAsync(url);
-                List<InstagramPost> postsFromApi = JsonSerializer.Deserialize<InstagramResponse>(response).data.ToList();                
+                    // Load Data From Instagram
+                    string url = InstagramApi + this.LongLivedAccessToken;
+                    var response = await (new HttpClient()).GetStringAsync(url);
+                    List<InstagramPost> postsFromApi = JsonSerializer.Deserialize<InstagramResponse>(response).data.ToList();
 
-                #region Sort & Store Data
-                #region Game
-                string GameFileName = "game.json";
-                List<InstagramPost> GamePosts = postsFromApi
-                    .Where(item => item.caption.Contains("#GameA ") || item.caption.Contains("#GameN "))                    
-                    .ToList();
+                    #region Sort & Store Data
+                    #region Game
+                    string GameFileName = "game.json";
+                    List<InstagramPost> GamePosts = postsFromApi
+                        .Where(item => item.caption.Contains("#GameA ") || item.caption.Contains("#GameN "))
+                        .ToList();
 
-                ids = GamePosts.Select(item => item.id).ToArray();
-                postsFromApi = postsFromApi
-                    .Where(item => !ids.Contains(item.id))
-                    .ToList();
+                    ids = GamePosts.Select(item => item.id).ToArray();
+                    postsFromApi = postsFromApi
+                        .Where(item => !ids.Contains(item.id))
+                        .ToList();
 
-                // Upload data to files
-                BlobContainer.DeleteBlobIfExists(GameFileName);
-                BlobContainer.UploadBlob(GameFileName, BinaryData.FromString(JsonSerializer.Serialize(GamePosts)));
-                #endregion
+                    // Upload data to files
+                    BlobContainer.DeleteBlobIfExists(GameFileName);
+                    BlobContainer.UploadBlob(GameFileName, BinaryData.FromString(JsonSerializer.Serialize(GamePosts)));
+                    #endregion
 
-                #region Home
-                string HomeFileName = "home.json";
-                List<InstagramPost> HomePosts = postsFromApi
-                    .Where(item => item.caption.Contains("#Home "))
-                    .Select(item => { 
-                        item.caption.Replace("#Home ", string.Empty); 
-                        return item; 
-                    })
-                    .ToList();
+                    #region Home
+                    string HomeFileName = "home.json";
+                    List<InstagramPost> HomePosts = postsFromApi
+                        .Where(item => item.caption.Contains("#Home "))
+                        .Select(item =>
+                        {
+                            item.caption.Replace("#Home ", string.Empty);
+                            return item;
+                        })
+                        .ToList();
 
-                ids = HomePosts.Select(item => item.id).ToArray();
-                postsFromApi = postsFromApi
-                    .Where(item => !ids.Contains(item.id))
-                    .ToList();
+                    ids = HomePosts.Select(item => item.id).ToArray();
+                    postsFromApi = postsFromApi
+                        .Where(item => !ids.Contains(item.id))
+                        .ToList();
 
-                // Upload data to files
-                BlobContainer.DeleteBlobIfExists(HomeFileName);
-                BlobContainer.UploadBlob(HomeFileName, BinaryData.FromString(JsonSerializer.Serialize(HomePosts)));
-                #endregion
+                    // Upload data to files
+                    BlobContainer.DeleteBlobIfExists(HomeFileName);
+                    BlobContainer.UploadBlob(HomeFileName, BinaryData.FromString(JsonSerializer.Serialize(HomePosts)));
+                    #endregion
 
-                #region Announcement
-                string AnnouncementFileName = "announcement.json";
-                List<InstagramPost> AnnouncementPosts = postsFromApi
-                    .Where(item => item.caption.Contains("#Announcement "))
-                    .Select(item => {
-                        item.caption.Replace("#Announcement ", string.Empty);
-                        return item;
-                    })
-                    .OrderBy(item => item.caption)
-                    .ToList();
+                    #region Announcement
+                    string AnnouncementFileName = "announcement.json";
+                    List<InstagramPost> AnnouncementPosts = postsFromApi
+                        .Where(item => item.caption.Contains("#Announcement "))
+                        .Select(item =>
+                        {
+                            item.caption.Replace("#Announcement ", string.Empty);
+                            return item;
+                        })
+                        .OrderBy(item => item.caption)
+                        .ToList();
 
-                ids = AnnouncementPosts.Select(item => item.id).ToArray();
-                postsFromApi = postsFromApi
-                    .Where(item => !ids.Contains(item.id))
-                    .ToList();
+                    ids = AnnouncementPosts.Select(item => item.id).ToArray();
+                    postsFromApi = postsFromApi
+                        .Where(item => !ids.Contains(item.id))
+                        .ToList();
 
-                // Upload data to files
-                BlobContainer.DeleteBlobIfExists(AnnouncementFileName);
-                BlobContainer.UploadBlob(AnnouncementFileName, BinaryData.FromString(JsonSerializer.Serialize(AnnouncementPosts)));
-                #endregion
+                    // Upload data to files
+                    BlobContainer.DeleteBlobIfExists(AnnouncementFileName);
+                    BlobContainer.UploadBlob(AnnouncementFileName, BinaryData.FromString(JsonSerializer.Serialize(AnnouncementPosts)));
+                    #endregion
 
-                #region LiveStream (i.e., Anything else not filtered out)
-                string LiveStreamFileName = "live.json";
-                List<InstagramPost> LivePosts = postsFromApi
-                    .ToList();
+                    #region LiveStream (i.e., Anything else not filtered out)
+                    string LiveStreamFileName = "live.json";
+                    List<InstagramPost> LivePosts = postsFromApi
+                        .ToList();
 
-                
-                // Upload data to files
-                BlobContainer.DeleteBlobIfExists(LiveStreamFileName);
-                BlobContainer.UploadBlob(LiveStreamFileName, BinaryData.FromString(JsonSerializer.Serialize(LivePosts)));
-                #endregion
-                #endregion
+
+                    // Upload data to files
+                    BlobContainer.DeleteBlobIfExists(LiveStreamFileName);
+                    BlobContainer.UploadBlob(LiveStreamFileName, BinaryData.FromString(JsonSerializer.Serialize(LivePosts)));
+                    #endregion
+                    #endregion
+                }
+                catch(Exception ex)
+                {
+                    // In Case Instagram goes down, do nothing, existing files should be okay
+                }
             },
             null,
             TimeSpan.Zero,
