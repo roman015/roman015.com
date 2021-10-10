@@ -132,16 +132,16 @@ namespace Roman015API.Services
                     BlobContainer.UploadBlob(BetrothalFileName, BinaryData.FromString(JsonSerializer.Serialize(BetrothalPosts)));
                     #endregion
 
-                    #region LiveStream (i.e., Anything else not filtered out)
-                    string LiveStreamFileName = "live.json";
-                    List<InstagramPost> LivePosts = postsFromApi
-                        .ToList();
+                    //#region LiveStream (i.e., Anything else not filtered out)
+                    //string LiveStreamFileName = "live.json";
+                    //List<InstagramPost> LivePosts = postsFromApi
+                    //    .ToList();
 
 
-                    // Upload data to files
-                    BlobContainer.DeleteBlobIfExists(LiveStreamFileName);
-                    BlobContainer.UploadBlob(LiveStreamFileName, BinaryData.FromString(JsonSerializer.Serialize(LivePosts)));
-                    #endregion
+                    //// Upload data to files
+                    //BlobContainer.DeleteBlobIfExists(LiveStreamFileName);
+                    //BlobContainer.UploadBlob(LiveStreamFileName, BinaryData.FromString(JsonSerializer.Serialize(LivePosts)));
+                    //#endregion
                     #endregion
                 }
                 catch(Exception)
