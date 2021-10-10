@@ -110,6 +110,28 @@ namespace Roman015API.Services
                     BlobContainer.UploadBlob(AnnouncementFileName, BinaryData.FromString(JsonSerializer.Serialize(AnnouncementPosts)));
                     #endregion
 
+                    #region Betrothal
+                    string BetrothalFileName = "betrothal.json";
+                    List<InstagramPost> BetrothalPosts = postsFromApi
+                        .Where(item => item.caption.Contains("#Betrothal "))
+                        .Select(item =>
+                        {
+                            item.caption.Replace("#Betrothal ", string.Empty);
+                            return item;
+                        })
+                        .OrderBy(item => item.caption)
+                        .ToList();
+
+                    ids = BetrothalPosts.Select(item => item.id).ToArray();
+                    postsFromApi = postsFromApi
+                        .Where(item => !ids.Contains(item.id))
+                        .ToList();
+
+                    // Upload data to files
+                    BlobContainer.DeleteBlobIfExists(BetrothalFileName);
+                    BlobContainer.UploadBlob(BetrothalFileName, BinaryData.FromString(JsonSerializer.Serialize(BetrothalPosts)));
+                    #endregion
+
                     #region LiveStream (i.e., Anything else not filtered out)
                     string LiveStreamFileName = "live.json";
                     List<InstagramPost> LivePosts = postsFromApi
@@ -122,7 +144,7 @@ namespace Roman015API.Services
                     #endregion
                     #endregion
                 }
-                catch(Exception ex)
+                catch(Exception)
                 {
                     // In Case Instagram goes down, do nothing, existing files should be okay
                 }
