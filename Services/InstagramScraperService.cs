@@ -48,7 +48,17 @@ namespace Roman015API.Services
                     // Load Data From Instagram
                     string url = InstagramApi + this.LongLivedAccessToken;
                     var response = await (new HttpClient()).GetStringAsync(url);
-                    List<InstagramPost> postsFromApi = JsonSerializer.Deserialize<InstagramResponse>(response).data.ToList();
+                    var responseInstagram = JsonSerializer.Deserialize<InstagramResponse>(response);
+                    List<InstagramPost> postsFromApi = responseInstagram.data.ToList();
+
+                    // Keep Loading the rest of the data, if any
+                    while(!string.IsNullOrWhiteSpace(responseInstagram.paging.next))
+                    {                        
+                        url = responseInstagram.paging.next;
+                        response = await (new HttpClient()).GetStringAsync(url);
+                        responseInstagram = JsonSerializer.Deserialize<InstagramResponse>(response);
+                        postsFromApi.AddRange(responseInstagram.data);
+                    }
 
                     #region Sort & Store Data
                     #region Game
@@ -181,10 +191,21 @@ namespace Roman015API.Services
         public String css{ get; set; }
     }
 
+    public class InstagramCursors
+    {
+        public string before { get; set; }
+        public string after { get; set; }
+    }
+
+    public class InstagramPaging
+    {
+        public InstagramCursors cursors { get; set; }
+        public string next { get; set; }        
+    }
+
     public class InstagramResponse
     {
         public InstagramPost[] data { get; set; }
-
-        // TODO : Check For Paging afterwards
+        public InstagramPaging paging { get; set; }
     }
 }
