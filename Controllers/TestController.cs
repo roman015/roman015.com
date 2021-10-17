@@ -54,5 +54,18 @@ namespace Roman015API.Controllers
             hubContext.Clients.All.TestMessage(message);
             return "Okay";
         }
+
+        [HttpGet]
+        [Route("TestWearOS")]
+        [Authorize(Roles = "WearOSApp")]
+        public IActionResult TestWearOS()
+        {
+            return Ok(new
+            {
+                RequestTimeStamp = DateTime.Now.ToString("dd/MM/yyyy HH:mm.ss"),
+                JediCount = 3,
+                SithCount = 4
+            });
+        }
     }
 }
