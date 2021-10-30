@@ -7,6 +7,7 @@ WORKDIR /source
 # Copy source and build App
 COPY . ./Roman015API/
 WORKDIR /source/Roman015API
+RUN dotnet nuget add source --username $BUILD_USERNAME --password $BUILD_TOKEN --store-password-in-clear-text --name "Roman015Github" "https://nuget.pkg.github.com/roman015-com/index.json"
 RUN dotnet restore
 RUN dotnet publish -c release -o /app --no-restore
 
