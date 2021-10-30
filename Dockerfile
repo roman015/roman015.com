@@ -1,5 +1,7 @@
 ﻿# https://hub.docker.com/_/microsoft-dotnet-sdk/
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+ARG BUILD_USERNAME=test
+ARG BUILD_TOKEN=test
 WORKDIR /source
 
 # Copy source and build App
