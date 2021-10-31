@@ -2,6 +2,8 @@
 
 This repo contains the source code used to host www.roman015.com. Currently in it's third iteration, which is implemented using .Net 5 and Blazor (Web Assembly).
 
+NOTE: All source code related to the roman015 website has been moved into https://github.com/roman015-com 
+
 # Components
 
 The three components of the current iteration is kept in three branches:
